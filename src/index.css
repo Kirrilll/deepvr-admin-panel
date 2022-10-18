@@ -78,3 +78,51 @@ code {
   border-radius: 15px;
   color: #F3F5F9;
 }
+
+
+.cell__container {
+  background: #FFFFFF;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.cell__container div {
+  padding: 8px 16px;
+}
+
+.cell__header {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 120%;
+  display: flex;
+  align-items: center;
+  color: #FFFFFF;
+}
+
+.cell__wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.booked-item__title {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 120%;
+  margin: 0;
+  letter-spacing: -0.41px;
+  text-transform: uppercase;
+  color: #050411;
+}
+
+.booked-item__payment-status {
+  border-radius: 25px;
+  padding: 4px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 140%;
+  text-align: center;
+  letter-spacing: 0.002em;
+}
