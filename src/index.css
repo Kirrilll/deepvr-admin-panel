@@ -126,3 +126,78 @@ code {
   text-align: center;
   letter-spacing: 0.002em;
 }
+
+td {
+  padding: 0;
+}
+
+/*Календарь*/
+
+.date-picker-input {
+  background: #F3F5F9;
+  border-radius: 15px;
+  border: none;
+  padding: 15px 24px;
+}
+
+.ant-picker-input{
+  flex-direction: row-reverse;
+  gap: 18px;
+}
+
+.date-picker-input input {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 140%;
+  letter-spacing: 0.002em;
+  color: #444656;
+}
+
+.ant-picker-panel-container {
+  background: #F3F5F9;
+  border-radius: 15px;
+  padding: 24px;
+  width: 538px;
+  height: 373px;
+}
+
+.nav-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.nav-date {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  color: #444656;
+  cursor: pointer;
+}
+
+.nav-date.active {
+  color: #30A5D1;
+}
+
+/* .date-panel-popup {
+  background: #F3F5F9;
+  border-radius: 15px;
+  padding: 24px;
+} */
+
+.date-cell {
+  width: 46px;
+  height: 46px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+}
+
+.date-cell.active {
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), #30A5D1;
+  border-radius: 4px;
+  color: #F3F5F9;
+}
