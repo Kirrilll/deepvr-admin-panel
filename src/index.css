@@ -15,11 +15,13 @@ code {
   height: 100%;
 }
 
+
 .ant-layout {
   height: 100%;
-  background-color: white;
+  background-color: #FAFAFC;
 }
 
+/* Селектор*/
 .ant-select:not(.ant-select-customize-input) .ant-select-selector {
   padding: 14px 16px 14px 24px;
   width: 255px;
@@ -81,7 +83,7 @@ code {
 
 
 .cell__container {
-  background: #FFFFFF;
+  background-color: #FAFAFC;
   border-radius: 15px;
   overflow: hidden;
 }
@@ -140,7 +142,7 @@ td {
   padding: 15px 24px;
 }
 
-.ant-picker-input{
+.ant-picker-input {
   flex-direction: row-reverse;
   gap: 18px;
 }
@@ -161,6 +163,72 @@ td {
   height: 373px;
 }
 
+.ant-picker-footer {
+  width: auto;
+  min-width: fit-content;
+  flex-grow: 3;
+}
+
+
+.ant-picker-panel {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  border: none;
+}
+
+.ant-picker-date-panel {
+  width: auto;
+  height: 100%;
+  flex-grow: 2.5;
+}
+
+.ant-picker-date-panel * {
+  padding: 0;
+  margin: 0;
+}
+
+.ant-picker-date-panel .ant-picker-body {
+  padding: 0;
+  height: 100%;
+}
+
+.ant-picker-header-view {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #596982;
+}
+
+.ant-picker-content {
+  width: 100% !important;
+  height: 100%;
+  margin: 0;
+  table-layout: auto
+}
+
+.ant-picker-cell {
+  color: #A0A9B7;
+}
+
+.ant-picker-cell::before {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  z-index: 1;
+  height: 100%;
+  transform: translateY(-50%);
+  transition: all 0.3s;
+  content: '';
+}
+
+.ant-picker-cell-in-view {
+  color: #12284C;
+}
+
 .nav-column {
   display: flex;
   flex-direction: column;
@@ -175,29 +243,111 @@ td {
   text-align: center;
   color: #444656;
   cursor: pointer;
+  touch-action: manipulation;
 }
 
 .nav-date.active {
   color: #30A5D1;
 }
 
-/* .date-panel-popup {
-  background: #F3F5F9;
-  border-radius: 15px;
-  padding: 24px;
-} */
-
 .date-cell {
-  width: 46px;
-  height: 46px;
+  height: 100%;
+  width: 100%;
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .date-cell.active {
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), #30A5D1;
   border-radius: 4px;
   color: #F3F5F9;
+}
+
+/*Таблица*/
+
+/*исправить здесь верстку*/
+
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-content>table,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-header>table,
+.ant-table.ant-table-bordered > .ant-table-container
+{
+  border: none;
+}
+
+
+.ant-table-thead>tr>th,
+.ant-table-tbody>tr>td,
+.ant-table tfoot>tr>th,
+.ant-table tfoot>tr>td {
+  position: relative;
+  padding: 0;
+}
+
+.ant-table-thead>tr>th {
+  padding: 20px 0px;
+}
+
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-content>table>thead>tr>th,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-header>table>thead>tr>th,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-body>table>thead>tr>th,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-summary>table>thead>tr>th,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-content>table>tbody>tr>td,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-header>table>tbody>tr>td,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-body>table>tbody>tr>td,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-summary>table>tbody>tr>td,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-content>table>tfoot>tr>th,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-header>table>tfoot>tr>th,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-body>table>tfoot>tr>th,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-summary>table>tfoot>tr>th,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-content>table>tfoot>tr>td,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-header>table>tfoot>tr>td,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-body>table>tfoot>tr>td,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-summary>table>tfoot>tr>td .ant-table.ant-table-bordered>.ant-table-container>.ant-table-content>table>thead>tr>th,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-header>table>thead>tr>th,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-body>table>thead>tr>th,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-summary>table>thead>tr>th,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-content>table>tbody>tr>td,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-header>table>tbody>tr>td,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-body>table>tbody>tr>td,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-summary>table>tbody>tr>td,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-content>table>tfoot>tr>th,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-header>table>tfoot>tr>th,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-body>table>tfoot>tr>th,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-summary>table>tfoot>tr>th,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-content>table>tfoot>tr>td,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-header>table>tfoot>tr>td,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-body>table>tfoot>tr>td,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-summary>table>tfoot>tr>td .ant-table-tbody>tr>td .ant-table-thead>tr>th .ant-table-tbody>tr>td {
+  border-right: 1px solid #DCDEE6;
+  border-collapse: collapse;
+  background-color: #FAFAFC !important;
+}
+
+
+.ant-table-thead>tr>th {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 140%;
+  letter-spacing: 0.002em;
+  color: #8A929E;
+  text-align: center;
+}
+
+.ant-table-thead>tr>th:first-child,
+.ant-table-tbody>tr>td:first-child div {
+  color: #000000 !important;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 140%;
+  text-align: center;
+  letter-spacing: 0.002em;
+  padding: 5px;
+}
+
+.ant-table-measure-row {
+  display: none;
 }

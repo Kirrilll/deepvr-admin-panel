@@ -8,9 +8,8 @@ const TimelinePage: React.FC = () => {
     return (
         <Layout style={{padding: 60}}> 
             <Content>
-                <SettingContainer></SettingContainer>
-                <Space/>
-                <Timeline></Timeline>
+                <SettingContainer/>
+                <Timeline/>
             </Content>
         </Layout>
     )

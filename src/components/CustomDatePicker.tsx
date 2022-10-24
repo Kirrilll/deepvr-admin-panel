@@ -1,18 +1,21 @@
-import { DatePicker, DatePickerProps } from 'antd';
+import { DatePicker } from 'antd';
 import React from 'react';
 import { ruLocale } from '../ruLocale';
-import DatePickerPanel from './DatePickerPanel';
+import DateNavPanel from './DateNavPanel';
 import DateCell from './DateCell';
 import CalendarIcon from '../assets/calendarIcon.svg';
+import moment from 'moment';
+
+
+type DatePickerProps = typeof DatePicker.prototype
 
 const CustomDatePicker: React.FC<DatePickerProps> = (props) => {
 
     const buildDateCell = (currentDate: moment.Moment, today: moment.Moment) => <DateCell
-        isToday={currentDate.isSame(today)}
+        isActive={currentDate.isSame(props.value, 'date')}
         date={currentDate} />
 
-    const buildDatePanel = (oldPanel: React.ReactNode) => <DatePickerPanel
-        oldPanel={oldPanel}
+    const buildDateNavPanel = (mode: any) => <DateNavPanel
         setDate={props.onChange ?? function _() { return; }}
         currentDate={props.value}
     />
@@ -21,14 +24,15 @@ const CustomDatePicker: React.FC<DatePickerProps> = (props) => {
         <DatePicker
             {...props}
             allowClear={false}
+            showToday={false}
             suffixIcon={<img src={CalendarIcon} />}
             className='date-picker-input'
             popupClassName="date-panel-popup"
             locale={ruLocale}
+            renderExtraFooter={buildDateNavPanel}
             format="DD.MM.YYYY"
             superNextIcon={null}
             superPrevIcon={null}
-            panelRender={buildDatePanel}
             dateRender={buildDateCell}
         />
     )

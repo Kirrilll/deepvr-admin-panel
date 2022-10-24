@@ -2,12 +2,13 @@ import React, { useMemo } from 'react'
 
 interface DateCellProps{
     date: moment.Moment,
-    isToday: boolean
+    isActive: boolean
 }
 
-const DateCell: React.FC<DateCellProps> = ({date, isToday}) => {
+const DateCell: React.FC<DateCellProps> = ({date, isActive}) => {
     
-    const className = isToday ? 'date-cell active': 'date-cell';
+    const className = isActive ? 'date-cell active': 'date-cell';
+
 
     return (
         <div className={className}>
