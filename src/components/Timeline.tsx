@@ -5,6 +5,7 @@ import { type } from "os";
 import React from "react";
 import { BookingInfo, EConfirmStatus, EPaymentStatus } from "../types";
 import Cell from "./Cell";
+import TableSummary from "./TableSummary";
 
 
 interface RoomData {
@@ -51,7 +52,10 @@ const Timeline: React.FC = () => {
             dataIndex: 'rooms',
             width: '10%',
             fixed: 'left',
-            render: (title, data) => <div>{data.name}</div>
+            render: (title, data) => <div className="room-name">
+                {data.name}
+                <p className="glasses-count">{'(≥ 4 чел.)'}</p>
+            </div>
         },
         ...Object.keys(shedule).map<ColumnType<RoomData>>(key => ({
             title: key,
@@ -72,12 +76,31 @@ const Timeline: React.FC = () => {
         }
     ]
 
-    
-    let length = 0;
-    for(let date in shedule){
-        length++;
-    }
 
+    // let length = 0;
+    // for (let date in shedule) {
+    //     length++;
+    // }
+
+
+    const buildSummary = (data: readonly RoomData[]): React.ReactNode => {
+
+        const columns = new Map<string, Array<BookingInfo | null>>();
+
+        for (const row of data) {
+            const rowShedle = row.shedule;
+            Object
+                .keys(rowShedle)
+                .forEach(
+                    (date, index, arr) => columns.set(
+                        date,
+                        [...columns.get(date) ?? [], rowShedle[date]]
+                    )
+                );
+        }
+
+        return <TableSummary columns= {Array.from(columns.values())}/>
+    };
 
     return (
         <Table
@@ -87,8 +110,8 @@ const Timeline: React.FC = () => {
             bordered
             columns={columns}
             dataSource={data}
-            // scroll = {{x: REFERENCE_CELL_WIDTH * length}}
-            footer={(data) => <tr>{data.map(d => <td>{d.name}</td>)}</tr>}
+            summary={buildSummary}
+        // scroll = {{x: REFERENCE_CELL_WIDTH * length}}
         />
     )
 }

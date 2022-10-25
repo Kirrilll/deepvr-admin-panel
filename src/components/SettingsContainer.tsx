@@ -9,7 +9,7 @@ const { Option } = Select;
 const SettingContainer: React.FC = () => {
 
     return (
-        <Row style={{ margin: 0 }} gutter={[8, 8]}>
+        <Row style={{ margin: 0, gap: 8}}>
             <DateRange/>
             <Select
                 defaultValue='default'
