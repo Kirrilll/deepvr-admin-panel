@@ -18,5 +18,6 @@ export interface BookingInfo{
     phone: string,
     guestCount: number,
     rooms: Array<string>,
-    time: string
+    time: string,
+    comment: string
 }

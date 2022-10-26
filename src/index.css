@@ -269,8 +269,6 @@ td {
 
 /*Таблица*/
 
-/*исправить здесь верстку*/
-
 .room-name {
   color: #000000 !important;
   font-weight: 700;
@@ -303,6 +301,11 @@ td {
   position: relative;
   padding: 0;
 }
+
+.table__cell {
+  cursor: pointer;
+}
+
 
 .ant-table-thead>tr>th {
   padding: 20px 0px;
@@ -386,4 +389,70 @@ td {
   line-height: 140%;
   text-transform: none;
   text-align: center;
+}
+
+/* Popover */
+
+/*Переопределени стилей wrapper*/
+
+.ant-popover-inner {
+  min-width: 348px;
+  background: #FFFFFF;
+  /* border: 1px solid #F091AA; */
+  box-shadow: 0px 0px 30px rgba(38, 21, 81, 0.25);
+  border-radius: 15px;
+}
+
+.ant-popover-inner-content {
+  padding: 24px;
+}
+
+.popover__section {
+  margin-bottom: 30px;
+  align-items: flex-start;
+}
+
+.popover__title {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 140%;
+  letter-spacing: 0.002em;
+  color: #1F2032;
+}
+
+.popover__text {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 140%;
+  letter-spacing: 0.002em;
+  color: #8A929E;
+}
+
+.payment-status {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 140%;
+  letter-spacing: 0.002em;
+}
+
+.payment-status.paid{
+  color: #65BD79;
+}
+
+.payment-status.notpaid{
+  color:#EE6E7E;
+}
+
+/*Общие*/
+.default-btn {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 140%;
+  letter-spacing: 0.002em;
+  text-align: center;
+  color: #FFFFFF;
+  padding: 0px 32px;
+  height: 46px;
+  background: linear-gradient(90deg, #36C0E7 6.68%, #4B51EA 84.84%, #4B51EA 87.36%);
+  border-radius: 15px;
 }
