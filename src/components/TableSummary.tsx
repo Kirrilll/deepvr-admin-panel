@@ -8,10 +8,14 @@ interface TableSummaryProps {
 }
 
 const TableSummary: React.FC<TableSummaryProps> = ({ columns }) => {
-    const buildFreeGlassesCount = (col: (BookingInfo | null)[]) =>
-        20 - col
+
+    const buildFreeGlassesCount = (col: (BookingInfo | null)[]): number => {
+        if (col.length == 0) return 20;
+        return 20 - col
             .map(info => info?.guestCount ?? 0)
-            .reduce((prev, next) => prev + next)
+            .reduce((prev, next) => prev + next);
+    }
+
 
     return (
         <Table.Summary>

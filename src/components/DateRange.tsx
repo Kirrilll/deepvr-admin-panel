@@ -1,39 +1,31 @@
 import { DatePicker } from 'antd';
 import moment from 'moment';
 import React, { useState } from 'react';
+import { selectDate, toggleOpen } from '../store/date-picker-slice/slice';
+import { useAppDispatch, useAppSelector } from '../store/store';
 import CustomDatePicker from './CustomDatePicker';
 
-interface DateRangeState {
-    date: moment.Moment | null,
-    isOpen: boolean
-}
-
-const initialState: DateRangeState = {
-    date: moment(),
-    isOpen: false
-}
 
 const DateRange: React.FC = () => {
-    const [state, setState] = useState<DateRangeState>(initialState)
 
-    const onStartChange = (date: moment.Moment | null, dateStr: string) => {
-        setState({
-            isOpen: false,
-            date: date
-        });
-    };
 
-    const handleStartOpenChange = (isOpen: boolean) => {
-        setState({ ...state, isOpen: isOpen });
-    };
+
+    const dispatch = useAppDispatch();
+    const {currentDate, isOpen} = useAppSelector(state => state.datePickerReducer);
+
+
+
+    const onChangeDate = (date: moment.Moment | null, dateStr: string) => dispatch(selectDate(date ?? currentDate))
+
+    const handleStartOpenChange = (isOpen: boolean) => dispatch(toggleOpen(isOpen))
 
     return (
         <div>
             <CustomDatePicker
                 //disabledDate={disabledStartDate}
-                value={state.date}
-                open={state.isOpen}
-                onChange={onStartChange}
+                value={currentDate}
+                open={isOpen}
+                onChange={onChangeDate}
                 onOpenChange={handleStartOpenChange}
             />
             {/* <CustomDatePicker
