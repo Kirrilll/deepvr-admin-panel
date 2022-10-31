@@ -1,13 +1,29 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { BookingInfo } from '../types';
 import BookedCell from './BookedCell';
+import BookingPopover from './BookingPopover';
+
+interface CellProps {
+    info: BookingInfo | null,
+}
+
+const Cell: React.FC<CellProps> = ({ info}) => {
+
+    const containerRef = useRef<HTMLDivElement>(null);
 
 
-const Cell: React.FC<{info: BookingInfo | null}> = ({info}) => {
+    const height = containerRef.current?.parentElement?.style.height;
+
+
     return (
-        info == null 
-            ? null
-            : <BookedCell color='green' bookingInfo={info}></BookedCell>
+    <div ref={containerRef} className='table__cell'>
+            {
+                info == null
+                    ? null
+                    : <BookingPopover bookingInfo={info} borderColor = {info.color}> <BookedCell color={info.color} bookingInfo={info} /></BookingPopover>
+            }
+        </div>
+
     )
 }
 

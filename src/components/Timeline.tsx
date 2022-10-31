@@ -1,51 +1,37 @@
-import { Table } from "antd";
+import { Popover, Table } from "antd";
 import { ColumnGroupType, ColumnsType, ColumnType } from "antd/es/table";
 import Column from "antd/lib/table/Column";
 import { type } from "os";
 import React from "react";
+import { RoomResponse } from "../entities/RoomResponse";
 import { BookingInfo, EConfirmStatus, EPaymentStatus } from "../types";
+import BookingPopover from "./BookingPopover";
 import Cell from "./Cell";
 import TableSummary from "./TableSummary";
 
 
-interface RoomData {
-    name: string,
-    shedule: Record<string, BookingInfo | null>
+interface RowData {
+    room: RoomResponse,
+    shedule: Map<string, BookingInfo | null>
 }
 
 
+interface TimelineProps {
+    rooms: RoomResponse[],
+    workingShift: string[],
+    isLoading: boolean,
+    shedule: Map<number, Map<string, BookingInfo>>
+}
+
+
+//Контроллер и стор этого компонента сразу возвращает замапенные данные, с цветом и все таким
+
 const REFERENCE_CELL_WIDTH = 190;
 
-const Timeline: React.FC = () => {
+const Timeline: React.FC<TimelineProps> = ({ rooms, workingShift, isLoading, shedule }) => {
 
-    const shedule: Record<string, BookingInfo | null> = {
-        '12:00': null,
-        '13:00': null,
-        '14:00': {
-            id: 423,
-            time: '14:00',
-            title: 'Vader',
-            guestCount: 5,
-            paymentStatus: EPaymentStatus.NOTPAID,
-            confirmStatus: EConfirmStatus.CONFIRM,
-            phone: '',
-            rooms: []
-        },
-        '15:00': null,
-        '16:00': null,
-        '17:00': null,
-        '18:00': null,
-        // '19:00': null,
-        // '20:00': null,
-        // '21:00': null,
-        // '22:00': null,
-        // '23:00': null,
-        // '24:00': null,
-        // '25:00': null,
-        // '26:00': null,
-    }
 
-    const columns: ColumnsType<RoomData> = [
+    const columns: ColumnsType<RowData> = [
         {
             title: 'Залы',
             key: 'rooms',
@@ -53,57 +39,45 @@ const Timeline: React.FC = () => {
             width: '10%',
             fixed: 'left',
             render: (title, data) => <div className="room-name">
-                {data.name}
-                <p className="glasses-count">{'(≥ 4 чел.)'}</p>
+                {data.room.title}
+                <p className="glasses-count">{`(≤ ${data.room.guest_max} чел.)`}</p>
             </div>
         },
-        ...Object.keys(shedule).map<ColumnType<RoomData>>(key => ({
-            title: key,
-            key: key,
-            dataIndex: key,
-            render: (value, data) => <Cell info={data.shedule[key]} />
+        ...workingShift.map<ColumnType<RowData>>(time => ({
+            title: time,
+            key: time,
+            dataIndex: time,
+            render: (value, data) => <Cell info={data.shedule.get(time) ?? null} />
         }))
     ]
 
-    const data: RoomData[] = [
-        {
-            name: 'Арена 1',
-            shedule: shedule
-        },
-        {
-            name: 'Арена 2',
-            shedule: shedule
-        }
-    ]
+    const data: RowData[] = rooms.map<RowData>(room => ({
+        room: room,
+        shedule: shedule.get(room.id) ?? new Map()
+    }));
 
 
-    // let length = 0;
-    // for (let date in shedule) {
-    //     length++;
-    // }
 
 
-    const buildSummary = (data: readonly RoomData[]): React.ReactNode => {
 
+    const buildSummary = (data: readonly RowData[]): React.ReactNode => {
         const columns = new Map<string, Array<BookingInfo | null>>();
 
-        for (const row of data) {
-            const rowShedle = row.shedule;
-            Object
-                .keys(rowShedle)
-                .forEach(
-                    (date, index, arr) => columns.set(
-                        date,
-                        [...columns.get(date) ?? [], rowShedle[date]]
-                    )
-                );
+        for(const date of workingShift){
+            columns.set(date, []);
         }
-
-        return <TableSummary columns= {Array.from(columns.values())}/>
+        for (const row of data) {
+            const rowShedule = row.shedule;
+            for(const date of Array.from(rowShedule.keys())){
+                columns.set(date, [...columns.get(date) ?? [], rowShedule.get(date) ?? null])
+            }
+        }
+        return <TableSummary columns={Array.from(columns.values())} />
     };
 
     return (
         <Table
+            loading={isLoading}
             rowKey='uid'
             tableLayout='fixed'
             pagination={false}
@@ -111,7 +85,7 @@ const Timeline: React.FC = () => {
             columns={columns}
             dataSource={data}
             summary={buildSummary}
-        // scroll = {{x: REFERENCE_CELL_WIDTH * length}}
+            scroll={{ x: REFERENCE_CELL_WIDTH * workingShift.length }}
         />
     )
 }

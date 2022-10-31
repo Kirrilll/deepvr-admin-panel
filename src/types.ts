@@ -12,11 +12,14 @@ export const enum EConfirmStatus {
 
 export interface BookingInfo{
     id: number,
+    room_id: number,
     paymentStatus: EPaymentStatus,
     confirmStatus: EConfirmStatus,
     title: string,
     phone: string,
     guestCount: number,
     rooms: Array<string>,
-    time: string
+    time: string,
+    comment: string,
+    color: string
 }

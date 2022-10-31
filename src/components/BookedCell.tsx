@@ -13,7 +13,7 @@ const BookedCell: React.FC<BookedCellProps> = (props) => {
     const {bookingInfo, color} = props;
     const {id, title, confirmStatus} = bookingInfo;
 
-    
+
 
     return (
         <div className='cell__container booked-item' style={{border: `1px solid ${color}`}}>
