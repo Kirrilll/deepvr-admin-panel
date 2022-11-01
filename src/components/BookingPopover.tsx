@@ -9,7 +9,7 @@ import BookingView, { EPaymentStatus } from '../entities/BookingView';
 
 type BookingPopupProps = Omit<PopoverProps
     & React.RefAttributes<unknown>
-    & { bookingInfo: BookingView, borderColor: string }, 'content'>
+    & { bookingInfo: BookingView}, 'content'>
 
 
 interface RowInfrormationProps {
@@ -21,7 +21,7 @@ interface RowInfrormationProps {
 const BookingPopover: React.FC<BookingPopupProps> = (props) => {
     return (
         <Popover
-            overlayInnerStyle={{ border: `1px solid ${props.borderColor}` }}
+            overlayInnerStyle={{ border: `1px solid ${props.bookingInfo.color}` }}
             showArrow={false}
             trigger='hover'
             placement='rightBottom'

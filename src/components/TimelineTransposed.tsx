@@ -10,52 +10,55 @@ import { TimelineProps } from "./TimelineBuilder";
 
 
 interface RowData {
-    room: Room,
-    shedule: Map<string, BookingView | null>
+    time: string,
+    shedule: Map<number, BookingView | null>
 }
 
-type TimelineDefaultProps = TimelineProps & {shedule: Map<number, Map<string, BookingView>>}
+type TimelineTransposedProps = TimelineProps & {shedule: Map<string, Map<number, BookingView>>};
 
 const REFERENCE_CELL_WIDTH = 190;
 
-const Timeline: React.FC<TimelineDefaultProps> = ({ rooms, workingShift, isLoading, shedule, isFixed }) => {
+const TimelineTrasposed: React.FC<TimelineTransposedProps> = ({ rooms, workingShift, isLoading, shedule, isFixed}) => {
 
     const columns: ColumnsType<RowData> = [
         {
-            title: 'Залы',
-            key: 'rooms',
-            dataIndex: 'rooms',
+            title: 'Время',
+            key: 'time',
+            dataIndex: 'time',
             width: '10%',
             fixed: 'left',
             render: (title, data) => <div className="room-name">
-                {data.room.title}
-                <p className="glasses-count">{`(≤ ${data.room.guest_max} чел.)`}</p>
+                {data.time}
             </div>
         },
-        ...workingShift.map<ColumnType<RowData>>(time => ({
-            title: time,
-            key: time,
-            dataIndex: time,
-            render: (value, data) =>  <Cell info={data.shedule.get(time) ?? null} />
+        ...rooms.map<ColumnType<RowData>>(room => ({
+            title: room.title,
+            key: room.id,
+            dataIndex: room.id,
+            render: (value, data) => <Cell info={data.shedule.get(room.id) ?? null} />
         }))
     ]
 
 
-    const data: RowData[] = rooms.map<RowData>(room => ({
-        room: room,
-        shedule: shedule.get(room.id) ?? new Map()
+
+
+    const data: RowData[] = workingShift.map<RowData>(time => ({
+        time: time,
+        shedule: shedule.get(time) ?? new Map()
     }));
 
-    const buildSummary = (data: readonly RowData[]): React.ReactNode => {
-        const columns = new Map<string, Array<BookingView | null>>();
 
-        for (const date of workingShift) {
-            columns.set(date, []);
+
+    const buildSummary = (data: readonly RowData[]): React.ReactNode => {
+        const columns = new Map<number, Array<BookingView | null>>();
+
+        for (const room of rooms) {
+            columns.set(room.id, []);
         }
         for (const row of data) {
             const rowShedule = row.shedule;
-            for (const date of Array.from(rowShedule.keys())) {
-                columns.set(date, [...columns.get(date) ?? [], rowShedule.get(date) ?? null])
+            for (const roomId of Array.from(rowShedule.keys())) {
+                columns.set(roomId, [...columns.get(roomId) ?? [], rowShedule.get(roomId) ?? null])
             }
         }
         return <TableSummary columns={Array.from(columns.values())} />
@@ -65,7 +68,7 @@ const Timeline: React.FC<TimelineDefaultProps> = ({ rooms, workingShift, isLoadi
     return (
         <Table
             loading={isLoading}
-            rowKey={record => record.room.id}
+            rowKey={record => record.time}
             tableLayout='fixed'
             pagination={false}
             bordered
@@ -77,4 +80,4 @@ const Timeline: React.FC<TimelineDefaultProps> = ({ rooms, workingShift, isLoadi
     )
 }
 
-export default Timeline;
+export default TimelineTrasposed;

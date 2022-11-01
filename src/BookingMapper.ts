@@ -11,7 +11,7 @@ import BookingView, { EConfirmStatus, EPaymentStatus } from "./entities/BookingV
 //BookingInfo - сущночть плиточки(заказ), имеет цвет(он конструируется относительно id брони)
 //В ЗАКАЗЕ есть id комнаты
 //в заказе есьь id ЗАКАЗА, это key для JSX
-export default class TimelineHelper {
+export default class BookingMapper {
     private static transformSecondsToTime(seconds: number): string {
         const hours =  Math.floor(seconds / 3600);
         const minutes = Math.floor(seconds / 60) - (hours * 60);
@@ -38,6 +38,7 @@ export default class TimelineHelper {
         })
     }
 
+
     static mapData(bookings: BookingResponse): Map<number, Map<string, BookingView>> {
         //ключ 1 - id комнаты,
         //ключ 2 - время
@@ -53,5 +54,20 @@ export default class TimelineHelper {
         }
 
         return roomMap;
+    }
+
+    static mapDataTranspose(bookings: BookingResponse): Map<string, Map<number, BookingView>>{
+
+        const timeMap = new Map<string, Map<number, BookingView>>();
+        for(const booking of bookings){
+            const timeKey = `${new Date(booking.booking_date).getHours()}:00`;
+            const shedule = timeMap.get(timeKey) ?? new Map<number, BookingView>();
+            shedule.set(
+                booking.room_id,
+                this.fromEntity(booking)
+            )
+            timeMap.set(timeKey, shedule);
+        }
+        return timeMap;
     }
 }

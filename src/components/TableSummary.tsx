@@ -22,7 +22,8 @@ const TableSummary: React.FC<TableSummaryProps> = ({ columns }) => {
             <Table.Summary.Row>
                 <Table.Summary.Cell index={0}>Св. шлемы</Table.Summary.Cell>
                 {columns
-                    .map((col, index) => <Table.Summary.Cell
+                    .map((col, index) => <Table.Summary.Cell 
+                        key={index}
                         index={index + 1}>
                         {buildFreeGlassesCount(col)}
                     </Table.Summary.Cell>)}

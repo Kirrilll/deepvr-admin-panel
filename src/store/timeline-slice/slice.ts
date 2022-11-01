@@ -3,7 +3,7 @@ import ColorPool from "../../ColorPool";
 import BookingResponse from "../../entities/Booking";
 import BookingView from "../../entities/BookingView";
 import RoomResponse, { Room } from "../../entities/Room";
-import TimelineHelper from "../../TimelineHelper";
+import BookingMapper from "../../BookingMapper";
 import { fetchTimline, getRooms } from "./asyncActions";
 
 
@@ -53,7 +53,7 @@ const timelineSlice = createSlice({
             colorPool.init();
             state.fetchingStatus = FetchingStatus.SUCCESSFULL,
             state.data = action.payload;
-            state.dataView = TimelineHelper.mapData(state.data);
+            // state.dataView = BookingMapper.mapData(state.data);
         })
     },
 })

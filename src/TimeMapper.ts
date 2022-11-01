@@ -4,8 +4,6 @@ import WorkingShiftResponse from "./entities/WorkingShift";
 export default class TimeMapper {
 
     timeToMinutes = (time: string): number => {
-    
-
         const timeSplitted = time.split(':');
 
         const hours = Number.parseInt(timeSplitted[0]);
@@ -28,9 +26,7 @@ export default class TimeMapper {
     transformToModel = (response: WorkingShiftResponse): string[] => {
 
         let workingShiftArr: Array<string> = [];
-
-
-        console.log(this);
+        
         const startTime = this.timeToMinutes(response.start_at);
         const endTime = this.timeToMinutes(response.end_at);
         const interval = Number.parseInt(response.interval);
