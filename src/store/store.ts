@@ -2,7 +2,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import timeLineReducer from '../store/timeline-slice/slice';
 import datePickerReducer from '../store/date-picker-slice/slice';
-import { timelineApi } from "../services/timelineApi";
+import { timelineApi } from "../services/TimelineApi";
 
 const rootReducer = combineReducers({
     timeLineReducer,

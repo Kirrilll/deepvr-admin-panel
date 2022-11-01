@@ -4,7 +4,7 @@ import Timeline from '../components/Timeline';
 import { Content } from "antd/lib/layout/layout";
 import SettingContainer from "../components/SettingsContainer";
 import { useAppDispatch, useAppSelector } from "../store/store";
-import { useGetRoomsQuery, useGetWorkingShiftQuery } from "../services/timelineApi";
+import { useGetRoomsQuery, useGetWorkingShiftQuery } from "../services/TimelineApi";
 import { fetchTimline, getRooms } from "../store/timeline-slice/asyncActions";
 import { FetchingStatus } from "../store/timeline-slice/slice";
 import TimelineBuilder from "../components/TimelineBuilder";
@@ -40,10 +40,11 @@ const TimelinePage: React.FC = () => {
                     isTranspose={isTranspose}
                     data={data}
                     timelineProps={{
+                        glasses: fetchingWorkingShift.data?.glasses ?? 20,
                         isFixed: isFixed,
                         isLoading: isLoading,
                         rooms: fetchingRooms.data ?? [],
-                        workingShift: fetchingWorkingShift.data ?? []
+                        workingShift: fetchingWorkingShift.data?.time ?? []
                     }}
                 />
             </Content>

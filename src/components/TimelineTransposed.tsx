@@ -14,18 +14,18 @@ interface RowData {
     shedule: Map<number, BookingView | null>
 }
 
-type TimelineTransposedProps = TimelineProps & {shedule: Map<string, Map<number, BookingView>>};
+type TimelineTransposedProps = TimelineProps & { shedule: Map<string, Map<number, BookingView>> };
 
 const REFERENCE_CELL_WIDTH = 190;
 
-const TimelineTrasposed: React.FC<TimelineTransposedProps> = ({ rooms, workingShift, isLoading, shedule, isFixed}) => {
+const TimelineTrasposed: React.FC<TimelineTransposedProps> = ({ rooms, workingShift, isLoading, shedule, isFixed, glasses }) => {
 
     const columns: ColumnsType<RowData> = [
         {
             title: 'Время',
             key: 'time',
             dataIndex: 'time',
-            width: '10%',
+            width: '95px',
             fixed: 'left',
             render: (title, data) => <div className="room-name">
                 {data.time}
@@ -61,7 +61,9 @@ const TimelineTrasposed: React.FC<TimelineTransposedProps> = ({ rooms, workingSh
                 columns.set(roomId, [...columns.get(roomId) ?? [], rowShedule.get(roomId) ?? null])
             }
         }
-        return <TableSummary columns={Array.from(columns.values())} />
+        return <TableSummary
+            glasses={glasses}
+            columns={Array.from(columns.values())} />
     };
 
 

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import timelineService from "../../services/bookingService";
+import timelineService from "../../services/BookingService";
 
 
 export const fetchTimline = createAsyncThunk(

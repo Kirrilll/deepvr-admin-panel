@@ -1,4 +1,4 @@
-import WorkingShiftResponse from "./entities/WorkingShift";
+import WorkingShiftResponse, { WorkingShiftView } from "./entities/WorkingShift";
 
 
 export default class TimeMapper {
@@ -23,7 +23,7 @@ export default class TimeMapper {
         return hoursStr + ':' + minutesStr;
     }
 
-    transformToModel = (response: WorkingShiftResponse): string[] => {
+    transformToModel = (response: WorkingShiftResponse): WorkingShiftView=> {
 
         let workingShiftArr: Array<string> = [];
         
@@ -35,7 +35,10 @@ export default class TimeMapper {
             workingShiftArr.push(this.minutesToTime(time));
         }
 
-        return workingShiftArr;
+        return {
+            glasses: Number.parseInt(response.glasses),
+            time: workingShiftArr
+        };
     }
 
 }

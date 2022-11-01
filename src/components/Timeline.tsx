@@ -14,18 +14,18 @@ interface RowData {
     shedule: Map<string, BookingView | null>
 }
 
-type TimelineDefaultProps = TimelineProps & {shedule: Map<number, Map<string, BookingView>>}
+type TimelineDefaultProps = TimelineProps & { shedule: Map<number, Map<string, BookingView>> }
 
 const REFERENCE_CELL_WIDTH = 190;
 
-const Timeline: React.FC<TimelineDefaultProps> = ({ rooms, workingShift, isLoading, shedule, isFixed }) => {
+const Timeline: React.FC<TimelineDefaultProps> = ({ rooms, workingShift, isLoading, shedule, isFixed, glasses }) => {
 
     const columns: ColumnsType<RowData> = [
         {
             title: 'Залы',
             key: 'rooms',
             dataIndex: 'rooms',
-            width: '10%',
+            width: '95px',
             fixed: 'left',
             render: (title, data) => <div className="room-name">
                 {data.room.title}
@@ -36,7 +36,7 @@ const Timeline: React.FC<TimelineDefaultProps> = ({ rooms, workingShift, isLoadi
             title: time,
             key: time,
             dataIndex: time,
-            render: (value, data) =>  <Cell info={data.shedule.get(time) ?? null} />
+            render: (value, data) => <Cell info={data.shedule.get(time) ?? null} />
         }))
     ]
 
@@ -58,7 +58,7 @@ const Timeline: React.FC<TimelineDefaultProps> = ({ rooms, workingShift, isLoadi
                 columns.set(date, [...columns.get(date) ?? [], rowShedule.get(date) ?? null])
             }
         }
-        return <TableSummary columns={Array.from(columns.values())} />
+        return <TableSummary glasses={glasses} columns={Array.from(columns.values())} />
     };
 
 

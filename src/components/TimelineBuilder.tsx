@@ -11,6 +11,7 @@ export interface TimelineProps {
     workingShift: string[],
     isFixed: boolean,
     isLoading: boolean,
+    glasses: number
 }
 
 
