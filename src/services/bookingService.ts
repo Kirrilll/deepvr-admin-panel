@@ -1,12 +1,12 @@
 import axios from "axios";
-import { BookingResponse } from "../entities/BookingResponse";
-import { RoomResponse } from "../entities/RoomResponse";
+import BookingResponse from "../entities/Booking";
+import RoomResponse from "../entities/Room";
 
 const baseUrl = process.env.REACT_APP_API_URL;
 
 const timelineService = {
     getTimeline: async (date: moment.Moment) => {
-        return await axios.get<BookingResponse.Booking[]>(
+        return await axios.get<BookingResponse>(
             `${baseUrl}/orders`,
             {
                 params: {
@@ -16,7 +16,7 @@ const timelineService = {
         )
     },
     getRooms: async () => {
-        return await axios.get<RoomResponse[]>(`${baseUrl}/rooms`)
+        return await axios.get<RoomResponse>(`${baseUrl}/rooms`)
     }
 }
 

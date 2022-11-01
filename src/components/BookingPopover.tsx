@@ -1,15 +1,15 @@
 import { Button, Col, Popover, PopoverProps, Row, Space } from 'antd';
 import React, { useMemo } from 'react';
-import { BookingInfo, EPaymentStatus } from '../types';
 import ClockIcon from '../assets/clock.svg';
 import GameIcon from '../assets/game.svg';
 import PersonIcon from '../assets/person.svg';
 import PhoneIcon from '../assets/phone.svg';
 import moment from 'moment';
+import BookingView, { EPaymentStatus } from '../entities/BookingView';
 
 type BookingPopupProps = Omit<PopoverProps
     & React.RefAttributes<unknown>
-    & { bookingInfo: BookingInfo, borderColor: string }, 'content'>
+    & { bookingInfo: BookingView, borderColor: string }, 'content'>
 
 
 interface RowInfrormationProps {
@@ -31,7 +31,7 @@ const BookingPopover: React.FC<BookingPopupProps> = (props) => {
     )
 }
 
-const BookingPopoverContent: React.FC<{ bookingInfo: BookingInfo}> = ({ bookingInfo }) => {
+const BookingPopoverContent: React.FC<{ bookingInfo: BookingView}> = ({ bookingInfo }) => {
 
 
 

@@ -1,9 +1,9 @@
 import React from 'react';
-import { BookingInfo } from '../types';
+import BookingView from '../entities/BookingView';
 import ConfirmStatusTag from './ConfirmStatusTag';
 
 interface BookedCellProps{
-    bookingInfo: BookingInfo,
+    bookingInfo: BookingView,
     color: string,
 }
 

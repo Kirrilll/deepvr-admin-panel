@@ -1,6 +1,6 @@
 import ColorPool from "./ColorPool";
-import { BookingResponse } from "./entities/BookingResponse";
-import { BookingInfo, EConfirmStatus, EPaymentStatus } from "./types";
+import BookingResponse, { Booking } from "./entities/Booking";
+import BookingView, { EConfirmStatus, EPaymentStatus } from "./entities/BookingView";
 
 
 //Большая сущность - плиточка,
@@ -18,7 +18,7 @@ export default class TimelineHelper {
         return `${hours}:${minutes}`;
     }
 
-    private static fromEntity(booking: BookingResponse.Booking): BookingInfo {
+    private static fromEntity(booking: Booking): BookingView {
 
         const colorPool = ColorPool.instance;
 
@@ -38,13 +38,13 @@ export default class TimelineHelper {
         })
     }
 
-    static mapData(bookings: BookingResponse.Booking[]): Map<number, Map<string, BookingInfo>> {
+    static mapData(bookings: BookingResponse): Map<number, Map<string, BookingView>> {
         //ключ 1 - id комнаты,
         //ключ 2 - время
-        const roomMap = new Map<number, Map<string, BookingInfo>>();
+        const roomMap = new Map<number, Map<string, BookingView>>();
         for (const booking of bookings) {
             const id = booking.room_id;
-            const shedule = roomMap.get(id) ?? new Map<string, BookingInfo>();
+            const shedule = roomMap.get(id) ?? new Map<string, BookingView>();
             shedule.set(
                 `${new Date(booking.booking_date).getHours()}:00`,
                 this.fromEntity(booking)

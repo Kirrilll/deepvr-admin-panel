@@ -1,13 +1,13 @@
 import React, { useRef } from 'react';
-import { BookingInfo } from '../types';
+import BookingView from '../entities/BookingView';
 import BookedCell from './BookedCell';
 import BookingPopover from './BookingPopover';
 
 interface CellProps {
-    info: BookingInfo | null,
+    info: BookingView | null,
 }
 
-const Cell: React.FC<CellProps> = ({ info}) => {
+const Cell: React.FC<CellProps> = ({ info }) => {
 
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -16,11 +16,13 @@ const Cell: React.FC<CellProps> = ({ info}) => {
 
 
     return (
-    <div ref={containerRef} className='table__cell'>
+        <div ref={containerRef} className='table__cell'>
             {
                 info == null
                     ? null
-                    : <BookingPopover bookingInfo={info} borderColor = {info.color}> <BookedCell color={info.color} bookingInfo={info} /></BookingPopover>
+                    : <BookingPopover bookingInfo={info} borderColor={info.color}>
+                        <BookedCell color={info.color} bookingInfo={info} />
+                    </BookingPopover>
             }
         </div>
 

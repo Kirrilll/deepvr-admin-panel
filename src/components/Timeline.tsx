@@ -1,26 +1,23 @@
-import { Popover, Table } from "antd";
-import { ColumnGroupType, ColumnsType, ColumnType } from "antd/es/table";
-import Column from "antd/lib/table/Column";
-import { type } from "os";
+import { Table } from "antd";
+import { ColumnsType, ColumnType } from "antd/es/table";
 import React from "react";
-import { RoomResponse } from "../entities/RoomResponse";
-import { BookingInfo, EConfirmStatus, EPaymentStatus } from "../types";
-import BookingPopover from "./BookingPopover";
+import BookingView from "../entities/BookingView";
+import RoomResponse, { Room } from "../entities/Room";
 import Cell from "./Cell";
 import TableSummary from "./TableSummary";
 
 
 interface RowData {
-    room: RoomResponse,
-    shedule: Map<string, BookingInfo | null>
+    room: Room,
+    shedule: Map<string, BookingView | null>
 }
 
 
 interface TimelineProps {
-    rooms: RoomResponse[],
+    rooms: RoomResponse,
     workingShift: string[],
     isLoading: boolean,
-    shedule: Map<number, Map<string, BookingInfo>>
+    shedule: Map<number, Map<string, BookingView>>
 }
 
 
@@ -30,6 +27,9 @@ const REFERENCE_CELL_WIDTH = 190;
 
 const Timeline: React.FC<TimelineProps> = ({ rooms, workingShift, isLoading, shedule }) => {
 
+    // console.log(rooms);
+    // console.log(workingShift)
+    // console.log(shedule);
 
     const columns: ColumnsType<RowData> = [
         {
@@ -61,7 +61,7 @@ const Timeline: React.FC<TimelineProps> = ({ rooms, workingShift, isLoading, she
 
 
     const buildSummary = (data: readonly RowData[]): React.ReactNode => {
-        const columns = new Map<string, Array<BookingInfo | null>>();
+        const columns = new Map<string, Array<BookingView | null>>();
 
         for(const date of workingShift){
             columns.set(date, []);

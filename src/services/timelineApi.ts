@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { RoomResponse } from '../entities/RoomResponse'
- 
+import RoomResponse, { Room } from '../entities/Room'
+import TimeMapper from '../TimeMapper'
 
-console.log(process.env.REACT_APP_API_URL)
+const timeMapper = new TimeMapper();
 
 export const timelineApi = createApi({
     reducerPath: 'timelineApi',
@@ -10,13 +10,14 @@ export const timelineApi = createApi({
         baseUrl: process.env.REACT_APP_API_URL
     }),
     endpoints: (build) => ({
-        getWorkingShift: build.query<string[], null>({
-            query: () => ({url: '/'})
+        getWorkingShift: build.query<string[], void>({
+            query: () => ({ url: '/work-times' }),
+            transformResponse: timeMapper.transformToModel
         }),
-        getRooms: build.query<RoomResponse[], null>({
-            query: () => ({url: '/rooms'})
+        getRooms: build.query<RoomResponse, void>({
+            query: () => ({ url: '/rooms' }),
         })
     })
 })
 
-export const {useGetRoomsQuery, useGetWorkingShiftQuery} = timelineApi;
+export const { useGetRoomsQuery, useGetWorkingShiftQuery } = timelineApi;
