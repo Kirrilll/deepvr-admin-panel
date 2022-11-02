@@ -23,7 +23,7 @@ export default class BookingMapper {
         const colorPool = ColorPool.instance;
 
         return ({
-            id: booking.id,
+            id: booking.orders[0].id,
             room_id: booking.room_id,
             color: colorPool.getColor(booking.orders[0].id),
             comment: booking.comment_user,

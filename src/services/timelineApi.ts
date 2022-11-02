@@ -12,7 +12,7 @@ export const timelineApi = createApi({
     }),
     endpoints: (build) => ({
         getWorkingShift: build.query<WorkingShiftView, void>({
-            query: () => ({ url: '/work-times' }),
+            query: () => ({ url: '/v2/work-times' }),
             transformResponse: timeMapper.transformToModel
         }),
         getRooms: build.query<RoomResponse, void>({

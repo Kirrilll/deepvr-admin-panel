@@ -7,7 +7,7 @@ const baseUrl = process.env.REACT_APP_API_URL;
 const timelineService = {
     getTimeline: async (date: moment.Moment) => {
         return await axios.get<BookingResponse>(
-            `${baseUrl}/orders`,
+            `${baseUrl}/v2/orders`,
             {
                 params: {
                     date: date.calendar({ sameDay: (today) => 'YYYY-MM-DD' })
