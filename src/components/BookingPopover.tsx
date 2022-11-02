@@ -33,8 +33,6 @@ const BookingPopover: React.FC<BookingPopupProps> = (props) => {
 
 const BookingPopoverContent: React.FC<{ bookingInfo: BookingView}> = ({ bookingInfo }) => {
 
-
-
     const paymentStatusView = useMemo(() => {
         if(bookingInfo.paymentStatus == EPaymentStatus.PAID){
             return {
@@ -50,6 +48,9 @@ const BookingPopoverContent: React.FC<{ bookingInfo: BookingView}> = ({ bookingI
 
     const onClick = () => console.log('show modal');
 
+    const buildTimeInterval = () => {
+        return `${bookingInfo.timeStart}-${bookingInfo.timeEnd}`;
+    }
 
     return (
         <>
@@ -61,8 +62,8 @@ const BookingPopoverContent: React.FC<{ bookingInfo: BookingView}> = ({ bookingI
                 <Space style={{ width: '100%' }} direction='vertical' size={9}>
                     <RowInformation
                         iconSrc={ClockIcon}
-                        title={bookingInfo?.time ?? ''}
-                        additionalInfo={moment(bookingInfo?.time).calendar() ?? ''}
+                        title={buildTimeInterval()}
+                        additionalInfo={bookingInfo.date.toLocaleDateString()}
                     />
                     <RowInformation
                         iconSrc={PhoneIcon}
@@ -78,13 +79,13 @@ const BookingPopoverContent: React.FC<{ bookingInfo: BookingView}> = ({ bookingI
                     />
                 </Space>
             </section>
-            <section className='popover__section'>
+            {/* <section className='popover__section'>
                 <div className='popover__title'>{'Зал(ы):'}</div>
                 <div className='popover__text'>{(bookingInfo?.rooms ?? []).join(';')}</div>
-            </section>
+            </section> */}
             <section className='popover__section'>
                 <div className='popover__title'>Комментарий:</div>
-                <div className='popover__text'>{bookingInfo?.comment}</div>
+                <div className='popover__text'>{bookingInfo?.comment ?? 'Не указано'}</div>
             </section>
             <Row justify='end'>
                 <Button className='default-btn' onClick={onClick}>Редактировать</Button>

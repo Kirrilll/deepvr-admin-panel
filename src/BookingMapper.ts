@@ -11,30 +11,40 @@ import BookingView, { EConfirmStatus, EPaymentStatus } from "./entities/BookingV
 //BookingInfo - сущночть плиточки(заказ), имеет цвет(он конструируется относительно id брони)
 //В ЗАКАЗЕ есть id комнаты
 //в заказе есьь id ЗАКАЗА, это key для JSX
+
+
+//TODO вынести всю работу со временем в TimeHelper
 export default class BookingMapper {
-    private static transformSecondsToTime(seconds: number): string {
-        const hours =  Math.floor(seconds / 3600);
-        const minutes = Math.floor(seconds / 60) - (hours * 60);
-        return `${hours}:${minutes}`;
+
+
+    private static timeToString(timeValue: number): string {
+        return timeValue > 10 ? timeValue.toString() : `0${timeValue}`;
     }
 
     private static fromEntity(booking: Booking): BookingView {
 
         const colorPool = ColorPool.instance;
+        const bookingDate = new Date(booking.booking_date);
+
+        const endDate = new Date(bookingDate);
+        endDate.setHours(bookingDate.getHours()+1);
+
+        const startTime = `${this.timeToString(bookingDate.getHours())}:${this.timeToString(bookingDate.getMinutes())}`;
+        const endTime = `${this.timeToString(endDate.getHours())}:${this.timeToString(endDate.getMinutes())}`;
 
         return ({
             id: booking.orders[0].id,
             room_id: booking.room_id,
             color: colorPool.getColor(booking.orders[0].id),
             comment: booking.comment_user,
-            time: this.transformSecondsToTime(new Date(booking.booking_date).getTime()),
+            timeStart: startTime,
+            timeEnd: endTime,
             paymentStatus: EPaymentStatus.NOTPAID,
             confirmStatus: EConfirmStatus.CANCELED,
             title: booking.game.title,
-            rooms: [],
-            // phone: booking.client.phone ?? '',
-            phone: '',
-            guestCount: booking.guest_quantity
+            phone: booking.client?.phone ?? 'Не указано',
+            guestCount: booking.guest_quantity,
+            date: new Date(booking.booking_date)
         })
     }
 
@@ -56,10 +66,10 @@ export default class BookingMapper {
         return roomMap;
     }
 
-    static mapDataTranspose(bookings: BookingResponse): Map<string, Map<number, BookingView>>{
+    static mapDataTranspose(bookings: BookingResponse): Map<string, Map<number, BookingView>> {
 
         const timeMap = new Map<string, Map<number, BookingView>>();
-        for(const booking of bookings){
+        for (const booking of bookings) {
             const timeKey = `${new Date(booking.booking_date).getHours()}:00`;
             const shedule = timeMap.get(timeKey) ?? new Map<number, BookingView>();
             shedule.set(

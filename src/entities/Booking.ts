@@ -1,3 +1,5 @@
+import Client from "./Client";
+
 interface Pivot {
     booking_id: number;
     order_id: number;
@@ -44,7 +46,7 @@ export interface Booking {
     external_id?: any;
     client_id?: any;
     orders: Order[];
-    client?: any;
+    client?: Client;
     game: Game;
 }
 

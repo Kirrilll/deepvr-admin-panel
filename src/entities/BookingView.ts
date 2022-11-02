@@ -11,14 +11,15 @@ export const enum EConfirmStatus {
 
 interface BookingView {
     id: number,
+    date: Date,
     room_id: number,
     paymentStatus: EPaymentStatus,
     confirmStatus: EConfirmStatus,
     title: string,
     phone: string,
     guestCount: number,
-    rooms: Array<string>,
-    time: string,
+    timeStart: string,
+    timeEnd: string,
     comment: string,
     color: string
 }

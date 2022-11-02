@@ -20,6 +20,15 @@ const REFERENCE_CELL_WIDTH = 190;
 
 const TimelineTrasposed: React.FC<TimelineTransposedProps> = ({ rooms, workingShift, isLoading, shedule, isFixed, glasses }) => {
 
+
+    const buildGlassesCount = (row: RowData) => {
+        const bookings = Array.from(row.shedule.values());
+        if (bookings.length == 0) return glasses;
+        return glasses - bookings
+            .map(booking => booking?.guestCount ?? 0)
+            .reduce((prev, next) => prev + next);
+    }
+
     const columns: ColumnsType<RowData> = [
         {
             title: 'Время',
@@ -29,6 +38,7 @@ const TimelineTrasposed: React.FC<TimelineTransposedProps> = ({ rooms, workingSh
             fixed: 'left',
             render: (title, data) => <div className="room-name">
                 {data.time}
+                <p className="glasses-count">{`Св. шлемы: ${buildGlassesCount(data)}`}</p>
             </div>
         },
         ...rooms.map<ColumnType<RowData>>(room => ({
@@ -40,31 +50,12 @@ const TimelineTrasposed: React.FC<TimelineTransposedProps> = ({ rooms, workingSh
     ]
 
 
-
-
     const data: RowData[] = workingShift.map<RowData>(time => ({
         time: time,
         shedule: shedule.get(time) ?? new Map()
     }));
 
 
-
-    const buildSummary = (data: readonly RowData[]): React.ReactNode => {
-        const columns = new Map<number, Array<BookingView | null>>();
-
-        for (const room of rooms) {
-            columns.set(room.id, []);
-        }
-        for (const row of data) {
-            const rowShedule = row.shedule;
-            for (const roomId of Array.from(rowShedule.keys())) {
-                columns.set(roomId, [...columns.get(roomId) ?? [], rowShedule.get(roomId) ?? null])
-            }
-        }
-        return <TableSummary
-            glasses={glasses}
-            columns={Array.from(columns.values())} />
-    };
 
 
     return (
@@ -76,7 +67,6 @@ const TimelineTrasposed: React.FC<TimelineTransposedProps> = ({ rooms, workingSh
             bordered
             columns={columns}
             dataSource={data}
-            summary={buildSummary}
             scroll={isFixed ? { x: REFERENCE_CELL_WIDTH * workingShift.length } : undefined}
         />
     )
