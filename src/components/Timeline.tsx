@@ -36,7 +36,11 @@ const Timeline: React.FC<TimelineDefaultProps> = ({ rooms, workingShift, isLoadi
             title: time,
             key: time,
             dataIndex: time,
-            render: (value, data) => <Cell info={data.shedule.get(time) ?? null} />
+            render: (value, data) => <Cell
+                time= {time}
+                roomId = {data.room.id}
+                info={data.shedule.get(time) ?? null}
+            />
         }))
     ]
 

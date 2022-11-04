@@ -1,6 +1,8 @@
-import ColorPool from "./ColorPool";
-import BookingResponse, { Booking } from "./entities/Booking";
-import BookingView, { EConfirmStatus, EPaymentStatus } from "./entities/BookingView";
+import ColorPool from "../ColorPool";
+import { OrderView } from "../components/BookingCreateModal";
+import BookingResponse, { Booking } from "../entities/Booking";
+import BookingView, { EConfirmStatus, EPaymentStatus } from "../entities/BookingView";
+import { Order } from "../entities/Order";
 
 
 //Большая сущность - плиточка,
@@ -26,8 +28,10 @@ export default class BookingMapper {
         const colorPool = ColorPool.instance;
         const bookingDate = new Date(booking.booking_date);
 
+
         const endDate = new Date(bookingDate);
-        endDate.setHours(bookingDate.getHours()+1);
+        //Складывать потом booking.time_duration к minutes
+        endDate.setHours(bookingDate.getHours() + 1);
 
         const startTime = `${this.timeToString(bookingDate.getHours())}:${this.timeToString(bookingDate.getMinutes())}`;
         const endTime = `${this.timeToString(endDate.getHours())}:${this.timeToString(endDate.getMinutes())}`;
@@ -42,7 +46,7 @@ export default class BookingMapper {
             paymentStatus: EPaymentStatus.NOTPAID,
             confirmStatus: EConfirmStatus.CANCELED,
             title: booking.game.title,
-            phone: booking.client?.phone ?? 'Не указано',
+            phone: `8${booking.user_phone}`,
             guestCount: booking.guest_quantity,
             date: new Date(booking.booking_date)
         })
@@ -79,5 +83,35 @@ export default class BookingMapper {
             timeMap.set(timeKey, shedule);
         }
         return timeMap;
+    }
+
+    static getBookedTimeByRoom(bookings: BookingResponse, roomId: number | null) {
+        console.log(roomId);
+        console.log(bookings);
+        return Array.from(new Set(bookings
+            .filter(booking => booking.room_id === roomId)
+            .map(booking => BookingMapper.fromEntity(booking))
+            .map(booking => booking.timeStart)).values());
+    }
+
+    static toOrder(order: OrderView, token: string ): Order {
+        const cutRegEx: RegExp = /^8|(\+7)/;
+        const cuttedPhone = order.phone.trim().replace(cutRegEx, '');
+        return ({
+            token: token,
+            status: order.confirmStatus.toString(),
+            phone: cuttedPhone,
+            name: order.name,
+            date: order.date.format('YYYY-MM-DD'),
+            comment: null,
+            promo_code: null,
+            bonus: '0',
+            bookings: order.bookings.map(booking => ({
+                time: booking.time,
+                game_id: booking.gameId,
+                room_id: booking.roomId,
+                guest_quantity: booking.guest_quantity
+            })) 
+        })
     }
 }

@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import BookingMapper from '../BookingMapper';
+import BookingMapper from '../mappers/BookingMapper';
 import BookingResponse from '../entities/Booking';
 import RoomResponse from '../entities/Room';
 import Timeline from './Timeline';
@@ -20,6 +20,8 @@ interface TimelineBuilderProps {
     isTranspose: boolean,
     timelineProps: TimelineProps
 }
+
+//TODO падает на 10.11.2022
 
 const TimelineBuilder: React.FC<TimelineBuilderProps> = ({ data, isTranspose, timelineProps }) => {
 

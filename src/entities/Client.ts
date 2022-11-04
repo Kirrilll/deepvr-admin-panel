@@ -1,3 +1,6 @@
+import { LabeledValue } from "antd/lib/select";
+import { type } from "os";
+
 interface Client {
     id: number;
     role_id: number;
@@ -12,4 +15,7 @@ interface Client {
     category_loyalty_id?: any;
 }
 
+
+export type ClientValue = LabeledValue & {client: Client};
+export type ClientResponse = Client[];
 export default Client;

@@ -6,6 +6,8 @@ import PersonIcon from '../assets/person.svg';
 import PhoneIcon from '../assets/phone.svg';
 import moment from 'moment';
 import BookingView, { EPaymentStatus } from '../entities/BookingView';
+import { useAppDispatch, useAppSelector } from '../store/store';
+import { open } from '../store/creation-booking-modal/slice';
 
 type BookingPopupProps = Omit<PopoverProps
     & React.RefAttributes<unknown>
@@ -33,6 +35,10 @@ const BookingPopover: React.FC<BookingPopupProps> = (props) => {
 
 const BookingPopoverContent: React.FC<{ bookingInfo: BookingView}> = ({ bookingInfo }) => {
 
+
+    const dispatch = useAppDispatch();
+    const currentDate = useAppSelector(state => state.datePickerReducer.currentDate);
+
     const paymentStatusView = useMemo(() => {
         if(bookingInfo.paymentStatus == EPaymentStatus.PAID){
             return {
@@ -46,7 +52,12 @@ const BookingPopoverContent: React.FC<{ bookingInfo: BookingView}> = ({ bookingI
         }
     }, [bookingInfo.paymentStatus]);
 
-    const onClick = () => console.log('show modal');
+    const onClick = () => dispatch(open({
+        initialData: bookingInfo,
+        initialTime: bookingInfo.timeStart,
+        initialRoomId: bookingInfo.room_id,
+        initialDate: currentDate
+    }));
 
     const buildTimeInterval = () => {
         return `${bookingInfo.timeStart}-${bookingInfo.timeEnd}`;

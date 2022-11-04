@@ -45,7 +45,11 @@ const TimelineTrasposed: React.FC<TimelineTransposedProps> = ({ rooms, workingSh
             title: room.title,
             key: room.id,
             dataIndex: room.id,
-            render: (value, data) => <Cell info={data.shedule.get(room.id) ?? null} />
+            render: (value, data) => <Cell
+                roomId={room.id}
+                time = {data.time}
+                info={data.shedule.get(room.id) ?? null}
+            />
         }))
     ]
 

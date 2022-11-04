@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import ColorPool from "../../ColorPool";
 import BookingResponse from "../../entities/Booking";
 import BookingView from "../../entities/BookingView";
-import { fetchTimline, getRooms } from "./asyncActions";
+import { fetchTimline } from "./asyncActions";
 
 
 export enum FetchingStatus{

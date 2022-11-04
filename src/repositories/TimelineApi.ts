@@ -1,9 +1,13 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { GameResponse } from '../entities/Game';
+import GameView from '../entities/GameView';
 import RoomResponse, { Room } from '../entities/Room'
 import { WorkingShiftView } from '../entities/WorkingShift';
-import TimeMapper from '../TimeMapper'
+import GameMapper from '../mappers/GameMapper';
+import TimeMapper from '../mappers/TimeMapper'
 
 const timeMapper = new TimeMapper();
+const gameMapper = new GameMapper();
 
 export const timelineApi = createApi({
     reducerPath: 'timelineApi',
@@ -17,8 +21,12 @@ export const timelineApi = createApi({
         }),
         getRooms: build.query<RoomResponse, void>({
             query: () => ({ url: '/rooms' }),
+        }),
+        getGames: build.query<GameView[], void>({
+            query: () => ({url: '/games'}),
+            transformResponse: GameMapper.gamesFromEntities
         })
     })
 })
 
-export const { useGetRoomsQuery, useGetWorkingShiftQuery } = timelineApi;
+export const { useGetRoomsQuery, useGetWorkingShiftQuery, useGetGamesQuery } = timelineApi;

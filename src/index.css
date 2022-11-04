@@ -6,6 +6,10 @@
   box-sizing: border-box;
 }
 
+.first-plan-object{
+  z-index: 6000;
+}
+
 html, body {
   min-height: 100vh;
   width: 100%;
@@ -27,7 +31,7 @@ code {
 }
 
 /* Селектор*/
-.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+/* .ant-select:not(.ant-select-customize-input) .ant-select-selector {
   padding: 14px 16px 14px 24px;
   width: 255px;
   height: 52px !important;
@@ -84,7 +88,7 @@ code {
   background: #444656;
   border-radius: 15px;
   color: #F3F5F9;
-}
+} */
 
 
 .cell__container {

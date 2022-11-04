@@ -27,7 +27,6 @@ const CustomDatePicker: React.FC<DatePickerProps> = (props) => {
             showToday={false}
             suffixIcon={<img src={CalendarIcon} />}
             className='date-picker-input'
-            popupClassName="date-panel-popup"
             locale={ruLocale}
             renderExtraFooter={buildDateNavPanel}
             format="DD.MM.YYYY"

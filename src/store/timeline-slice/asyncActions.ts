@@ -1,19 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import timelineService from "../../services/BookingService";
+import api from "../../repositories/Api";
 
 
 export const fetchTimline = createAsyncThunk(
-    'fetchTimeline',
+    'fetchBookings',
     async (date: moment.Moment) => {
-        const response = await timelineService.getTimeline(date);
-        return response.data;
-    }
-)
-
-export const getRooms = createAsyncThunk(
-    'getRooms',
-    async () => {
-        const response = await timelineService.getRooms();
+        const response = await api.getTimeline(date);
         return response.data;
     }
 )
