@@ -1,17 +1,22 @@
 import { Table } from 'antd';
 import React from 'react';
-import { BookingInfo } from '../types';
+import BookingView from '../entities/BookingView';
+import { useAppSelector } from '../store/store';
 
 
 interface TableSummaryProps {
-    columns: Array<BookingInfo | null>[];
+    columns: Array<BookingView | null>[];
+    glasses: number
 }
 
-const TableSummary: React.FC<TableSummaryProps> = ({ columns }) => {
+const TableSummary: React.FC<TableSummaryProps> = ({ columns, glasses }) => {
 
-    const buildFreeGlassesCount = (col: (BookingInfo | null)[]): number => {
-        if (col.length == 0) return 20;
-        return 20 - col
+
+
+
+    const buildFreeGlassesCount = (col: (BookingView | null)[]): number => {
+        if (col.length == 0) return glasses;
+        return glasses - col
             .map(info => info?.guestCount ?? 0)
             .reduce((prev, next) => prev + next);
     }
@@ -22,7 +27,8 @@ const TableSummary: React.FC<TableSummaryProps> = ({ columns }) => {
             <Table.Summary.Row>
                 <Table.Summary.Cell index={0}>Св. шлемы</Table.Summary.Cell>
                 {columns
-                    .map((col, index) => <Table.Summary.Cell
+                    .map((col, index) => <Table.Summary.Cell 
+                        key={index}
                         index={index + 1}>
                         {buildFreeGlassesCount(col)}
                     </Table.Summary.Cell>)}

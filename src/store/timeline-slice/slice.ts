@@ -1,10 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import ColorPool from "../../ColorPool";
-import { BookingResponse } from "../../entities/BookingResponse";
-import { RoomResponse } from "../../entities/RoomResponse";
-import TimelineHelper from "../../TimelineHelper";
-import { BookingInfo } from "../../types";
-import { fetchTimline, getRooms } from "./asyncActions";
+import BookingResponse from "../../entities/Booking";
+import BookingView from "../../entities/BookingView";
+import { fetchTimline } from "./asyncActions";
 
 
 export enum FetchingStatus{
@@ -18,10 +16,8 @@ interface TimelineState{
     isFixed: boolean,
     isTranspose: boolean,
     fetchingStatus: FetchingStatus,
-    roomFetchingStatus: FetchingStatus,
-    data: BookingResponse.Booking[],
-    rooms: RoomResponse[],
-    dataView: Map<number, Map<string, BookingInfo>>
+    data: BookingResponse,
+    dataView: Map<number, Map<string, BookingView>>
 }
 
 
@@ -30,8 +26,6 @@ const initialState: TimelineState = {
     isTranspose: false,
     data: [],
     dataView: new Map(),
-    roomFetchingStatus: FetchingStatus.NEVER,
-    rooms: [],
     fetchingStatus: FetchingStatus.NEVER
 }
 
@@ -41,7 +35,7 @@ const timelineSlice = createSlice({
     name: 'TimelineSlice',
     initialState: initialState,
     reducers: {
-        toggleTranspose: (state) => {
+        toggleTranspose: (state, action) => {
             state.isTranspose = !state.isTranspose
             //маппятся данные
         },
@@ -53,18 +47,11 @@ const timelineSlice = createSlice({
         builder.addCase(fetchTimline.pending, (state) => {
             state.fetchingStatus = FetchingStatus.LOADING
         }),
-        builder.addCase(fetchTimline.fulfilled, (state, action: PayloadAction<BookingResponse.Booking[]>) => {
+        builder.addCase(fetchTimline.fulfilled, (state, action: PayloadAction<BookingResponse>) => {
             colorPool.init();
             state.fetchingStatus = FetchingStatus.SUCCESSFULL,
             state.data = action.payload;
-            state.dataView = TimelineHelper.mapData(state.data);
-        }),
-        builder.addCase(getRooms.pending, state => {
-            state.roomFetchingStatus = FetchingStatus.LOADING
-        }),
-        builder.addCase(getRooms.fulfilled, (state, action) => {
-            state.roomFetchingStatus = FetchingStatus.SUCCESSFULL;
-            state.rooms = action.payload;
+            // state.dataView = BookingMapper.mapData(state.data);
         })
     },
 })

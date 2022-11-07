@@ -1,5 +1,5 @@
 import React from 'react';
-import { EConfirmStatus } from '../types';
+import { EConfirmStatus } from '../entities/BookingView';
 
 
 const ConfirmStatusTag: React.FC<{status: EConfirmStatus}> = ({status}) => {

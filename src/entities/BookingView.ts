@@ -1,4 +1,3 @@
-
 export const enum EPaymentStatus {
     PAID = 'Оплачено',
     NOTPAID = 'Не оплачено'
@@ -10,16 +9,20 @@ export const enum EConfirmStatus {
     CANCELED = 'Отменено'
 }
 
-export interface BookingInfo{
+interface BookingView {
     id: number,
+    date: Date,
     room_id: number,
     paymentStatus: EPaymentStatus,
     confirmStatus: EConfirmStatus,
     title: string,
     phone: string,
     guestCount: number,
-    rooms: Array<string>,
-    time: string,
+    timeStart: string,
+    timeEnd: string,
     comment: string,
     color: string
 }
+
+
+export default BookingView;

@@ -1,15 +1,17 @@
 import { Button, Col, Popover, PopoverProps, Row, Space } from 'antd';
 import React, { useMemo } from 'react';
-import { BookingInfo, EPaymentStatus } from '../types';
 import ClockIcon from '../assets/clock.svg';
 import GameIcon from '../assets/game.svg';
 import PersonIcon from '../assets/person.svg';
 import PhoneIcon from '../assets/phone.svg';
 import moment from 'moment';
+import BookingView, { EPaymentStatus } from '../entities/BookingView';
+import { useAppDispatch, useAppSelector } from '../store/store';
+import { open } from '../store/creation-booking-modal/slice';
 
 type BookingPopupProps = Omit<PopoverProps
     & React.RefAttributes<unknown>
-    & { bookingInfo: BookingInfo, borderColor: string }, 'content'>
+    & { bookingInfo: BookingView}, 'content'>
 
 
 interface RowInfrormationProps {
@@ -21,7 +23,7 @@ interface RowInfrormationProps {
 const BookingPopover: React.FC<BookingPopupProps> = (props) => {
     return (
         <Popover
-            overlayInnerStyle={{ border: `1px solid ${props.borderColor}` }}
+            overlayInnerStyle={{ border: `1px solid ${props.bookingInfo.color}` }}
             showArrow={false}
             trigger='hover'
             placement='rightBottom'
@@ -31,9 +33,11 @@ const BookingPopover: React.FC<BookingPopupProps> = (props) => {
     )
 }
 
-const BookingPopoverContent: React.FC<{ bookingInfo: BookingInfo}> = ({ bookingInfo }) => {
+const BookingPopoverContent: React.FC<{ bookingInfo: BookingView}> = ({ bookingInfo }) => {
 
 
+    const dispatch = useAppDispatch();
+    const currentDate = useAppSelector(state => state.datePickerReducer.currentDate);
 
     const paymentStatusView = useMemo(() => {
         if(bookingInfo.paymentStatus == EPaymentStatus.PAID){
@@ -48,8 +52,16 @@ const BookingPopoverContent: React.FC<{ bookingInfo: BookingInfo}> = ({ bookingI
         }
     }, [bookingInfo.paymentStatus]);
 
-    const onClick = () => console.log('show modal');
+    const onClick = () => dispatch(open({
+        initialData: bookingInfo,
+        initialTime: bookingInfo.timeStart,
+        initialRoomId: bookingInfo.room_id,
+        initialDate: currentDate
+    }));
 
+    const buildTimeInterval = () => {
+        return `${bookingInfo.timeStart}-${bookingInfo.timeEnd}`;
+    }
 
     return (
         <>
@@ -61,8 +73,8 @@ const BookingPopoverContent: React.FC<{ bookingInfo: BookingInfo}> = ({ bookingI
                 <Space style={{ width: '100%' }} direction='vertical' size={9}>
                     <RowInformation
                         iconSrc={ClockIcon}
-                        title={bookingInfo?.time ?? ''}
-                        additionalInfo={moment(bookingInfo?.time).calendar() ?? ''}
+                        title={buildTimeInterval()}
+                        additionalInfo={bookingInfo.date.toLocaleDateString()}
                     />
                     <RowInformation
                         iconSrc={PhoneIcon}
@@ -78,13 +90,13 @@ const BookingPopoverContent: React.FC<{ bookingInfo: BookingInfo}> = ({ bookingI
                     />
                 </Space>
             </section>
-            <section className='popover__section'>
+            {/* <section className='popover__section'>
                 <div className='popover__title'>{'Зал(ы):'}</div>
                 <div className='popover__text'>{(bookingInfo?.rooms ?? []).join(';')}</div>
-            </section>
+            </section> */}
             <section className='popover__section'>
                 <div className='popover__title'>Комментарий:</div>
-                <div className='popover__text'>{bookingInfo?.comment}</div>
+                <div className='popover__text'>{bookingInfo?.comment ?? 'Не указано'}</div>
             </section>
             <Row justify='end'>
                 <Button className='default-btn' onClick={onClick}>Редактировать</Button>

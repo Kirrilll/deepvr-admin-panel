@@ -1,32 +1,35 @@
 import React from 'react';
-import { BookingInfo } from '../types';
+import BookingView from '../entities/BookingView';
+import BookingPopover from './BookingPopover';
 import ConfirmStatusTag from './ConfirmStatusTag';
 
-interface BookedCellProps{
-    bookingInfo: BookingInfo,
-    color: string,
+interface BookedCellProps {
+    bookingInfo: BookingView,
 }
 
 const BookedCell: React.FC<BookedCellProps> = (props) => {
 
 
-    const {bookingInfo, color} = props;
-    const {id, title, confirmStatus} = bookingInfo;
+    const { bookingInfo } = props;
+    const { id, title, confirmStatus } = bookingInfo;
 
 
 
     return (
-        <div className='cell__container booked-item' style={{border: `1px solid ${color}`}}>
-            <div className='cell__header' style={{backgroundColor: color}}>
-                {`Заказ ${id}`}
+        <BookingPopover bookingInfo={bookingInfo} >
+            <div className='cell__container booked-item' style={{ border: `1px solid ${bookingInfo.color}` }}>
+                <div className='cell__header' style={{ backgroundColor: bookingInfo.color }}>
+                    {`Заказ ${id}`}
+                </div>
+                <div className='cell__wrapper'>
+                    <p className='booked-item__title'>
+                        {title}
+                    </p>
+                    <ConfirmStatusTag status={confirmStatus} />
+                </div>
             </div>
-            <div className='cell__wrapper'>
-                <p className='booked-item__title'>
-                    {title}
-                </p>
-                <ConfirmStatusTag status={confirmStatus}/>
-            </div>
-        </div>
+        </BookingPopover>
+
     )
 }
 
