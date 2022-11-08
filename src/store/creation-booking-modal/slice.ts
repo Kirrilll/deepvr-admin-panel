@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import BookingResponse from "../../entities/Booking"
 import BookingView from "../../entities/BookingView"
-import { FetchingStatus } from "../timeline-slice/slice"
+import { FetchingStatus } from "../../features/timeline/redux/slice"
 import { createBooking, fetchBookings } from "./asyncActions"
 
 interface ModalState{

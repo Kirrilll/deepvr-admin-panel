@@ -1,8 +1,8 @@
 import { DatePicker } from 'antd';
 import moment from 'moment';
 import React, { useState } from 'react';
-import { selectDate, toggleOpen } from '../store/date-picker-slice/slice';
-import { useAppDispatch, useAppSelector } from '../store/store';
+import { selectDate, toggleOpen } from '../../../store/date-picker-slice/slice';
+import { useAppDispatch, useAppSelector } from '../../../app/store';
 import CustomDatePicker from './CustomDatePicker';
 
 

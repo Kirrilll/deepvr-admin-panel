@@ -1,9 +1,9 @@
 import { DatePicker } from 'antd';
 import React from 'react';
-import { ruLocale } from '../ruLocale';
+import { ruLocale } from '../../../common/configs/ruLocale';
 import DateNavPanel from './DateNavPanel';
 import DateCell from './DateCell';
-import CalendarIcon from '../assets/calendarIcon.svg';
+import CalendarIcon from '../../../assets/calendarIcon.svg';
 import moment from 'moment';
 
 

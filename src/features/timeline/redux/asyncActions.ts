@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import api from "../../repositories/Api";
+import api from "../../../repositories/Api";
 
 
 export const fetchTimline = createAsyncThunk(

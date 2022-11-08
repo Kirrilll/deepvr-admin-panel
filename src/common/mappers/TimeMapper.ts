@@ -1,4 +1,4 @@
-import WorkingShiftResponse, { WorkingShiftView } from "../entities/WorkingShift";
+import WorkingShiftResponse, { WorkingShiftView } from "../../entities/WorkingShift";
 
 
 export default class TimeMapper {

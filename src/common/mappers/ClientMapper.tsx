@@ -1,5 +1,5 @@
 import { LabeledValue } from "antd/lib/select"
-import Client, { ClientValue }  from "../entities/Client";
+import Client, { ClientValue } from "../../entities/Client";
 
 class ClientMapper {
     static clientToSelector(client: Client): ClientValue {

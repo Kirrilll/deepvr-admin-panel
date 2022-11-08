@@ -1,9 +1,8 @@
 import { Button, Col, Form, Input, InputNumber, Modal, ModalProps, Radio, Row, Select, Space } from "antd";
 import React, { useEffect, useMemo, useState } from "react";
 import { close } from "../store/creation-booking-modal/slice";
-import { useAppDispatch, useAppSelector } from "../store/store";
+import { useAppDispatch, useAppSelector } from "../app/store";
 import { PlusOutlined, DeleteOutlined, } from '@ant-design/icons';
-import CustomDatePicker from "./CustomDatePicker";
 import DebounceSelect, { UserValue } from "./DebounceSelect";
 import BookingModalService from "../services/BookingModalService";
 import { LabeledValue } from "antd/lib/select";
@@ -12,9 +11,10 @@ import { useGetGamesQuery, useGetRoomsQuery, useGetWorkingShiftQuery } from "../
 import GamesService from "../services/GamesService";
 import { Room } from "../entities/Room";
 import { createBooking, fetchBookings } from "../store/creation-booking-modal/asyncActions";
-import { FetchingStatus } from "../store/timeline-slice/slice";
-import BookingMapper from "../mappers/BookingMapper";
-import MathHelper from "../helpers/MathHelper";
+import BookingMapper from "../common/mappers/BookingMapper";
+import MathHelper from "../common/helpers/MathHelper";
+import { FetchingStatus } from "../features/timeline/redux/slice";
+import CustomDatePicker from "../features/timeline/ui/CustomDatePicker";
 
 export interface OrderView {
     date: moment.Moment,

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import ColorPool from "../../ColorPool";
-import BookingResponse from "../../entities/Booking";
-import BookingView from "../../entities/BookingView";
+import ColorPool from "../../../common/utils/ColorPool";
+import BookingResponse from "../../../entities/Booking";
+import BookingView from "../../../entities/BookingView";
 import { fetchTimline } from "./asyncActions";
 
 

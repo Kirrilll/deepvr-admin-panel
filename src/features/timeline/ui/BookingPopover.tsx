@@ -1,13 +1,12 @@
 import { Button, Col, Popover, PopoverProps, Row, Space } from 'antd';
 import React, { useMemo } from 'react';
-import ClockIcon from '../assets/clock.svg';
-import GameIcon from '../assets/game.svg';
-import PersonIcon from '../assets/person.svg';
-import PhoneIcon from '../assets/phone.svg';
-import moment from 'moment';
-import BookingView, { EPaymentStatus } from '../entities/BookingView';
-import { useAppDispatch, useAppSelector } from '../store/store';
-import { open } from '../store/creation-booking-modal/slice';
+import ClockIcon from '../../../assets/clock.svg';
+import GameIcon from '../../../assets/game.svg';
+import PersonIcon from '../../../assets/person.svg';
+import PhoneIcon from '../../../assets/phone.svg';
+import BookingView, { EPaymentStatus } from '../../../entities/BookingView';
+import { useAppDispatch, useAppSelector } from '../../../app/store';
+import {open} from '../../../store/creation-booking-modal/slice';
 
 type BookingPopupProps = Omit<PopoverProps
     & React.RefAttributes<unknown>

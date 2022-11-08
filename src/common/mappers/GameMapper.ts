@@ -1,5 +1,6 @@
-import { Game, GameResponse } from "../entities/Game";
-import GameView from "../entities/GameView";
+import { Game, GameResponse } from "../../entities/Game";
+import GameView from "../../entities/GameView";
+
 
 class GameMapper {
 

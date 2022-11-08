@@ -1,13 +1,15 @@
-import ColorPool from "../ColorPool";
-import { OrderView } from "../components/BookingCreateModal";
-import BookingResponse, { Booking } from "../entities/Booking";
-import BookingView, { EConfirmStatus, EPaymentStatus } from "../entities/BookingView";
-import { Order } from "../entities/Order";
+
 
 
 //Большая сущность - плиточка,
 //Номер заказа это id Order
 //Время указано в большой сущности
+
+import { OrderView } from "../../components/BookingCreateModal";
+import BookingResponse, { Booking } from "../../entities/Booking";
+import BookingView, { EConfirmStatus, EPaymentStatus } from "../../entities/BookingView";
+import { Order } from "../../entities/Order";
+import ColorPool from "../utils/ColorPool";
 
 
 //BookingInfo - сущночть плиточки(заказ), имеет цвет(он конструируется относительно id брони)

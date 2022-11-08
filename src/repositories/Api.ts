@@ -3,7 +3,7 @@ import { OrderView } from "../components/BookingCreateModal";
 import BookingResponse from "../entities/Booking";
 import { ClientResponse } from "../entities/Client";
 import RoomResponse from "../entities/Room";
-import BookingMapper from "../mappers/BookingMapper";
+import BookingMapper from "../common/mappers/BookingMapper";
 
 const baseUrl = process.env.REACT_APP_API_URL;
 const api = {

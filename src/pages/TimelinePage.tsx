@@ -1,17 +1,14 @@
 import React, { useEffect } from "react";
 import { Layout, Space } from 'antd';
-import Timeline from '../components/Timeline';
 import { Content } from "antd/lib/layout/layout";
-import SettingContainer from "../components/SettingsContainer";
-import { useAppDispatch, useAppSelector } from "../store/store";
+import { useAppDispatch, useAppSelector } from "../app/store";
 import { useGetRoomsQuery, useGetWorkingShiftQuery } from "../repositories/TimelineApi";
-import { fetchTimline } from "../store/timeline-slice/asyncActions";
-import { FetchingStatus } from "../store/timeline-slice/slice";
-import TimelineBuilder from "../components/TimelineBuilder";
-import BookingMapper from "../mappers/BookingMapper";
-import BookingPopover from "../components/BookingPopover";
-import { EConfirmStatus, EPaymentStatus } from "../entities/BookingView";
+import { fetchTimline } from "../features/timeline/redux/asyncActions";
 import BookingCreateModal from "../components/BookingCreateModal";
+import { FetchingStatus } from "../features/timeline/redux/slice";
+import SettingContainer from "../features/timeline/ui/SettingsContainer";
+import Timeline from "../features/timeline/ui/Timeline";
+import BookingView from "../entities/BookingView";
 
 
 const TimelinePage: React.FC = () => {
@@ -33,22 +30,38 @@ const TimelinePage: React.FC = () => {
         && fetchingRooms.isLoading
         && fetchingWorkingShift.isLoading;
 
+
+    const testData: Array<(BookingView | null)[]> = [];
+
+
     return (
         <>
             <BookingCreateModal/>
             <Layout style={{ padding: 60 }}>
                 <Content>
                     <SettingContainer />
-                    <TimelineBuilder
-                        isTranspose={isTranspose}
-                        data={data}
-                        timelineProps={{
-                            glasses: fetchingWorkingShift.data?.glasses ?? 20,
-                            isFixed: isFixed,
-                            isLoading: isLoading,
-                            rooms: fetchingRooms.data ?? [],
-                            workingShift: fetchingWorkingShift.data?.time ?? []
+                    <Timeline
+                        mode = {{
+                            type: 'idle'
                         }}
+                        type = 'default'
+                        options={{
+                            isFixed: isFixed,
+                        }}
+                        glasses = {fetchingWorkingShift.data?.glasses ?? 30}
+                        data = {testData}
+                        workingShift = {fetchingWorkingShift.data?.time ?? []}
+                        rooms = {fetchingRooms.data ?? []}
+
+                        // isTranspose={isTranspose}
+                        // data={data}
+                        // timelineProps={{
+                        //     glasses: fetchingWorkingShift.data?.glasses ?? 20,
+                        //     isFixed: isFixed,
+                        //     isLoading: isLoading,
+                        //     rooms: fetchingRooms.data ?? [],
+                        //     workingShift: fetchingWorkingShift.data?.time ?? []
+                        // }}
                     />
                 </Content>
             </Layout>

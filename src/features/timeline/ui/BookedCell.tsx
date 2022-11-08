@@ -1,7 +1,7 @@
 import React from 'react';
-import BookingView from '../entities/BookingView';
+import BookingView from '../../../entities/BookingView';
 import BookingPopover from './BookingPopover';
-import ConfirmStatusTag from './ConfirmStatusTag';
+import ConfirmStatusTag from './ConfirmStatusTag'
 
 interface BookedCellProps {
     bookingInfo: BookingView,

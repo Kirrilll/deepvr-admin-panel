@@ -1,7 +1,7 @@
 import { Checkbox, Row, Select } from "antd";
 import React from "react";
-import { useAppDispatch, useAppSelector } from "../store/store";
-import { toggleFixed, toggleTranspose } from "../store/timeline-slice/slice";
+import { useAppDispatch, useAppSelector } from "../../../app/store";
+import { toggleFixed, toggleTranspose } from '../redux/slice';
 import DateRange from "./DateRange";
 
 const { Option } = Select;

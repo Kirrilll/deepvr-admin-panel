@@ -1,7 +1,6 @@
 import { Table } from 'antd';
 import React from 'react';
-import BookingView from '../entities/BookingView';
-import { useAppSelector } from '../store/store';
+import BookingView from '../../../entities/BookingView';
 
 
 interface TableSummaryProps {

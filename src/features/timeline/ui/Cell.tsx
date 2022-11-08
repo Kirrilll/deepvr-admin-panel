@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
-import BookingView from '../entities/BookingView';
-import { open } from '../store/creation-booking-modal/slice';
-import { useAppDispatch, useAppSelector } from '../store/store';
+import BookingView from '../../../entities/BookingView';
+import { open } from '../../../store/creation-booking-modal/slice';
+import { useAppDispatch, useAppSelector } from '../../../app/store';
 import BookedCell from './BookedCell';
 
 interface CellProps {

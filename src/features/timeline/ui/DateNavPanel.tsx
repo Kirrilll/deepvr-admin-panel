@@ -1,7 +1,6 @@
 import { Col, Row } from 'antd';
 import moment from 'moment';
 import React from 'react';
-import { ruLocale } from '../ruLocale';
 
 interface DatePickerProps {
     setDate: (date: moment.Moment | null, dateStr: string) => void,
