@@ -1,6 +1,7 @@
 import { TimelineType } from "../../entities/TimelineTypes";
 import { TimelineDirector } from "../../entities/TimelineUtilsTypes";
 import TimelineDefaultDirector from "./TimelineDefaultDirector";
+import TimelineLoadingDirector from "./TimelineLoadingDirector";
 import TimelineTransposedDirector from "./TimelineTransposedDirector";
 
 class TimelineFactory {
@@ -8,8 +9,10 @@ class TimelineFactory {
         switch (type) {
             case 'default':
                 return TimelineDefaultDirector.instance;
-            default:
+            case 'transposed':
                 return TimelineTransposedDirector.instance;
+            default:
+                return TimelineLoadingDirector.instance;
         }
     }
 }

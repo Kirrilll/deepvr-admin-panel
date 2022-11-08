@@ -37,9 +37,7 @@ const REFERENCE_CELL_WIDTH = 190;
 const Timeline: React.FC<TimelineProps> = ({ options, mode, data, workingShift, rooms, glasses, type }) => {
 
     const director = TimelineFactory.createTimeline(type);
-
-    const timeline = director.construct(workingShift, rooms, data);
-
+    const timeline = director.construct(workingShift, rooms, data, glasses);
 
     return (
         <Table
@@ -50,7 +48,7 @@ const Timeline: React.FC<TimelineProps> = ({ options, mode, data, workingShift, 
             bordered
             columns={timeline.columns}
             dataSource={timeline.data}
-            // summary={ }
+            summary={timeline.summary}
             scroll={options.isFixed ? { x: REFERENCE_CELL_WIDTH * workingShift.length } : undefined}
         />
     )

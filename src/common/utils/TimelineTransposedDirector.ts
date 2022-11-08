@@ -12,10 +12,11 @@ class TimelineTransposedDirector implements TimelineDirector {
 
     private constructor(){};
 
-    construct(workingShift: string[], rooms: Room[], data: BookingMatrix): Timeline{
+    construct(workingShift: string[], rooms: Room[], data: BookingMatrix, glasses: number): Timeline{
         return ({
             columns: this.builder.buildColumns(rooms),
-            data: this.builder.buildData(data, workingShift)
+            data: this.builder.buildData(data, workingShift, glasses),
+            summary: this.builder.buildSummary()
         })
     }
 }

@@ -9,6 +9,10 @@ import Cell from "../../features/timeline/ui/Cell";
 type RowTransposed = Row<SheduleTime>;
 
 class TimelineTransposedBuilder implements TimelineBuilder {
+
+    buildSummary = (...args: any[]) => undefined;
+
+
     private buildGlasses(allGlassesCount: number, shedule: (BookingView | null)[]) {
         if (shedule.length == 0) return allGlassesCount;
         return allGlassesCount - shedule
@@ -16,7 +20,7 @@ class TimelineTransposedBuilder implements TimelineBuilder {
             .reduce((prev, next) => prev + next);
     }
 
-    buildData(globalData: BookingMatrix, times: string[]): RowTransposed[] {
+    buildData(globalData: BookingMatrix, times: string[], glasses: number): RowTransposed[] {
         return times.map((time, index) => {
             const shedule = globalData.at(index) ?? [];
 
@@ -24,7 +28,7 @@ class TimelineTransposedBuilder implements TimelineBuilder {
                 leadingCol: {
                     key: time,
                     time: time,
-                    restGlasses: this.buildGlasses(30, shedule)
+                    restGlasses: this.buildGlasses(glasses, shedule)
                 },
                 shedule: shedule
             })
@@ -58,7 +62,6 @@ class TimelineTransposedBuilder implements TimelineBuilder {
         return columns;
     };
 
-    buildSummary: ((data: readonly Row<SheduleTime>[]) => ReactNode) | undefined;
 }
 
 export default TimelineTransposedBuilder

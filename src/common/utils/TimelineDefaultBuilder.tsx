@@ -1,13 +1,29 @@
 import { ColumnsType, ColumnType } from "antd/lib/table";
+import { ReactNode } from "react";
 import { Room } from "../../entities/Room";
 import { BookingMatrix, Row } from "../../entities/TimelineTypes";
-import { TimelineBuilder } from "../../entities/TimelineUtilsTypes";
+import { SummaryCallback, TimelineBuilder } from "../../entities/TimelineUtilsTypes";
 import Cell from "../../features/timeline/ui/Cell";
+import MathHelper from "../helpers/MathHelper";
 
 type RowDefault = Row<Room>;
 
 
 class TimelineDefaultBuilder implements TimelineBuilder{
+
+    buildSummary(glasses: number, workingShift: string[]): SummaryCallback{
+        
+        return (data: readonly RowDefault[]) => {
+            for(const time of workingShift){
+                for(const row of data){
+
+                }
+            }
+            return <div>adad</div>
+        }
+    };
+
+
     buildData(globalData: BookingMatrix, rooms: Room[]): RowDefault[] {
         return rooms.map<RowDefault>((room, index) => ({
             leadingCol: {
@@ -19,9 +35,7 @@ class TimelineDefaultBuilder implements TimelineBuilder{
     };
 
 
-    buildSummary(data: readonly RowDefault[]) {
-        return <div>hj</div>;
-    };
+    
     // const buildSummary = (data: readonly RowData[]): React.ReactNode => {
     //     const columns = new Map<string, Array<BookingView | null>>();
 

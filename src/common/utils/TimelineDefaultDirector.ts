@@ -11,11 +11,11 @@ class TimelineDefaultDirector implements TimelineDirector {
 
     private constructor() { };
 
-    construct(workingShift: string[], rooms: Room[], data: BookingMatrix): Timeline {
+    construct(workingShift: string[], rooms: Room[], data: BookingMatrix, glasses: number): Timeline {
         return ({
             columns: this.builder.buildColumns(workingShift),
             data: this.builder.buildData(data, rooms),
-            summary: (data) => this.builder.buildSummary(data)
+            summary: this.builder.buildSummary(glasses, workingShift)
         })
     }
 }

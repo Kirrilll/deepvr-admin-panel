@@ -44,7 +44,7 @@ const TimelinePage: React.FC = () => {
                         mode = {{
                             type: 'idle'
                         }}
-                        type = 'default'
+                        type = 'loading'
                         options={{
                             isFixed: isFixed,
                         }}
