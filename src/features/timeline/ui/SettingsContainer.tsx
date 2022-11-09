@@ -1,6 +1,7 @@
 import { Checkbox, Row, Select } from "antd";
-import React from "react";
+import React, { useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
+import { selectOptions, selectType } from "../redux/selectors";
 import { toggleFixed, toggleTranspose } from '../redux/slice';
 import DateRange from "./DateRange";
 
@@ -8,10 +9,16 @@ const { Option } = Select;
 
 const SettingContainer: React.FC = () => {
     const dispatch = useAppDispatch();
-    const { isFixed, isTranspose } = useAppSelector(state => state.timeLineReducer)
+    const type = useAppSelector(selectType);
+    const options = useAppSelector(selectOptions);
 
+    const isTranspose = useMemo(() => type === 'transposed', [type]);
+    const isFixed = useMemo(() => options.isFixed, [options.isFixed]);
 
-    const handleTranspose = () => dispatch(toggleTranspose(!isTranspose))
+    const handleTranspose = () => dispatch(toggleTranspose(isTranspose
+        ? 'default'
+        : 'transposed')
+    );
     const handleFixed = () => dispatch(toggleFixed());
 
     return (

@@ -2,6 +2,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import ColorPool from "../../../common/utils/ColorPool";
 import BookingResponse from "../../../entities/Booking";
 import BookingView from "../../../entities/BookingView";
+import { TimelineMode, TimelineOptions } from "../../../entities/TimelineOptions";
+import { TimelineType } from "../../../entities/TimelineTypes";
 import { fetchTimline } from "./asyncActions";
 
 
@@ -12,9 +14,12 @@ export enum FetchingStatus{
     SUCCESSFULL 
 }
 
+type TimelineStateType = Exclude<TimelineType, 'loading'>
+
 interface TimelineState{
-    isFixed: boolean,
-    isTranspose: boolean,
+    mode: TimelineMode,
+    type: TimelineStateType,
+    options: TimelineOptions
     fetchingStatus: FetchingStatus,
     data: BookingResponse,
     dataView: Map<number, Map<string, BookingView>>
@@ -22,11 +27,12 @@ interface TimelineState{
 
 
 const initialState: TimelineState = {
-    isFixed: true,
-    isTranspose: false,
+    options: {isFixed: false},
+    mode: {type: 'idle'},
+    type: 'default',
+    fetchingStatus: FetchingStatus.NEVER,
     data: [],
-    dataView: new Map(),
-    fetchingStatus: FetchingStatus.NEVER
+    dataView: new Map()
 }
 
 const colorPool: ColorPool = ColorPool.instance;
@@ -35,17 +41,17 @@ const timelineSlice = createSlice({
     name: 'TimelineSlice',
     initialState: initialState,
     reducers: {
-        toggleTranspose: (state, action) => {
-            state.isTranspose = !state.isTranspose
+        toggleTranspose: (state, action: PayloadAction<TimelineStateType>) => {
+            state.type = action.payload;
             //маппятся данные
         },
         toggleFixed: (state) => {
-            state.isFixed = !state.isFixed
+            state.options.isFixed = !state.options.isFixed;
         }
     },
     extraReducers: (builder) => {
         builder.addCase(fetchTimline.pending, (state) => {
-            state.fetchingStatus = FetchingStatus.LOADING
+            state.fetchingStatus = FetchingStatus.LOADING;
         }),
         builder.addCase(fetchTimline.fulfilled, (state, action: PayloadAction<BookingResponse>) => {
             colorPool.init();

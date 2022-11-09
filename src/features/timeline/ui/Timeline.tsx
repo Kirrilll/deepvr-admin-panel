@@ -2,13 +2,9 @@ import { Table } from 'antd';
 import React, { useMemo } from 'react';
 import TimelineFactory from '../../../common/utils/TimlineFactory';
 import BookingView from '../../../entities/BookingView';
-import RoomResponse, { Room } from '../../../entities/Room';
-import { TimelineMode } from '../../../entities/TimelineOptions';
+import { Room } from '../../../entities/Room';
+import { TimelineMode, TimelineOptions } from '../../../entities/TimelineOptions';
 import { TimelineType } from '../../../entities/TimelineTypes';
-
-interface TimelineOptions {
-    isFixed: boolean,
-}
 
 
 interface TimelineProps {
@@ -36,12 +32,12 @@ const REFERENCE_CELL_WIDTH = 190;
 
 const Timeline: React.FC<TimelineProps> = ({ options, mode, data, workingShift, rooms, glasses, type }) => {
 
-    const director = TimelineFactory.createTimeline(type);
-    const timeline = director.construct(workingShift, rooms, data, glasses);
+    const director = useMemo(() => TimelineFactory.createTimeline(type), [type]);
+
+    const timeline = useMemo(() => director.construct(workingShift, rooms, data, glasses), [data, type]); 
 
     return (
         <Table
-            // loading={isLoading}
             rowKey={record => record.leadingCol.key}
             tableLayout='fixed'
             pagination={false}
