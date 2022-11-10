@@ -1,29 +1,29 @@
 import { ColumnsType, ColumnType } from "antd/lib/table";
-import { ReactNode } from "react";
-import BookingView from "../../entities/BookingView";
+import OrderView, { OrderMatrix } from "../../entities/OrderView";
 import { Room } from "../../entities/Room";
-import { BookingMatrix, Row, SheduleTime } from "../../entities/TimelineTypes";
+import { Row, SheduleTime } from "../../entities/TimelineTypes";
 import { TimelineBuilder } from "../../entities/TimelineUtilsTypes";
 import Cell from "../../features/timeline/ui/Cell";
 
 type RowTransposed = Row<SheduleTime>;
-
+//TODO пофиксить формат данных
 class TimelineTransposedBuilder implements TimelineBuilder {
 
     buildSummary = (...args: any[]) => undefined;
 
 
-    private buildGlasses(allGlassesCount: number, shedule: (BookingView | null)[]) {
+    private buildGlasses(allGlassesCount: number, shedule: (OrderView | null)[]) {
         if (shedule.length == 0) return allGlassesCount;
         return allGlassesCount - shedule
-            .map(booking => booking?.guestCount ?? 0)
+            .map(order => order?.bookings
+                .map(booking => booking.guestCount)
+                .reduce((prev, next) => prev + next) ?? 0)
             .reduce((prev, next) => prev + next);
     }
 
-    buildData(globalData: BookingMatrix, times: string[], glasses: number): RowTransposed[] {
+    buildData(globalData: OrderMatrix, times: string[], glasses: number): RowTransposed[] {
         return times.map((time, index) => {
             const shedule = globalData.at(index) ?? [];
-
             return ({
                 leadingCol: {
                     key: time,
@@ -48,7 +48,7 @@ class TimelineTransposedBuilder implements TimelineBuilder {
                     <p className="glasses-count">{`(≤ ${data.leadingCol.restGlasses} чел.)`}</p>
                 </div>
             },
-            ...rooms.map<ColumnType<RowTransposed>>(room => ({
+            ...rooms.map<ColumnType<RowTransposed>>((room, index) => ({
                 title: room.title,
                 key: room.id,
                 dataIndex: room.id,

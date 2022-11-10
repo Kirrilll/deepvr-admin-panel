@@ -1,5 +1,6 @@
+import OrderView, { OrderMatrix } from "../../entities/OrderView";
 import { Room } from "../../entities/Room";
-import { BookingMatrix, Timeline } from "../../entities/TimelineTypes";
+import { Timeline } from "../../entities/TimelineTypes";
 import { TimelineDirector } from "../../entities/TimelineUtilsTypes";
 import TimelineLoadingBuilder from "./TimelineLoadingBuilder";
 
@@ -10,7 +11,7 @@ class TimelineLoadingDirector implements TimelineDirector{
 
     private constructor(){}
 
-    construct (workingShift: string[], rooms: Room[], data: BookingMatrix, glasses: number): Timeline{
+    construct (workingShift: string[], rooms: Room[], data: OrderView[], glasses: number): Timeline{
         return ({
             columns: this.builder.buildColumns(),
             data: this.builder.buildData(),

@@ -8,7 +8,7 @@ import BookingCreateModal from "../components/BookingCreateModal";
 import { FetchingStatus } from "../features/timeline/redux/slice";
 import SettingContainer from "../features/timeline/ui/SettingsContainer";
 import Timeline from "../features/timeline/ui/Timeline";
-import BookingView from "../entities/BookingView";
+import OrderView from "../entities/OrderView";
 import { TimelineType } from "../entities/TimelineTypes";
 
 
@@ -31,15 +31,13 @@ const TimelinePage: React.FC = () => {
         && fetchingRooms.isLoading
         && fetchingWorkingShift.isLoading;
 
-
-    const testData: Array<(BookingView | null)[]> = [];
     const timelineType: TimelineType = isLoading
         ? 'loading'
         : type;
 
     return (
         <>
-            <BookingCreateModal />
+            {/* <BookingCreateModal /> */}
             <Layout style={{ padding: 60 }}>
                 <Content>
                     <SettingContainer />
@@ -48,7 +46,7 @@ const TimelinePage: React.FC = () => {
                         type= {timelineType}
                         options={options}
                         glasses={fetchingWorkingShift.data?.glasses ?? 30}
-                        data={testData}
+                        data={data}
                         workingShift={fetchingWorkingShift.data?.time ?? []}
                         rooms={fetchingRooms.data ?? []}
                     />

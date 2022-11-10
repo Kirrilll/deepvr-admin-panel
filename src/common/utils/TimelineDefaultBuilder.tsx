@@ -1,7 +1,8 @@
 import { ColumnsType, ColumnType } from "antd/lib/table";
 import { ReactNode } from "react";
+import { OrderMatrix } from "../../entities/OrderView";
 import { Room } from "../../entities/Room";
-import { BookingMatrix, Row } from "../../entities/TimelineTypes";
+import { Row } from "../../entities/TimelineTypes";
 import { SummaryCallback, TimelineBuilder } from "../../entities/TimelineUtilsTypes";
 import Cell from "../../features/timeline/ui/Cell";
 import MathHelper from "../helpers/MathHelper";
@@ -9,6 +10,14 @@ import MathHelper from "../helpers/MathHelper";
 type RowDefault = Row<Room>;
 
 
+//Ячейка хранит OrderView,
+ 
+//В случае если в одном ряду подряд записи с одинаковы id, объединяем ячейки, rowSpan = <order.booking.lenth>
+//В случае если в одной колонне несколько записей с одинаковым id, объединяем столбцы 
+
+
+//Храним обрубленную матрицу
+//Передаем матрицу ячеек
 class TimelineDefaultBuilder implements TimelineBuilder{
 
     buildSummary(glasses: number, workingShift: string[]): SummaryCallback{
@@ -24,7 +33,7 @@ class TimelineDefaultBuilder implements TimelineBuilder{
     };
 
 
-    buildData(globalData: BookingMatrix, rooms: Room[]): RowDefault[] {
+    buildData(globalData: OrderMatrix, rooms: Room[]): RowDefault[] {
         return rooms.map<RowDefault>((room, index) => ({
             leadingCol: {
                 key: room.id.toString(),
@@ -67,9 +76,14 @@ class TimelineDefaultBuilder implements TimelineBuilder{
             ...workingShift.map<ColumnType<RowDefault>>(time => ({
                 title: time,
                 key: time,
+                // onCell: (data, index) => {
+                //     if(index == 2) {
+                //         return {colSpan: 2}
+                //     }
+                //     return {colSpan: 1};
+                // },
                 dataIndex: time,
                 render: (value, data, index) => {
-                    console.log(data);
                     return <Cell
                         time={time}
                         roomId={data.leadingCol.id}

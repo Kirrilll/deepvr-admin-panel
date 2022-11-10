@@ -1,7 +1,7 @@
 import { Table } from 'antd';
 import React, { useMemo } from 'react';
 import TimelineFactory from '../../../common/utils/TimlineFactory';
-import BookingView from '../../../entities/BookingView';
+import OrderView from '../../../entities/OrderView';
 import { Room } from '../../../entities/Room';
 import { TimelineMode, TimelineOptions } from '../../../entities/TimelineOptions';
 import { TimelineType } from '../../../entities/TimelineTypes';
@@ -11,7 +11,7 @@ interface TimelineProps {
     options: TimelineOptions,
     glasses: number,
     mode: TimelineMode,
-    data: (BookingView | null)[][],
+    data: OrderView[],
     workingShift: string[],
     rooms: Room[],
     type: TimelineType
@@ -31,7 +31,6 @@ interface TimelineProps {
 const REFERENCE_CELL_WIDTH = 190;
 
 const Timeline: React.FC<TimelineProps> = ({ options, mode, data, workingShift, rooms, glasses, type }) => {
-
     const director = useMemo(() => TimelineFactory.createTimeline(type), [type]);
 
     const timeline = useMemo(() => director.construct(workingShift, rooms, data, glasses), [data, type]); 

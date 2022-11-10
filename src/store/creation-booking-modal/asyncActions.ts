@@ -16,11 +16,11 @@ export const fetchBookings = createAsyncThunk(
     }
 )
 
-export const createBooking = createAsyncThunk(
-    'createBooking',
-    async (args: CreateBookingArgs) => {
-        const {order, token}= args;
-        const response = await api.createBooking(order, token);
-        return response.data;
-    }
-)
+// export const createBooking = createAsyncThunk(
+//     'createBooking',
+//     async (args: CreateBookingArgs) => {
+//         const {order, token}= args;
+//         const response = await api.createBooking(order, token);
+//         return response.data;
+//     }
+// )

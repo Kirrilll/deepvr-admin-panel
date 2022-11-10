@@ -10,8 +10,8 @@ import { ClientValue } from "../entities/Client";
 import { useGetGamesQuery, useGetRoomsQuery, useGetWorkingShiftQuery } from "../repositories/TimelineApi";
 import GamesService from "../services/GamesService";
 import { Room } from "../entities/Room";
-import { createBooking, fetchBookings } from "../store/creation-booking-modal/asyncActions";
-import BookingMapper from "../common/mappers/BookingMapper";
+import { fetchBookings } from "../store/creation-booking-modal/asyncActions";
+import OrderMapper from "../common/mappers/OrderMapper";
 import MathHelper from "../common/helpers/MathHelper";
 import { FetchingStatus } from "../features/timeline/redux/slice";
 import CustomDatePicker from "../features/timeline/ui/CustomDatePicker";
@@ -49,22 +49,22 @@ const BookingCreateModal: React.FC = () => {
     const service = useMemo(() => new BookingModalService(), [])
     const onFinish = (values: any) => {
         console.log(values)
-        dispatch(createBooking({
-            order: {
-                date: values.datePicker,
-                confirmStatus: values.confirmStatus,
-                phone: values.phoneSelect.value,
-                name: values.name,
-                bookings: values.bookings
-                    .map((booking: { room: LabeledValue, game: LabeledValue, time: LabeledValue, guestCount: string }) => ({
-                        time: booking.time.value,
-                        guest_quantity: Number.parseInt(booking.guestCount),
-                        roomId: Number.parseInt(booking.room.value as string),
-                        gameId: Number.parseInt(booking.game.value as string)
-                    }))
-            },
-            token: '6bc8a47477b1427a6ae7f4e13789aea32c77ec29'
-        }))
+        // dispatch(createBooking({
+        //     order: {
+        //         date: values.datePicker,
+        //         confirmStatus: values.confirmStatus,
+        //         phone: values.phoneSelect.value,
+        //         name: values.name,
+        //         bookings: values.bookings
+        //             .map((booking: { room: LabeledValue, game: LabeledValue, time: LabeledValue, guestCount: string }) => ({
+        //                 time: booking.time.value,
+        //                 guest_quantity: Number.parseInt(booking.guestCount),
+        //                 roomId: Number.parseInt(booking.room.value as string),
+        //                 gameId: Number.parseInt(booking.game.value as string)
+        //             }))
+        //     },
+        //     token: '6bc8a47477b1427a6ae7f4e13789aea32c77ec29'
+        // }))
     }
     const onCancel = () => dispatch(close());
 
@@ -146,7 +146,8 @@ const BookingCreateModal: React.FC = () => {
 
     const getAvailableTime = (field: any) => {
         const room = getSelectedRoom(field);
-        const bookedTime = BookingMapper.getBookedTimeByRoom(bookings, room?.id ?? null);
+        //const bookedTime = OrderMapper.getBookedTimeByRoom(bookings, room?.id ?? null);
+        const bookedTime = ['12:00', '13:00'];
         return MathHelper.getArrDifference(bookedTime, workingShiftQuery.data?.time ?? []);
     }
 

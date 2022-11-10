@@ -4,13 +4,13 @@ import ClockIcon from '../../../assets/clock.svg';
 import GameIcon from '../../../assets/game.svg';
 import PersonIcon from '../../../assets/person.svg';
 import PhoneIcon from '../../../assets/phone.svg';
-import BookingView, { EPaymentStatus } from '../../../entities/BookingView';
+import OrderView, { EPaymentStatus } from '../../../entities/OrderView';
 import { useAppDispatch, useAppSelector } from '../../../app/store';
 import {open} from '../../../store/creation-booking-modal/slice';
 
 type BookingPopupProps = Omit<PopoverProps
     & React.RefAttributes<unknown>
-    & { bookingInfo: BookingView}, 'content'>
+    & { order: OrderView}, 'content'>
 
 
 interface RowInfrormationProps {
@@ -22,21 +22,20 @@ interface RowInfrormationProps {
 const BookingPopover: React.FC<BookingPopupProps> = (props) => {
     return (
         <Popover
-            overlayInnerStyle={{ border: `1px solid ${props.bookingInfo.color}` }}
+            overlayInnerStyle={{ border: `1px solid ${props.order.color}` }}
             showArrow={false}
             trigger='hover'
             placement='rightBottom'
-            content={<BookingPopoverContent bookingInfo={props.bookingInfo} />}>
+            content={<BookingPopoverContent bookingInfo={props.order} />}>
             {props.children}
         </Popover>
     )
 }
 
-const BookingPopoverContent: React.FC<{ bookingInfo: BookingView}> = ({ bookingInfo }) => {
-
+const BookingPopoverContent: React.FC<{ bookingInfo: OrderView}> = ({ bookingInfo }) => {
 
     const dispatch = useAppDispatch();
-    const currentDate = useAppSelector(state => state.datePickerReducer.currentDate);
+    const currentDate = bookingInfo.date;
 
     const paymentStatusView = useMemo(() => {
         if(bookingInfo.paymentStatus == EPaymentStatus.PAID){
@@ -53,14 +52,14 @@ const BookingPopoverContent: React.FC<{ bookingInfo: BookingView}> = ({ bookingI
 
     const onClick = () => dispatch(open({
         initialData: bookingInfo,
-        initialTime: bookingInfo.timeStart,
-        initialRoomId: bookingInfo.room_id,
+        initialTime: bookingInfo.bookings[0].startTime.time,
+        initialRoomId: bookingInfo.bookings[0].gameId,
         initialDate: currentDate
     }));
 
-    const buildTimeInterval = () => {
-        return `${bookingInfo.timeStart}-${bookingInfo.timeEnd}`;
-    }
+    // const buildTimeInterval = () => {
+    //     return `${bookingInfo.timeStart}-${bookingInfo.timeEnd}`;
+    // }
 
     return (
         <>
@@ -70,23 +69,23 @@ const BookingPopoverContent: React.FC<{ bookingInfo: BookingView}> = ({ bookingI
             </section>
             <section className='popover__section '>
                 <Space style={{ width: '100%' }} direction='vertical' size={9}>
-                    <RowInformation
+                    {/* <RowInformation
                         iconSrc={ClockIcon}
                         title={buildTimeInterval()}
                         additionalInfo={bookingInfo.date.toLocaleDateString()}
-                    />
+                    /> */}
                     <RowInformation
                         iconSrc={PhoneIcon}
                         title={bookingInfo?.phone ?? '8-888-888-88-88'}
                     />
-                    <RowInformation
+                    {/* <RowInformation
                         iconSrc={GameIcon}
-                        title={bookingInfo?.title ?? ''}
+                        title={bookingInfo?.gameTitle ?? ''}
                     />
                     <RowInformation
                         iconSrc={PersonIcon}
                         title={bookingInfo?.guestCount.toString() ?? ''}
-                    />
+                    /> */}
                 </Space>
             </section>
             {/* <section className='popover__section'>
@@ -95,7 +94,7 @@ const BookingPopoverContent: React.FC<{ bookingInfo: BookingView}> = ({ bookingI
             </section> */}
             <section className='popover__section'>
                 <div className='popover__title'>Комментарий:</div>
-                <div className='popover__text'>{bookingInfo?.comment ?? 'Не указано'}</div>
+                {/* <div className='popover__text'>{bookingInfo?.comment ?? 'Не указано'}</div> */}
             </section>
             <Row justify='end'>
                 <Button className='default-btn' onClick={onClick}>Редактировать</Button>

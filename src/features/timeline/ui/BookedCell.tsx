@@ -1,22 +1,24 @@
 import React from 'react';
-import BookingView from '../../../entities/BookingView';
+import OrderView, { EConfirmStatus } from '../../../entities/OrderView';
 import BookingPopover from './BookingPopover';
 import ConfirmStatusTag from './ConfirmStatusTag'
 
 interface BookedCellProps {
-    bookingInfo: BookingView,
+    bookingInfo: OrderView,
 }
-
+//Хранит order и index в bookings
 const BookedCell: React.FC<BookedCellProps> = (props) => {
 
 
     const { bookingInfo } = props;
-    const { id, title, confirmStatus } = bookingInfo;
+    const { id,} = bookingInfo;
 
+    const title = 'Рандомное название';
+    const confirmStatus = EConfirmStatus.CONFIRM;
 
 
     return (
-        <BookingPopover bookingInfo={bookingInfo} >
+        <BookingPopover order={bookingInfo} >
             <div className='cell__container booked-item' style={{ border: `1px solid ${bookingInfo.color}` }}>
                 <div className='cell__header' style={{ backgroundColor: bookingInfo.color }}>
                     {`Заказ ${id}`}

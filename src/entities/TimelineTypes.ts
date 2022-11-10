@@ -1,9 +1,8 @@
 import { ColumnsType } from "antd/lib/table"
-import BookingView from "./BookingView"
-import {Room} from "./Room"
+import OrderView, { OrderApart } from "./OrderView"
+import { Room } from "./Room"
 
 
-export type BookingMatrix = (BookingView | null)[][];
 export type TimelineType = 'loading' | 'transposed' | 'default';
 
 export interface SheduleTime {
@@ -13,7 +12,7 @@ export interface SheduleTime {
 
 export interface Row<T extends Room | SheduleTime> {
     leadingCol: T & { key: string },
-    shedule: (BookingView | null)[]
+    shedule: (OrderView | null)[]
 }
 
 export interface Timeline {

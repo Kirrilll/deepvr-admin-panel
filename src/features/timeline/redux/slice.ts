@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import OrderMapper from "../../../common/mappers/OrderMapper";
 import ColorPool from "../../../common/utils/ColorPool";
-import BookingResponse from "../../../entities/Booking";
-import BookingView from "../../../entities/BookingView";
+import { OrderResponse } from "../../../entities/Order";
+import OrderView, { OrderMatrix } from "../../../entities/OrderView";
 import { TimelineMode, TimelineOptions } from "../../../entities/TimelineOptions";
 import { TimelineType } from "../../../entities/TimelineTypes";
 import { fetchTimline } from "./asyncActions";
@@ -21,8 +22,8 @@ interface TimelineState{
     type: TimelineStateType,
     options: TimelineOptions
     fetchingStatus: FetchingStatus,
-    data: BookingResponse,
-    dataView: Map<number, Map<string, BookingView>>
+    data: OrderView[],
+    orderMatrix: OrderMatrix
 }
 
 
@@ -32,7 +33,7 @@ const initialState: TimelineState = {
     type: 'default',
     fetchingStatus: FetchingStatus.NEVER,
     data: [],
-    dataView: new Map()
+    orderMatrix: [[]]
 }
 
 const colorPool: ColorPool = ColorPool.instance;
@@ -53,11 +54,10 @@ const timelineSlice = createSlice({
         builder.addCase(fetchTimline.pending, (state) => {
             state.fetchingStatus = FetchingStatus.LOADING;
         }),
-        builder.addCase(fetchTimline.fulfilled, (state, action: PayloadAction<BookingResponse>) => {
+        builder.addCase(fetchTimline.fulfilled, (state, action: PayloadAction<OrderResponse>) => {
             colorPool.init();
             state.fetchingStatus = FetchingStatus.SUCCESSFULL,
-            state.data = action.payload;
-            // state.dataView = BookingMapper.mapData(state.data);
+            state.data = OrderMapper.fromEntities(action.payload);
         })
     },
 })
