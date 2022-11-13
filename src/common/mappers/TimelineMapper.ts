@@ -1,18 +1,10 @@
-import OrderView, { BookingView, OrderApart, OrderMatrix } from "../../entities/OrderView"
+import OrderView from "../../entities/OrderView"
 import { Room } from "../../entities/Room";
+import { CellPivot, OrderCellMatrix } from "../../entities/TimelineTypes";
 
-interface CellInfo {
-    rowSpan: number,
-    colSpan: number,
-    pivot: {
-        orderId: number,
-        currBooking: BookingView
-    }
-}
 
-type CellMatrix = CellInfo[][];
-type OrderMapDefault = Map<number, Map<string, OrderView | null>>;
-type OrderMapTransposed = Map<string, Map<number, OrderView | null>>;
+type OrderMapDefault = Map<number, Map<string, CellPivot | null>>;
+type OrderMapTransposed = Map<string, Map<number, CellPivot | null>>;
 
 export default class TimelineMapper {
 
@@ -23,7 +15,7 @@ export default class TimelineMapper {
                 .from(innerMap.values()))
     }
 
-    static toOrderMatrixDefault(orders: OrderView[], times: string[], rooms: Room[]): OrderMatrix {
+    static toOrderMatrixDefault(orders: OrderView[], times: string[], rooms: Room[]): OrderCellMatrix {
         const defaultSheduleMap = new Map(times.map(time => ([time, null])));
         const map: OrderMapDefault = new Map(
             rooms.map(room => ([
@@ -32,42 +24,40 @@ export default class TimelineMapper {
             ]))
         );
         for (const order of orders) {
-            for (const booking of order.bookings) {
+            for (let bookingIndex = 0; bookingIndex < order.bookings.length; bookingIndex++) {
+                const booking = order.bookings[bookingIndex];
                 const roomId = booking.roomId;
                 const time = booking.startTime.time;
                 const shedule = map.get(roomId) ?? new Map(defaultSheduleMap);
-                shedule.set(time, { ...order, bookings: [booking]})
+                shedule.set(time, {
+                    order: order,
+                    bookingIndex: bookingIndex
+                })
                 map.set(
                     roomId,
                     shedule
                 );
             }
         }
-        return TimelineMapper.mapToMatrix<number, string, OrderView | null>(map);
+        return TimelineMapper.mapToMatrix<number, string, CellPivot | null>(map);
     }
 
-    static toOrderMatrixTransposed(orders: OrderView[], times: string[], rooms: Room[]): OrderMatrix {
-        const defaultRoomMap: Map<number, OrderView | null> = new Map(rooms.map(room => [room.id, null]));
+    static toOrderMatrixTransposed(orders: OrderView[], times: string[], rooms: Room[]): OrderCellMatrix {
+        const defaultRoomMap: Map<number, CellPivot | null> = new Map(rooms.map(room => [room.id, null]));
         const map: OrderMapTransposed = new Map(times.map(time => [
             time,
             new Map(defaultRoomMap)
         ]));
 
         for (const order of orders) {
-            for (const booking of order.bookings) {
+            for (let bookingIndex = 0; bookingIndex < order.bookings.length; bookingIndex++) {
+                const booking = order.bookings[bookingIndex];
                 const time = booking.startTime.time;
                 const roomId = booking.roomId;
                 const shedule = map.get(time) ?? new Map(defaultRoomMap);
-                shedule.set(roomId, { ...order, bookings: [booking]})
+                shedule.set(roomId, { order: order, bookingIndex: bookingIndex })
             }
         }
-        return TimelineMapper.mapToMatrix<string, number, OrderView | null>(map);
-    }
-
-    static toCellMatix(orderMatrix: OrderMatrix): CellMatrix {
-        const matrix: CellMatrix = [[]];
-        
-
-        return matrix;
+        return TimelineMapper.mapToMatrix<string, number, CellPivot | null>(map);
     }
 }

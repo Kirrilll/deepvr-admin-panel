@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import OrderMapper from "../../../common/mappers/OrderMapper";
 import ColorPool from "../../../common/utils/ColorPool";
 import { OrderResponse } from "../../../entities/Order";
-import OrderView, { OrderMatrix } from "../../../entities/OrderView";
+import OrderView from "../../../entities/OrderView";
 import { TimelineMode, TimelineOptions } from "../../../entities/TimelineOptions";
 import { TimelineType } from "../../../entities/TimelineTypes";
 import { fetchTimline } from "./asyncActions";
@@ -23,7 +23,6 @@ interface TimelineState{
     options: TimelineOptions
     fetchingStatus: FetchingStatus,
     data: OrderView[],
-    orderMatrix: OrderMatrix
 }
 
 
@@ -33,7 +32,6 @@ const initialState: TimelineState = {
     type: 'default',
     fetchingStatus: FetchingStatus.NEVER,
     data: [],
-    orderMatrix: [[]]
 }
 
 const colorPool: ColorPool = ColorPool.instance;

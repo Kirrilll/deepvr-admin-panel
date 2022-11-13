@@ -1,8 +1,7 @@
 import { ColumnsType, ColumnType } from "antd/lib/table";
 import { ReactNode } from "react";
-import { OrderMatrix } from "../../entities/OrderView";
 import { Room } from "../../entities/Room";
-import { Row } from "../../entities/TimelineTypes";
+import { OrderCellMatrix, Row } from "../../entities/TimelineTypes";
 import { SummaryCallback, TimelineBuilder } from "../../entities/TimelineUtilsTypes";
 import Cell from "../../features/timeline/ui/Cell";
 import MathHelper from "../helpers/MathHelper";
@@ -33,7 +32,7 @@ class TimelineDefaultBuilder implements TimelineBuilder {
     };
 
 
-    buildData(globalData: OrderMatrix, rooms: Room[]): RowDefault[] {
+    buildData(globalData: OrderCellMatrix, rooms: Room[]): RowDefault[] {
         return rooms.map<RowDefault>((room, index) => ({
             leadingCol: {
                 key: room.id.toString(),
@@ -87,7 +86,7 @@ class TimelineDefaultBuilder implements TimelineBuilder {
                     return <Cell
                         time={time}
                         roomId={data.leadingCol.id}
-                        info={data.shedule.at(index) ?? null}
+                        pivot={data.shedule.at(index) ?? null}
                     />
                 }
             }))

@@ -1,7 +1,9 @@
 import { ColumnsType } from "antd/lib/table"
-import OrderView, { OrderMatrix } from "./OrderView";
+import OrderView from "./OrderView";
 import {Room} from "./Room"
-import { Row, Timeline } from "./TimelineTypes"
+import { OrderCellMatrix, Row, Timeline } from "./TimelineTypes"
+
+
 
 
 export type SummaryCallback = ((data: readonly Row<any>[]) => React.ReactNode) | undefined;
@@ -12,6 +14,6 @@ export interface TimelineDirector {
 
 export interface TimelineBuilder {
     buildSummary: (...args: any[]) => SummaryCallback,
-    buildData: (globalData: OrderMatrix, rowData: string[] & Room[], ...args: any[]) => Row<any>[],
+    buildData: (globalData: OrderCellMatrix, rowData: string[] & Room[], ...args: any[]) => Row<any>[],
     buildColumns: (leadingData: any[]) => ColumnsType<any>
 }

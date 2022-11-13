@@ -1,13 +1,15 @@
-import React, { useRef } from 'react';
-import OrderView, { OrderApart } from '../../../entities/OrderView';
+import React, { useMemo, useRef } from 'react';
 import { open } from '../../../store/creation-booking-modal/slice';
 import { useAppDispatch, useAppSelector } from '../../../app/store';
 import BookedCell from './BookedCell';
+import { CellPivot } from '../../../entities/TimelineTypes';
 
 type CellMode = 'selected' | 'selectable' | 'unselectable'
 
+
+
 interface CellProps {
-    info: OrderView | null,
+    pivot: CellPivot | null,
     time: string,
     roomId: number
 }
@@ -15,8 +17,7 @@ interface CellProps {
 //Является по сути factory, 
 //Если ячейка selectable
 //Ячейка сама определяет является ли она ВЫБИРАЕМОЙ
-const Cell: React.FC<CellProps> = ({ info, time, roomId }) => {
-
+const Cell: React.FC<CellProps> = ({pivot, time, roomId}) => {
 
     const dispatch = useAppDispatch();
     const currentDate = useAppSelector(state => state.datePickerReducer.currentDate);
@@ -33,9 +34,9 @@ const Cell: React.FC<CellProps> = ({ info, time, roomId }) => {
     return (
         <div onClick={onCellClick} className='table__cell'>
             {
-                info == null
+                pivot == null
                     ? null
-                    : <BookedCell bookingInfo={info} />
+                    : <BookedCell  pivot={pivot}/>
                   
             }
         </div>

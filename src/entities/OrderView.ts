@@ -14,6 +14,8 @@ export const enum EConfirmStatus {
 interface OrderView {
     id: number,
     date: moment.Moment,
+    clientName: string,
+    comment?: string,
     paymentStatus: EPaymentStatus,
     phone: string,
     color: string,
@@ -31,8 +33,5 @@ export interface BookingView {
     gameId: number,
     comment?: string,
 }
-
-export type OrderApart = Omit<OrderView, 'bookings'> & { booking: BookingView };
-export type OrderMatrix = (OrderView | null)[][];
 
 export default OrderView;

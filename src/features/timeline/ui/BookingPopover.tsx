@@ -6,11 +6,11 @@ import PersonIcon from '../../../assets/person.svg';
 import PhoneIcon from '../../../assets/phone.svg';
 import OrderView, { EPaymentStatus } from '../../../entities/OrderView';
 import { useAppDispatch, useAppSelector } from '../../../app/store';
-import {open} from '../../../store/creation-booking-modal/slice';
+import { open } from '../../../store/creation-booking-modal/slice';
 
 type BookingPopupProps = Omit<PopoverProps
     & React.RefAttributes<unknown>
-    & { order: OrderView}, 'content'>
+    & { order: OrderView }, 'content'>
 
 
 interface RowInfrormationProps {
@@ -26,19 +26,19 @@ const BookingPopover: React.FC<BookingPopupProps> = (props) => {
             showArrow={false}
             trigger='hover'
             placement='rightBottom'
-            content={<BookingPopoverContent bookingInfo={props.order} />}>
+            content={<BookingPopoverContent order={props.order} />}>
             {props.children}
         </Popover>
     )
 }
 
-const BookingPopoverContent: React.FC<{ bookingInfo: OrderView}> = ({ bookingInfo }) => {
+const BookingPopoverContent: React.FC<{ order: OrderView }> = ({ order }) => {
 
     const dispatch = useAppDispatch();
-    const currentDate = bookingInfo.date;
+    const currentDate = order.date
 
     const paymentStatusView = useMemo(() => {
-        if(bookingInfo.paymentStatus == EPaymentStatus.PAID){
+        if (order.paymentStatus == EPaymentStatus.PAID) {
             return {
                 className: 'payment-status paid',
                 title: 'Оплачено'
@@ -48,12 +48,13 @@ const BookingPopoverContent: React.FC<{ bookingInfo: OrderView}> = ({ bookingInf
             className: 'payment-status notpaid',
             title: 'Не оплачено'
         }
-    }, [bookingInfo.paymentStatus]);
+    }, [order.paymentStatus]);
 
+    //ПОФИКСИТЬ!!!
     const onClick = () => dispatch(open({
-        initialData: bookingInfo,
-        initialTime: bookingInfo.bookings[0].startTime.time,
-        initialRoomId: bookingInfo.bookings[0].gameId,
+        initialData: order,
+        initialTime: order.bookings[0].startTime.time,
+        initialRoomId: order.bookings[0].gameId,
         initialDate: currentDate
     }));
 
@@ -61,10 +62,26 @@ const BookingPopoverContent: React.FC<{ bookingInfo: OrderView}> = ({ bookingInf
     //     return `${bookingInfo.timeStart}-${bookingInfo.timeEnd}`;
     // }
 
+
+    /*
+        Номер заказа
+Статус оплаты
+Время брони (с - до ) было бы отлично
+Имя клиента
+Номер телефона
+Количество гостей
+Комментарий
+Залы(было бы отлично)
+
+    */
+
+    //Написать селектор с комнатами
+    const rooms = useMemo<string>(() => order.bookings.map(booking => booking.roomId).join(','), [order.id]);
+
     return (
         <>
             <section className='popover__section'>
-                <div className='popover__title'>{`Заказ №${bookingInfo?.id}`}</div>
+                <div className='popover__title'>{`Заказ №${order.id}`}</div>
                 <div className={paymentStatusView.className}>{`• ${paymentStatusView.title}`}</div>
             </section>
             <section className='popover__section '>
@@ -76,7 +93,7 @@ const BookingPopoverContent: React.FC<{ bookingInfo: OrderView}> = ({ bookingInf
                     /> */}
                     <RowInformation
                         iconSrc={PhoneIcon}
-                        title={bookingInfo?.phone ?? '8-888-888-88-88'}
+                        title={order.phone ?? '8-888-888-88-88'}
                     />
                     {/* <RowInformation
                         iconSrc={GameIcon}
@@ -88,13 +105,13 @@ const BookingPopoverContent: React.FC<{ bookingInfo: OrderView}> = ({ bookingInf
                     /> */}
                 </Space>
             </section>
-            {/* <section className='popover__section'>
+            <section className='popover__section'>
                 <div className='popover__title'>{'Зал(ы):'}</div>
-                <div className='popover__text'>{(bookingInfo?.rooms ?? []).join(';')}</div>
-            </section> */}
+                <div className='popover__text'>{rooms}</div>
+            </section>
             <section className='popover__section'>
                 <div className='popover__title'>Комментарий:</div>
-                {/* <div className='popover__text'>{bookingInfo?.comment ?? 'Не указано'}</div> */}
+                <div className='popover__text'>{order?.comment ?? 'Не указано'}</div>
             </section>
             <Row justify='end'>
                 <Button className='default-btn' onClick={onClick}>Редактировать</Button>

@@ -1,9 +1,22 @@
 import { ColumnsType } from "antd/lib/table"
-import OrderView, { OrderApart } from "./OrderView"
+import OrderView from "./OrderView"
 import { Room } from "./Room"
 
 
 export type TimelineType = 'loading' | 'transposed' | 'default';
+
+
+interface BookingInfo {
+    order: OrderView,
+    bookingIndex: number
+}
+
+export interface CellPivot {
+    order: OrderView,
+    bookingIndex: number
+}
+
+export type OrderCellMatrix = (CellPivot | null)[][];
 
 export interface SheduleTime {
     time: string,
@@ -12,7 +25,7 @@ export interface SheduleTime {
 
 export interface Row<T extends Room | SheduleTime> {
     leadingCol: T & { key: string },
-    shedule: (OrderView | null)[]
+    shedule: (CellPivot | null)[]
 }
 
 export interface Timeline {

@@ -46,6 +46,8 @@ export default class OrderMapper {
         return ({
             id: order.id,
             phone: `8 ${order.client.phone}`,
+            clientName: order.client.name,
+            comment: order.comment,
             date: moment(new Date(order.booking_date)),
             color: OrderMapper._colorPool.getColor(order.id),
             paymentStatus: order.paymentInfo.is_payed ? EPaymentStatus.PAID : EPaymentStatus.NOTPAID,

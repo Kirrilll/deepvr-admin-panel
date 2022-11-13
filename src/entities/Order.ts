@@ -87,6 +87,7 @@ export interface Order {
     bookings: Booking[];
     client: Client;
     promo?: any;
+    comment?: string;
     transactions: any[];
 }
 

@@ -1,7 +1,7 @@
 import { ColumnsType, ColumnType } from "antd/lib/table";
-import OrderView, { OrderMatrix } from "../../entities/OrderView";
+import OrderView from "../../entities/OrderView";
 import { Room } from "../../entities/Room";
-import { Row, SheduleTime } from "../../entities/TimelineTypes";
+import { CellPivot, OrderCellMatrix, Row, SheduleTime } from "../../entities/TimelineTypes";
 import { TimelineBuilder } from "../../entities/TimelineUtilsTypes";
 import Cell from "../../features/timeline/ui/Cell";
 
@@ -11,16 +11,14 @@ class TimelineTransposedBuilder implements TimelineBuilder {
 
     buildSummary = (...args: any[]) => undefined;
 
-    private buildGlasses(allGlassesCount: number, shedule: (OrderView | null)[]) {
+    private buildGlasses(allGlassesCount: number, shedule: (CellPivot | null)[]) {
         if (shedule.length == 0) return allGlassesCount;
         return allGlassesCount - shedule
-            .map(order => order?.bookings
-                .map(booking => booking.guestCount)
-                .reduce((prev, next) => prev + next) ?? 0)
+            .map(cell => cell?.order.bookings[cell.bookingIndex].guestCount ?? 0)
             .reduce((prev, next) => prev + next);
     }
 
-    buildData(globalData: OrderMatrix, times: string[], glasses: number): RowTransposed[] {
+    buildData(globalData: OrderCellMatrix, times: string[], glasses: number): RowTransposed[] {
         return times.map((time, index) => {
             const shedule = globalData.at(index) ?? [];
             return ({
@@ -54,7 +52,7 @@ class TimelineTransposedBuilder implements TimelineBuilder {
                 render: (value, data) => <Cell
                     roomId={room.id}
                     time={data.leadingCol.time}
-                    info={data.shedule[index]}
+                    pivot={data.shedule[index]}
                 />
             }))
         ]
