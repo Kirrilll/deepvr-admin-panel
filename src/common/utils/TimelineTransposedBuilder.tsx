@@ -11,7 +11,6 @@ class TimelineTransposedBuilder implements TimelineBuilder {
 
     buildSummary = (...args: any[]) => undefined;
 
-
     private buildGlasses(allGlassesCount: number, shedule: (OrderView | null)[]) {
         if (shedule.length == 0) return allGlassesCount;
         return allGlassesCount - shedule
@@ -52,7 +51,7 @@ class TimelineTransposedBuilder implements TimelineBuilder {
                 title: room.title,
                 key: room.id,
                 dataIndex: room.id,
-                render: (value, data, index) => <Cell
+                render: (value, data) => <Cell
                     roomId={room.id}
                     time={data.leadingCol.time}
                     info={data.shedule[index]}

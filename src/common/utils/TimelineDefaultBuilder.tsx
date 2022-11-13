@@ -11,20 +11,20 @@ type RowDefault = Row<Room>;
 
 
 //Ячейка хранит OrderView,
- 
+
 //В случае если в одном ряду подряд записи с одинаковы id, объединяем ячейки, rowSpan = <order.booking.lenth>
 //В случае если в одной колонне несколько записей с одинаковым id, объединяем столбцы 
 
 
 //Храним обрубленную матрицу
 //Передаем матрицу ячеек
-class TimelineDefaultBuilder implements TimelineBuilder{
+class TimelineDefaultBuilder implements TimelineBuilder {
 
-    buildSummary(glasses: number, workingShift: string[]): SummaryCallback{
-        
+    buildSummary(glasses: number, workingShift: string[]): SummaryCallback {
+
         return (data: readonly RowDefault[]) => {
-            for(const time of workingShift){
-                for(const row of data){
+            for (const time of workingShift) {
+                for (const row of data) {
 
                 }
             }
@@ -44,7 +44,7 @@ class TimelineDefaultBuilder implements TimelineBuilder{
     };
 
 
-    
+
     // const buildSummary = (data: readonly RowData[]): React.ReactNode => {
     //     const columns = new Map<string, Array<BookingView | null>>();
 
@@ -73,7 +73,7 @@ class TimelineDefaultBuilder implements TimelineBuilder{
                     <p className="glasses-count">{`(≤ ${data.leadingCol.guest_max} чел.)`}</p>
                 </div>
             },
-            ...workingShift.map<ColumnType<RowDefault>>(time => ({
+            ...workingShift.map<ColumnType<RowDefault>>((time, index) => ({
                 title: time,
                 key: time,
                 // onCell: (data, index) => {
@@ -83,7 +83,7 @@ class TimelineDefaultBuilder implements TimelineBuilder{
                 //     return {colSpan: 1};
                 // },
                 dataIndex: time,
-                render: (value, data, index) => {
+                render: (value, data) => {
                     return <Cell
                         time={time}
                         roomId={data.leadingCol.id}

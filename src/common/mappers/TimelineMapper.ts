@@ -47,7 +47,6 @@ export default class TimelineMapper {
     }
 
     static toOrderMatrixTransposed(orders: OrderView[], times: string[], rooms: Room[]): OrderMatrix {
-        //console.log(orders);
         const defaultRoomMap: Map<number, OrderView | null> = new Map(rooms.map(room => [room.id, null]));
         const map: OrderMapTransposed = new Map(times.map(time => [
             time,
@@ -62,7 +61,6 @@ export default class TimelineMapper {
                 shedule.set(roomId, { ...order, bookings: [booking]})
             }
         }
-        console.log(map);
         return TimelineMapper.mapToMatrix<string, number, OrderView | null>(map);
     }
 
