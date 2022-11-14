@@ -1,9 +1,10 @@
+
 import { ColumnsType, ColumnType } from "antd/lib/table";
-import OrderView from "../../entities/OrderView";
-import { Room } from "../../entities/Room";
-import { CellPivot, OrderCellMatrix, Row, SheduleTime } from "../../entities/TimelineTypes";
-import { TimelineBuilder } from "../../entities/TimelineUtilsTypes";
-import Cell from "../../features/timeline/ui/Cell";
+import {Room} from "../../../entities/Room";
+import { SheduleTime, CellPivot, OrderCellMatrix, Row } from "../../../entities/TimelineTypes";
+import { TimelineBuilder } from "../../../entities/TimelineUtilsTypes";
+import Cell from "../../../features/timeline/ui/Cell";
+
 
 type RowTransposed = Row<SheduleTime>;
 //TODO пофиксить формат данных

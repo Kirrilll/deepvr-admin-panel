@@ -1,7 +1,7 @@
 import { Skeleton, TableColumnsType } from "antd";
 import { ColumnsType, ColumnType } from "antd/lib/table";
-import { Row } from "../../entities/TimelineTypes";
-import { TimelineBuilder } from "../../entities/TimelineUtilsTypes";
+import { Row } from "../../../entities/TimelineTypes";
+import { TimelineBuilder } from "../../../entities/TimelineUtilsTypes";
 
 
 

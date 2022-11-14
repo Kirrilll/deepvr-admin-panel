@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { OrderResponse } from "../../entities/Order"
 import OrderView from "../../entities/OrderView"
 import { FetchingStatus } from "../../features/timeline/redux/slice"
-import {fetchBookings } from "./asyncActions"
+import {createBooking, fetchBookings } from "./asyncActions"
 
 interface ModalState{
     isOpen: boolean,
@@ -12,6 +12,7 @@ interface ModalState{
     initialRoomId: number | null,
     bookingsFetchingStatus: FetchingStatus,
     createBookingStatus: FetchingStatus,
+    message?: string,
     bookings: OrderResponse
 }
 
@@ -49,6 +50,16 @@ const modalSlice = createSlice({
             state.initialData = null;
             state.createBookingStatus = FetchingStatus.NEVER;
             state.bookingsFetchingStatus = FetchingStatus.NEVER;
+        },
+        creatingPending: (state) => {
+            state.createBookingStatus = FetchingStatus.LOADING;
+        },
+        creatingFulfilled: (state) => {
+            state.createBookingStatus = FetchingStatus.SUCCESSFULL;
+        },
+        creatingRejected: (state) => {
+            state.createBookingStatus = FetchingStatus.ERROR;
+            
         }
     },
     extraReducers: (builder) => {
@@ -64,9 +75,12 @@ const modalSlice = createSlice({
         // }),
         // builder.addCase(createBooking.fulfilled, (state) => {
         //     state.createBookingStatus = FetchingStatus.SUCCESSFULL;
+        // }),
+        // builder.addCase(createBooking.rejected, (state, action) => {
+        //     console.log(action.error);
         // })
     }
 })
 
 export default modalSlice.reducer;
-export const {open, close } = modalSlice.actions;
+export const {open, close, creatingPending, creatingFulfilled, creatingRejected } = modalSlice.actions;

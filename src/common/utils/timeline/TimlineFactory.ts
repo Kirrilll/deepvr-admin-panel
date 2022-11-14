@@ -1,5 +1,6 @@
-import { TimelineType } from "../../entities/TimelineTypes";
-import { TimelineDirector } from "../../entities/TimelineUtilsTypes";
+
+import { TimelineType } from "../../../entities/TimelineTypes";
+import { TimelineDirector } from "../../../entities/TimelineUtilsTypes";
 import TimelineDefaultDirector from "./TimelineDefaultDirector";
 import TimelineLoadingDirector from "./TimelineLoadingDirector";
 import TimelineTransposedDirector from "./TimelineTransposedDirector";

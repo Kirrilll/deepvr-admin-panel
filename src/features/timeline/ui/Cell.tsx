@@ -3,10 +3,14 @@ import { open } from '../../../store/creation-booking-modal/slice';
 import { useAppDispatch, useAppSelector } from '../../../app/store';
 import BookedCell from './BookedCell';
 import { CellPivot } from '../../../entities/TimelineTypes';
+import moment from 'moment';
+import { selectSelectedCells } from '../redux/selectors';
 
 type CellMode = 'selected' | 'selectable' | 'unselectable'
 
-
+const selection_selectable_color = '#e9ffef';
+const selected_border_color = '#962FF3';
+const unselectable_background_color = '#888faa';
 
 interface CellProps {
     pivot: CellPivot | null,
@@ -20,15 +24,22 @@ interface CellProps {
 const Cell: React.FC<CellProps> = ({pivot, time, roomId}) => {
 
     const dispatch = useAppDispatch();
-    const currentDate = useAppSelector(state => state.datePickerReducer.currentDate);
+    const selectedDate = useAppSelector(state => state.datePickerReducer.currentDate);
+
+    
+    const selectedCells = useAppSelector(selectSelectedCells);
+
+    const buildIsSelected = () => {
+        
+    };
 
     const onCellClick = () => {
-        // dispatch(open({
-        //     initialData: info,
-        //     initialRoomId: roomId,
-        //     initialTime: time,
-        //     initialDate: currentDate
-        // }));
+        dispatch(open({
+            initialData: null,
+            initialRoomId: roomId,
+            initialTime: time,
+            initialDate: selectedDate
+        }));
     }
 
     return (

@@ -7,15 +7,20 @@ export interface BookingShort {
     guest_quantity: number;
 }
 
+interface Certificate{
+    code: string
+}
 
-export interface OrderViewForm {
+export interface OrderDTO {
     token: string;
     status: string;
     name: string;
     phone: string;
     bonus: string | null;
+    employee_code: string,
     date: string;
     bookings: BookingShort[];
     promo_code?: string | null;
     comment: string | null;
+    certificates: Certificate[] | null
 }

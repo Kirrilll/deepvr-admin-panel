@@ -1,7 +1,9 @@
-import OrderView from "../../entities/OrderView";
-import { Room } from "../../entities/Room";
-import { Timeline } from "../../entities/TimelineTypes";
-import { TimelineDirector } from "../../entities/TimelineUtilsTypes";
+
+
+import OrderView from "../../../entities/OrderView";
+import {Room} from "../../../entities/Room";
+import { Timeline } from "../../../entities/TimelineTypes";
+import { TimelineDirector } from "../../../entities/TimelineUtilsTypes";
 import TimelineLoadingBuilder from "./TimelineLoadingBuilder";
 
 class TimelineLoadingDirector implements TimelineDirector{

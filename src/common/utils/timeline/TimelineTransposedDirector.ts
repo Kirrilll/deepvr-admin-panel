@@ -1,10 +1,8 @@
-import { TableColumnsType } from "antd";
-import { ReactNode } from "react";
-import OrderView from "../../entities/OrderView";
-import { Room } from "../../entities/Room";
-import { Timeline } from "../../entities/TimelineTypes";
-import { TimelineDirector } from "../../entities/TimelineUtilsTypes";
-import TimelineMapper from "../mappers/TimelineMapper";
+import OrderView from "../../../entities/OrderView";
+import {Room} from "../../../entities/Room";
+import { Timeline } from "../../../entities/TimelineTypes";
+import { TimelineDirector } from "../../../entities/TimelineUtilsTypes";
+import TimelineMapper from "../../mappers/TimelineMapper";
 import TimelineTransposedBuilder from "./TimelineTransposedBuilder";
 
 class TimelineTransposedDirector implements TimelineDirector {

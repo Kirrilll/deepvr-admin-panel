@@ -24,7 +24,6 @@ export default class TimeMapper {
     }
 
     transformToModel = (response: WorkingShiftResponse): WorkingShiftView=> {
-
         let workingShiftArr: Array<string> = [];
         
         const startTime = this.timeToMinutes(response.start_at);

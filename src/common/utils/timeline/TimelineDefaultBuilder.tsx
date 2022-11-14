@@ -1,10 +1,10 @@
 import { ColumnsType, ColumnType } from "antd/lib/table";
 import { ReactNode } from "react";
-import { Room } from "../../entities/Room";
-import { OrderCellMatrix, Row } from "../../entities/TimelineTypes";
-import { SummaryCallback, TimelineBuilder } from "../../entities/TimelineUtilsTypes";
-import Cell from "../../features/timeline/ui/Cell";
-import MathHelper from "../helpers/MathHelper";
+import { Room } from "../../../entities/Room";
+import { OrderCellMatrix, Row } from "../../../entities/TimelineTypes";
+import { SummaryCallback, TimelineBuilder } from "../../../entities/TimelineUtilsTypes";
+import Cell from "../../../features/timeline/ui/Cell";
+import MathHelper from "../../helpers/MathHelper";
 
 type RowDefault = Row<Room>;
 

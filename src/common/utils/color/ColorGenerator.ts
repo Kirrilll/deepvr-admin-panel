@@ -1,4 +1,4 @@
-import MathHelper from "../helpers/MathHelper";
+import MathHelper from "../../helpers/MathHelper";
 
 interface HslLimitArgs {
     minHLimit?: number,

@@ -7,10 +7,9 @@
 
 import moment from "moment";
 import OrderView, { EConfirmStatus, EPaymentStatus } from "../../entities/OrderView";
-import { Booking, Order } from "../../entities/Order";
-import { OrderViewForm } from "../../entities/OrderForm";
+import { Order } from "../../entities/Order";
 import TimeHelper from "../helpers/TimeHelper";
-import ColorPool from "../utils/ColorPool";
+import ColorPool from "../utils/color/ColorPool";
 import TimeMapper from "./TimeMapper";
 
 
