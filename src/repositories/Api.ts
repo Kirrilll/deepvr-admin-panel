@@ -1,15 +1,14 @@
 import axios from "axios";
-import { OrderView } from "../components/BookingCreateModal";
-import BookingResponse from "../entities/Booking";
 import { ClientResponse } from "../entities/Client";
 import RoomResponse from "../entities/Room";
-import BookingMapper from "../mappers/BookingMapper";
+import { Order, OrderResponse } from "../entities/Order";
+import { OrderDTO } from "../entities/OrderForm";
 
 const baseUrl = process.env.REACT_APP_API_URL;
 const api = {
     getTimeline: async (date: moment.Moment) => {
-        return await axios.get<BookingResponse>(
-            `${baseUrl}/v2/orders`,
+        return await axios.get<OrderResponse>(
+            `${baseUrl}/v2/orders/test`,
             {
                 params: {
                     date: date.calendar({ sameDay: (today) => 'YYYY-MM-DD' })
@@ -30,11 +29,19 @@ const api = {
             }
         )
     },
-    createBooking: async (order: OrderView, token: string) => {
-        console.log(JSON.stringify(BookingMapper.toOrder(order, token)));
-        return await axios.post(
+    createBooking: async (order: OrderDTO) => {
+        return await axios.post<Order>(
             `${baseUrl}/v2/booking/admin`,
-           BookingMapper.toOrder(order, token) 
+            order
+        )
+    },
+    validatePromoCode: async (promoCode: string) => {
+        return await axios.post(
+            `${baseUrl}/v2/promo/activate`,
+            {
+                token: '6bc8a47477b1427a6ae7f4e13789aea32c77ec29',
+                promoCode: promoCode
+            }
         )
     }
 }

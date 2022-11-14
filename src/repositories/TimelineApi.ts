@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import GameMapper from '../common/mappers/GameMapper';
+import TimeMapper from '../common/mappers/TimeMapper';
 import { GameResponse } from '../entities/Game';
 import GameView from '../entities/GameView';
 import RoomResponse, { Room } from '../entities/Room'
 import { WorkingShiftView } from '../entities/WorkingShift';
-import GameMapper from '../mappers/GameMapper';
-import TimeMapper from '../mappers/TimeMapper'
 
 const timeMapper = new TimeMapper();
 const gameMapper = new GameMapper();
