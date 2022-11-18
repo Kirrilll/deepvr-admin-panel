@@ -144,6 +144,12 @@ code {
   letter-spacing: 0.002em;
 }
 
+@container(min-width:150px){
+  .booked-item__payment-status{
+    display: none;
+  }
+}
+
 td {
   padding: 0;
 }
@@ -317,8 +323,27 @@ td {
   padding: 0;
 }
 
+
+/* --Ячейки */
 .table__cell {
   height: 130px;
+}
+
+.table__cell.selectable{
+  background-color: #e9ffef;
+}
+
+.table__cell.unselectable{
+  /* background-color: #888faa; */
+}
+
+.table__cell.unselectable--idle{
+  background-color: #888faa;
+}
+
+.table__cell.selected{
+  /* border: 2px solid #962FF3; */
+  background-color: #FFE9EF;
 }
 
 

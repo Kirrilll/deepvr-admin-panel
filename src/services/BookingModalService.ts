@@ -1,5 +1,5 @@
 import { LabeledValue } from "antd/lib/select";
-import ClientMapper from "../mappers/ClientMapper";
+import ClientMapper from "../common/mappers/ClientMapper";
 import api from "../repositories/Api";
 
 class BookingModalService {
