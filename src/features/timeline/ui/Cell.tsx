@@ -76,7 +76,7 @@ const Cell: React.FC<CellProps> = ({ pivot, time, roomId }) => {
         }, 1000);
         return () => clearInterval(interval);;
     }, [selectedDate])
-=======
+
 
 
 
