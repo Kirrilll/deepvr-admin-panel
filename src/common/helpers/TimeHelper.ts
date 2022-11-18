@@ -10,7 +10,8 @@ export default class TimeHelper {
     private static readonly MAX_DAY_MINUTES: number = 1439;
 
 
-    static isEquals(tFirstStr: string, tSecondStr: string): number {
+
+    static getTimeDiff(tFirstStr: string, tSecondStr: string): number {
         const tFirst = TimeHelper.transformStringToTime(tFirstStr);
         const tSecond = TimeHelper.transformStringToTime(tSecondStr);
         
@@ -20,7 +21,7 @@ export default class TimeHelper {
     }
 
     static isNextOrPrev(tFirstStr: string, tSecondStr: string): boolean{
-        return Math.abs(TimeHelper.isEquals(tFirstStr, tSecondStr)) <= 1;
+        return Math.abs(TimeHelper.getTimeDiff(tFirstStr, tSecondStr)) <= 1;
     }
 
     static transformStringToTime(value: string): Time {
