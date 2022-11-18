@@ -9,6 +9,32 @@ export default class TimeHelper {
 
     private static readonly MAX_DAY_MINUTES: number = 1439;
 
+
+
+    static getTimeDiff(tFirstStr: string, tSecondStr: string): number {
+        const tFirst = TimeHelper.transformStringToTime(tFirstStr);
+        const tSecond = TimeHelper.transformStringToTime(tSecondStr);
+        
+        const tFirtsHours = tFirst.hours + tFirst.minutes / 60;
+        const tSecondHours = tSecond.hours + tSecond.minutes / 60;
+        return tFirtsHours - tSecondHours;
+    }
+
+    static isNextOrPrev(tFirstStr: string, tSecondStr: string): boolean{
+        return Math.abs(TimeHelper.getTimeDiff(tFirstStr, tSecondStr)) <= 1;
+    }
+
+    static transformStringToTime(value: string): Time {
+        const timeSplitted = value.split(':');
+        const hours = Number.parseInt(timeSplitted[0]);
+        const minutes = Number.parseInt(timeSplitted[1]);
+        return ({
+            hours: hours,
+            minutes: minutes,
+            time: value
+        });
+    }
+
     static transformTimeNumToTimeStr(value: number): string {
         return value > 10 ? value.toString() : `0${value}`;
     }
