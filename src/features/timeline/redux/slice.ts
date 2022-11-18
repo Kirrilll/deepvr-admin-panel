@@ -31,16 +31,25 @@ interface TimelineState {
     options: TimelineOptions
     fetchingStatus: FetchingStatus,
     data: OrderView[],
+    isWarningOpen: boolean,
+    lastUnselectedItem: CellIndeficator | null
 }
 
 
 const initialState: TimelineState = {
     options: { isFixed: true },
-    mode: { type: 'idle' },
+
     type: 'default',
     fetchingStatus: FetchingStatus.NEVER,
     data: [],
+
+    //Вынести в другой слайс
+    isWarningOpen: false,
+    mode: { type: 'idle' },
+    lastUnselectedItem: null
 }
+
+type UnselectMode = 'hard' | 'light';
 
 const colorPool: ColorPool = ColorPool.instance;
 
@@ -48,22 +57,43 @@ const timelineSlice = createSlice({
     name: 'TimelineSlice',
     initialState: initialState,
     reducers: {
-        unselectCell: (state, action: PayloadAction<CellIndeficator>) => {
-            const unselectedItem = action.payload;
+        unselectCell: (state, action: PayloadAction<{ cell: CellIndeficator, mode: UnselectMode }>) => {
+            const { cell, mode } = action.payload;
+            const unselectedItem = cell;
             let selectedCells = [...state.mode.extraData] as CellIndeficator[];
             const unselectedItemIndex = selectedCells
                 .findIndex(cell => cell.roomId == unselectedItem.roomId && cell.time == unselectedItem.time);
-            //const sortedCells = selectedCells.sort((fCell, sCell) => TimeHelper.isEquals(fCell.time, sCell.time));
             selectedCells = [
                 ...selectedCells.slice(0, unselectedItemIndex),
                 ...selectedCells.slice(unselectedItemIndex + 1)
             ];
+
             if (selectedCells.length == 0) {
                 state.mode = { type: 'idle' };
             }
             else {
-                state.mode.extraData = [...selectedCells];
+                let isSequence = true;
+                const sortedCells = selectedCells
+                    .sort((prev, next) => TimeHelper.getTimeDiff(prev.time, next.time));
+
+                for(let i =0; i < sortedCells.length; i++) {
+                    const isLast = i  == sortedCells.length -1;
+                    if(!isLast && !TimeHelper.isNextOrPrev(sortedCells[i].time, sortedCells[i+1].time)){
+                        isSequence = false;
+                        break;
+                    }
+                }
+
+                if (isSequence || mode == 'hard') {
+                    state.lastUnselectedItem = null;
+                    state.mode.extraData = [...selectedCells];
+                }
+                else {
+                    state.isWarningOpen = true;
+                    state.lastUnselectedItem = cell;
+                }
             }
+
         },
         selectCell: (state, action: PayloadAction<CellIndeficator>) => {
             const selectedCell = action.payload;
@@ -76,6 +106,10 @@ const timelineSlice = createSlice({
             else {
                 state.mode.extraData.push(selectedCell);
             }
+        },
+        closeWarning: (state) => {
+            state.isWarningOpen = false;
+            state.lastUnselectedItem = null;
         },
         toggleTranspose: (state, action: PayloadAction<TimelineStateType>) => {
             state.type = action.payload;
@@ -103,4 +137,4 @@ const timelineSlice = createSlice({
 
 export default timelineSlice.reducer;
 
-export const { toggleFixed, toggleTranspose, addOrder, selectCell, unselectCell } = timelineSlice.actions;
+export const { toggleFixed, toggleTranspose, addOrder, selectCell, unselectCell, closeWarning } = timelineSlice.actions;
