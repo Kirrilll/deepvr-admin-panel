@@ -4,7 +4,9 @@ import { useAppDispatch, useAppSelector } from "../app/store";
 import { useGetRoomsQuery, useGetWorkingShiftQuery } from "../repositories/TimelineApi";
 import { fetchTimline } from "../features/timeline/redux/asyncActions";
 import BookingCreateModal from "../components/BookingCreateModal";
+
 import { closeWarning, FetchingStatus, unselectCell } from "../features/timeline/redux/slice";
+
 import SettingContainer from "../features/timeline/ui/SettingsContainer";
 import Timeline from "../features/timeline/ui/Timeline";
 import { TimelineType } from "../entities/TimelineTypes";
@@ -25,6 +27,7 @@ const TimelinePage: React.FC = () => {
 
     const { isWarningOpen, lastUnselectedItem } = useAppSelector(state => state.timeLineReducer);
 
+
     useEffect(() => {
         dispatch(fetchTimline(currentDate));
     }, [currentDate]);
@@ -36,7 +39,6 @@ const TimelinePage: React.FC = () => {
     const timelineType: TimelineType = isLoading
         ? 'loading'
         : type;
-
 
     const onOk = () => {
         dispatch(unselectCell({
@@ -58,6 +60,7 @@ const TimelinePage: React.FC = () => {
                 open={isWarningOpen}>
                 <div>У вас образуется временная яма</div>
             </Modal>
+
             <Layout hasSider>
                 <Layout>
                     <Content style={{ padding: 60 }}>

@@ -31,8 +31,10 @@ interface TimelineState {
     options: TimelineOptions
     fetchingStatus: FetchingStatus,
     data: OrderView[],
+
     isWarningOpen: boolean,
     lastUnselectedItem: CellIndeficator | null
+
 }
 
 
@@ -57,21 +59,23 @@ const timelineSlice = createSlice({
     name: 'TimelineSlice',
     initialState: initialState,
     reducers: {
+
         unselectCell: (state, action: PayloadAction<{ cell: CellIndeficator, mode: UnselectMode }>) => {
             const { cell, mode } = action.payload;
             const unselectedItem = cell;
             let selectedCells = [...state.mode.extraData] as CellIndeficator[];
             const unselectedItemIndex = selectedCells
                 .findIndex(cell => cell.roomId == unselectedItem.roomId && cell.time == unselectedItem.time);
+
             selectedCells = [
                 ...selectedCells.slice(0, unselectedItemIndex),
                 ...selectedCells.slice(unselectedItemIndex + 1)
             ];
-
             if (selectedCells.length == 0) {
                 state.mode = { type: 'idle' };
             }
             else {
+
                 let isSequence = true;
                 const sortedCells = selectedCells
                     .sort((prev, next) => TimeHelper.getTimeDiff(prev.time, next.time));
@@ -94,6 +98,7 @@ const timelineSlice = createSlice({
                 }
             }
 
+
         },
         selectCell: (state, action: PayloadAction<CellIndeficator>) => {
             const selectedCell = action.payload;
@@ -107,10 +112,12 @@ const timelineSlice = createSlice({
                 state.mode.extraData.push(selectedCell);
             }
         },
+
         closeWarning: (state) => {
             state.isWarningOpen = false;
             state.lastUnselectedItem = null;
         },
+
         toggleTranspose: (state, action: PayloadAction<TimelineStateType>) => {
             state.type = action.payload;
             //маппятся данные
@@ -138,3 +145,4 @@ const timelineSlice = createSlice({
 export default timelineSlice.reducer;
 
 export const { toggleFixed, toggleTranspose, addOrder, selectCell, unselectCell, closeWarning } = timelineSlice.actions;
+

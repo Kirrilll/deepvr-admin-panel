@@ -146,6 +146,7 @@ code {
 }
 
 
+
 td {
   padding: 0;
 }
@@ -325,6 +326,7 @@ td {
   height: 130px;
 }
 
+
 .table__cell.selectable {
   background-color: #e9ffef;
 }
@@ -339,6 +341,7 @@ td {
 }
 
 .table__cell.selected {
+
   /* border: 2px solid #962FF3; */
   background-color: #FFE9EF;
 }

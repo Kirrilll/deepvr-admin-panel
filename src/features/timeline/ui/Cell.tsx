@@ -5,6 +5,7 @@ import BookedCell from './BookedCell';
 import { CellPivot } from '../../../entities/TimelineTypes';
 import moment from 'moment';
 import { selectedCellsSelector, selectSelectedCells } from '../redux/selectors';
+
 import { closeWarning, selectCell, unselectCell } from '../redux/slice';
 import TimeHelper from '../../../common/helpers/TimeHelper';
 import { Button, Modal, Tooltip } from 'antd';
@@ -23,6 +24,7 @@ type CellMode = 'selected' | 'selectable' | 'unselectable'
         selectable
 Ячейка - по размеру, чтобы делать адптив
 */
+
 
 interface CellProps {
     pivot: CellPivot | null,
@@ -46,6 +48,7 @@ const Cell: React.FC<CellProps> = ({ pivot, time, roomId }) => {
     const modeType = useAppSelector(state => state.timeLineReducer.mode.type);
     const selectedCells = useAppSelector(selectedCellsSelector);
     const [isAfter, setAfter] = useState(false);
+
 
 
     useEffect(() => {
@@ -73,6 +76,8 @@ const Cell: React.FC<CellProps> = ({ pivot, time, roomId }) => {
         }, 1000);
         return () => clearInterval(interval);;
     }, [selectedDate])
+=======
+
 
 
     const buildSelectionState = (): CellAttr => {
@@ -87,6 +92,7 @@ const Cell: React.FC<CellProps> = ({ pivot, time, roomId }) => {
                         date: selectedDate.format('DD-MM-YYYY')
                     },
                     mode: 'light'
+
                 }))
             })
         }
@@ -108,7 +114,9 @@ const Cell: React.FC<CellProps> = ({ pivot, time, roomId }) => {
     }
 
     const buildCellState = (): CellAttr => {
+
         if (!isAfter) {
+
             return ({
                 className: 'table__cell unselectable--idle',
                 onClick: () => { }
@@ -130,7 +138,9 @@ const Cell: React.FC<CellProps> = ({ pivot, time, roomId }) => {
     const isLastSelected = () => {
         if (selectedCells.length == 0) return false;
         const lastSelected = selectedCells[selectedCells.length - 1];
+
         return lastSelected.time == time && lastSelected.roomId == roomId && selectedDate.format('DD-MM-YYYY') == lastSelected.date;
+
 
     }
 
@@ -145,6 +155,7 @@ const Cell: React.FC<CellProps> = ({ pivot, time, roomId }) => {
     }
 
     return (
+
         <>
             <div style={{ position: 'relative' }}>
                 <div style={{
@@ -168,6 +179,7 @@ const Cell: React.FC<CellProps> = ({ pivot, time, roomId }) => {
 
             </div>
         </>
+
 
     )
 }

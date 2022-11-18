@@ -10,6 +10,7 @@ export default class TimeHelper {
     private static readonly MAX_DAY_MINUTES: number = 1439;
 
 
+
     static getTimeDiff(tFirstStr: string, tSecondStr: string): number {
         const tFirst = TimeHelper.transformStringToTime(tFirstStr);
         const tSecond = TimeHelper.transformStringToTime(tSecondStr);
