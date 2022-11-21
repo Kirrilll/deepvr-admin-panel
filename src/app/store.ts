@@ -4,18 +4,21 @@ import timeLineReducer from '../features/timeline/redux/slice';
 import datePickerReducer from '../store/date-picker-slice/slice';
 import { timelineApi } from "../repositories/TimelineApi";
 import modalReducer from '../store/creation-booking-modal/slice';
+import selectionReducer from '../features/selection/redux/slice';
 
 const rootReducer = combineReducers({
     timeLineReducer,
     datePickerReducer,
     modalReducer,
+    selectionReducer,
     [timelineApi.reducerPath]: timelineApi.reducer
 });
 
 export const setupStore = () => {
     return configureStore({
         reducer: rootReducer,
-        middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false}).concat(timelineApi.middleware)
+        middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false })
+            .concat(timelineApi.middleware)
     });
 }
 

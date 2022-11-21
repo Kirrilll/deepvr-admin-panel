@@ -2,12 +2,12 @@ import React, { useMemo } from 'react';
 import { open } from '../../../store/creation-booking-modal/slice';
 import { useAppDispatch, useAppSelector } from '../../../app/store';
 import { CellPivot } from '../../../entities/TimelineTypes';
-import { selectedCellsSelector } from '../redux/selectors';
 import { Button, Modal, Tooltip } from 'antd';
 import useTimeChecker from '../../../common/hooks/useTimeChecker';
 import CellContentFactory from '../../../common/utils/cell/CellContentFactory';
 import CellModeFactory from '../../../common/utils/cell/CellModeFactory';
 import { CellIndeficator } from '../redux/slice';
+import { selectMode } from '../../selection/redux/selectors';
 
 export const DEFAULT_CELL_CLASSNAME = 'table__cell';
 
@@ -21,8 +21,10 @@ const Cell: React.FC<CellProps> = ({ pivot, time, roomId }) => {
 
     const dispatch = useAppDispatch();
     const selectedDate = useAppSelector(state => state.datePickerReducer.currentDate);
-    const mode = useAppSelector(state => state.timeLineReducer.mode);
 
+    const selectedCells = useAppSelector(state => state.selectionReducer.selectedCells);
+    const modeType = useAppSelector(selectMode);
+    
     const isAfter = useTimeChecker({ time: time, date: selectedDate });
 
     const cellid = useMemo<CellIndeficator>(
@@ -30,13 +32,15 @@ const Cell: React.FC<CellProps> = ({ pivot, time, roomId }) => {
         [time, roomId, selectedDate.format('DD-MM-YYYY')]
     );
 
+    
+
     const cellContent = useMemo(() => CellContentFactory.createContent(pivot), [pivot]);
     const cellMode = useMemo(() => CellModeFactory.createMode(
-        !isAfter ? { type: 'overpast' } : mode,
+        !isAfter ? { type: 'overpast' } : {type: modeType, extraData: selectedCells},
         cellid,
         pivot,
         dispatch
-    ), [isAfter, cellid, pivot, mode]);
+    ), [isAfter, cellid, pivot, modeType, selectedCells]);
 
 
     const onButtonClick = () => {

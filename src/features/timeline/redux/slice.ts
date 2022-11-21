@@ -7,7 +7,6 @@ import OrderView from "../../../entities/OrderView";
 import { TimelineMode, TimelineOptions } from "../../../entities/TimelineOptions";
 import { TimelineType } from "../../../entities/TimelineTypes";
 import { fetchTimline } from "./asyncActions";
-import { selectedCellsSelector } from "./selectors";
 
 
 export enum FetchingStatus {
@@ -59,65 +58,6 @@ const timelineSlice = createSlice({
     name: 'TimelineSlice',
     initialState: initialState,
     reducers: {
-
-        unselectCell: (state, action: PayloadAction<{ cell: CellIndeficator, mode: UnselectMode }>) => {
-            const { cell, mode } = action.payload;
-            const unselectedItem = cell;
-            let selectedCells = [...state.mode.extraData] as CellIndeficator[];
-            const unselectedItemIndex = selectedCells
-                .findIndex(cell => cell.roomId == unselectedItem.roomId && cell.time == unselectedItem.time);
-
-            selectedCells = [
-                ...selectedCells.slice(0, unselectedItemIndex),
-                ...selectedCells.slice(unselectedItemIndex + 1)
-            ];
-            if (selectedCells.length == 0) {
-                state.mode = { type: 'idle' };
-            }
-            else {
-
-                let isSequence = true;
-                const sortedCells = selectedCells
-                    .sort((prev, next) => TimeHelper.getTimeDiff(prev.time, next.time));
-
-                for(let i =0; i < sortedCells.length; i++) {
-                    const isLast = i  == sortedCells.length -1;
-                    if(!isLast && !TimeHelper.isNextOrPrev(sortedCells[i].time, sortedCells[i+1].time)){
-                        isSequence = false;
-                        break;
-                    }
-                }
-
-                if (isSequence || mode == 'hard') {
-                    state.lastUnselectedItem = null;
-                    state.mode.extraData = [...selectedCells];
-                }
-                else {
-                    state.isWarningOpen = true;
-                    state.lastUnselectedItem = cell;
-                }
-            }
-
-
-        },
-        selectCell: (state, action: PayloadAction<CellIndeficator>) => {
-            const selectedCell = action.payload;
-            if (state.mode.type == 'idle') {
-                state.mode = {
-                    type: 'selection',
-                    extraData: [selectedCell]
-                };
-            }
-            else {
-                state.mode.extraData.push(selectedCell);
-            }
-        },
-
-        closeWarning: (state) => {
-            state.isWarningOpen = false;
-            state.lastUnselectedItem = null;
-        },
-
         toggleTranspose: (state, action: PayloadAction<TimelineStateType>) => {
             state.type = action.payload;
             //маппятся данные
@@ -144,5 +84,5 @@ const timelineSlice = createSlice({
 
 export default timelineSlice.reducer;
 
-export const { toggleFixed, toggleTranspose, addOrder, selectCell, unselectCell, closeWarning } = timelineSlice.actions;
+export const { toggleFixed, toggleTranspose, addOrder} = timelineSlice.actions;
 

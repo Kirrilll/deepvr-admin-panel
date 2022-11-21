@@ -5,12 +5,14 @@ import { useGetRoomsQuery, useGetWorkingShiftQuery } from "../repositories/Timel
 import { fetchTimline } from "../features/timeline/redux/asyncActions";
 import BookingCreateModal from "../components/BookingCreateModal";
 
-import { closeWarning, FetchingStatus, unselectCell } from "../features/timeline/redux/slice";
+import {FetchingStatus } from "../features/timeline/redux/slice";
 
 import SettingContainer from "../features/timeline/ui/SettingsContainer";
 import Timeline from "../features/timeline/ui/Timeline";
 import { TimelineType } from "../entities/TimelineTypes";
 import { close } from "../store/creation-booking-modal/slice";
+import StorageService from "../common/services/StorageService";
+import { closeWarning, unselectCell } from "../features/selection/redux/slice";
 const { Sider, Content } = Layout;
 
 const TimelinePage: React.FC = () => {
@@ -25,8 +27,7 @@ const TimelinePage: React.FC = () => {
     const fetchingWorkingShift = useGetWorkingShiftQuery();
     const onCancel = () => dispatch(close());
 
-    const { isWarningOpen, lastUnselectedItem } = useAppSelector(state => state.timeLineReducer);
-
+    const isWarning = useAppSelector(state => state.selectionReducer.isWarning);
 
     useEffect(() => {
         dispatch(fetchTimline(currentDate));
@@ -41,15 +42,8 @@ const TimelinePage: React.FC = () => {
         : type;
 
     const onOk = () => {
-        dispatch(unselectCell({
-            cell: {
-                time: lastUnselectedItem!.time,
-                roomId: lastUnselectedItem!.roomId,
-                date: lastUnselectedItem!.date
-            },
-            mode: 'hard'
-        }));
-        dispatch(closeWarning());
+        dispatch(unselectCell(StorageService.instance.getItem('lastSelectedItem')!));
+        dispatch(closeWarning())
     }
 
     return (
@@ -57,7 +51,7 @@ const TimelinePage: React.FC = () => {
             <Modal
                 onOk={onOk}
                 onCancel={() => dispatch(closeWarning())}
-                open={isWarningOpen}>
+                open={isWarning}>
                 <div>У вас образуется временная яма</div>
             </Modal>
 

@@ -5,6 +5,3 @@ import { CellIndeficator } from "./slice";
 
 export const selectType = (state: RootState) => state.timeLineReducer.type;
 export const selectOptions = (state: RootState) => state.timeLineReducer.options;
-export const selectSelectedCells = (state: RootState) => (state.timeLineReducer.mode.extraData ?? []) as CellIndeficator[];
-
-export const selectedCellsSelector = createDraftSafeSelector(selectSelectedCells, state => state);

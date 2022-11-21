@@ -1,6 +1,7 @@
 import { AppDispatch } from "../../../app/store";
 import { CellPivot } from "../../../entities/TimelineTypes";
-import { CellIndeficator, selectCell, unselectCell } from "../../../features/timeline/redux/slice";
+import { selectCell, unselectCellSafety, } from "../../../features/selection/redux/slice";
+import { CellIndeficator } from "../../../features/timeline/redux/slice";
 import { DEFAULT_CELL_CLASSNAME } from "../../../features/timeline/ui/Cell";
 import CellHelper from "../../helpers/CellHelper";
 
@@ -30,10 +31,7 @@ class CellSelectionModeFactory {
             return ({
                 isLastSelected: CellHelper.isSame(selectedCells[selectedCells.length-1], cellId),
                 className: DEFAULT_CELL_CLASSNAME + ' selected',
-                onClick: () => dispatch(unselectCell({
-                    cell: cellId,
-                    mode: 'light'
-                }))
+                onClick: () => dispatch(unselectCellSafety(cellId))
             })
         }
         if (timeRule(selectedCells, cellId) && pivotRule(pivot)) {

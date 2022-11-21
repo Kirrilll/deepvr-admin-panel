@@ -1,7 +1,8 @@
 import { AppDispatch } from "../../../app/store";
 import { TimelineMode, TimelineModeType } from "../../../entities/TimelineOptions";
 import { CellPivot } from "../../../entities/TimelineTypes";
-import { CellIndeficator, selectCell } from "../../../features/timeline/redux/slice";
+import { startSelecting } from "../../../features/selection/redux/slice";
+import { CellIndeficator } from "../../../features/timeline/redux/slice";
 import { DEFAULT_CELL_CLASSNAME } from "../../../features/timeline/ui/Cell";
 import CellSelectionModeFactory from "./CellSelectionModeFactory";
 export type TimelineModeExtended = Omit<TimelineMode, 'type'> & { type: TimelineModeType | 'overpast' };
@@ -26,7 +27,7 @@ class CellModeFactory {
                 return ({
                     isLastSelected: false,
                     className: `${DEFAULT_CELL_CLASSNAME}`,
-                    onClick: () => dispatch(selectCell(cellId))
+                    onClick: () => dispatch(startSelecting(cellId))
                 })
         }
     }
