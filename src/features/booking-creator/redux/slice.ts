@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { OrderResponse } from "../../entities/Order"
-import OrderView from "../../entities/OrderView"
-import { FetchingStatus } from "../../features/timeline/redux/slice"
+import { OrderResponse } from "../../../entities/Order"
+import OrderView from "../../../entities/OrderView"
+import { FetchingStatus } from "../../timeline/redux/slice"
 import {createBooking, fetchBookings } from "./asyncActions"
 
 interface ModalState{
     isOpen: boolean,
     initialData: OrderView | null,
-    initialDate: moment.Moment | null,
+    initialDate: moment.Moment | null
     initialTime: string | null,
     initialRoomId: number | null,
     bookingsFetchingStatus: FetchingStatus,
@@ -58,8 +58,7 @@ const modalSlice = createSlice({
             state.createBookingStatus = FetchingStatus.SUCCESSFULL;
         },
         creatingRejected: (state) => {
-            state.createBookingStatus = FetchingStatus.ERROR;
-            
+            state.createBookingStatus = FetchingStatus.ERROR; 
         }
     },
     extraReducers: (builder) => {

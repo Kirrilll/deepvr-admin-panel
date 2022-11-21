@@ -1,9 +1,9 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import timeLineReducer from '../features/timeline/redux/slice';
-import datePickerReducer from '../store/date-picker-slice/slice';
+import datePickerReducer from '../features/date-picker/redux/slice';
 import { timelineApi } from "../repositories/TimelineApi";
-import modalReducer from '../store/creation-booking-modal/slice';
+import modalReducer from '../features/booking-creator/redux/slice';
 import selectionReducer from '../features/selection/redux/slice';
 
 const rootReducer = combineReducers({

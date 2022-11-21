@@ -3,16 +3,16 @@ import { Button, Layout, Modal, Space } from 'antd';
 import { useAppDispatch, useAppSelector } from "../app/store";
 import { useGetRoomsQuery, useGetWorkingShiftQuery } from "../repositories/TimelineApi";
 import { fetchTimline } from "../features/timeline/redux/asyncActions";
-import BookingCreateModal from "../components/BookingCreateModal";
+import { close } from "../features/booking-creator/redux/slice";
 
 import {FetchingStatus } from "../features/timeline/redux/slice";
 
 import SettingContainer from "../features/timeline/ui/SettingsContainer";
 import Timeline from "../features/timeline/ui/Timeline";
 import { TimelineType } from "../entities/TimelineTypes";
-import { close } from "../store/creation-booking-modal/slice";
 import StorageService from "../common/services/StorageService";
 import { closeWarning, unselectCell } from "../features/selection/redux/slice";
+import BookingCreateForm from "../features/booking-creator/ui/BookingCreateForm";
 const { Sider, Content } = Layout;
 
 const TimelinePage: React.FC = () => {
@@ -78,7 +78,7 @@ const TimelinePage: React.FC = () => {
                     trigger={<div>Закрыть</div>}
                 >
                     <Button onClick={onCancel}>Закрыть</Button>
-                    <BookingCreateModal></BookingCreateModal>
+                    <BookingCreateForm></BookingCreateForm>
                 </Sider>
 
             </Layout>

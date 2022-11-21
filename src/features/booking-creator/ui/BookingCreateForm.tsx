@@ -1,20 +1,20 @@
 import { Button, Col, Drawer, Form, Input, InputNumber, ModalProps, Radio, Row, Select, Space } from "antd";
 import React, { useEffect, useMemo, useState } from "react";
-import { close } from "../store/creation-booking-modal/slice";
-import { useAppDispatch, useAppSelector } from "../app/store";
+
+import { useAppDispatch, useAppSelector } from "../../../app/store";
 import { PlusOutlined, DeleteOutlined, } from '@ant-design/icons';
 import DebounceSelect, { UserValue } from "./DebounceSelect";
-import BookingModalService from "../services/BookingModalService";
+import BookingModalService from "../../../services/BookingModalService";
 import { LabeledValue } from "antd/lib/select";
-import { ClientValue } from "../entities/Client";
-import { useGetGamesQuery, useGetRoomsQuery, useGetWorkingShiftQuery } from "../repositories/TimelineApi";
-import GamesService from "../services/GamesService";
-import { Room } from "../entities/Room";
-import { createBooking, fetchBookings } from "../store/creation-booking-modal/asyncActions";
-import OrderMapper from "../common/mappers/OrderMapper";
-import MathHelper from "../common/helpers/MathHelper";
-import { FetchingStatus } from "../features/timeline/redux/slice";
-import CustomDatePicker from "../features/timeline/ui/CustomDatePicker";
+import { ClientValue } from "../../../entities/Client";
+import { useGetGamesQuery, useGetRoomsQuery, useGetWorkingShiftQuery } from "../../../repositories/TimelineApi";
+import GamesService from "../../../services/GamesService";
+import { Room } from "../../../entities/Room";
+import { createBooking, fetchBookings } from "../redux/asyncActions";
+import { close } from "../redux/slice";
+import MathHelper from "../../../common/helpers/MathHelper";
+import { FetchingStatus } from "../../timeline/redux/slice";
+import CustomDatePicker from "../../date-picker/ui/CustomDatePicker";
 import Layout from "antd/lib/layout/layout";
 
 
@@ -35,7 +35,7 @@ interface BookingFormState {
     gameId: number
 }
 
-const BookingCreateModal: React.FC = () => {
+const BookingCreateForm: React.FC = () => {
 
     const [form] = Form.useForm();
     const dispatch = useAppDispatch();
@@ -354,5 +354,5 @@ const BookingCreateModal: React.FC = () => {
     );
 }
 
-export default BookingCreateModal;
+export default BookingCreateForm;
 

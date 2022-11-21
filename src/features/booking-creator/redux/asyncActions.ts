@@ -1,8 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { AppDispatch } from "../../app/store";
-import { OrderDTO } from "../../entities/OrderForm";
-import { addOrder } from "../../features/timeline/redux/slice";
-import api from "../../repositories/Api";
+import { AppDispatch } from "../../../app/store";
+import { OrderDTO } from "../../../entities/OrderForm";
+import { addOrder } from "../../timeline/redux/slice";
+import api from "../../../repositories/Api";
 import { creatingFulfilled, creatingPending, creatingRejected } from "./slice";
 
 

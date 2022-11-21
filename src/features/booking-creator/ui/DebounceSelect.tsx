@@ -1,7 +1,6 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { Select, Spin } from 'antd';
 import type { SelectProps } from 'antd/es/select';
-import { ClientValue } from '../entities/Client';
 
 const debounce = (fn: Function, ms = 300) => {
     let timeoutId: ReturnType<typeof setTimeout>;

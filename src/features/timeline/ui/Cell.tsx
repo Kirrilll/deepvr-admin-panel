@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { open } from '../../../store/creation-booking-modal/slice';
+import { open } from '../../booking-creator/redux/slice';
 import { useAppDispatch, useAppSelector } from '../../../app/store';
 import { CellPivot } from '../../../entities/TimelineTypes';
 import { Button, Modal, Tooltip } from 'antd';

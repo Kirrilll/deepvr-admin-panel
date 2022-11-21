@@ -6,7 +6,7 @@ import PersonIcon from '../../../assets/person.svg';
 import PhoneIcon from '../../../assets/phone.svg';
 import OrderView, { EPaymentStatus } from '../../../entities/OrderView';
 import { useAppDispatch, useAppSelector } from '../../../app/store';
-import { open } from '../../../store/creation-booking-modal/slice';
+import {open} from '../../booking-creator/redux/slice';
 
 type BookingPopupProps = Omit<PopoverProps
     & React.RefAttributes<unknown>
