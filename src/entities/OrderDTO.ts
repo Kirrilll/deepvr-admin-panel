@@ -1,4 +1,3 @@
-import OrderView, { EPaymentStatus } from "./OrderView";
 
 export interface BookingShort {
     time: string;

@@ -2,7 +2,7 @@ import axios from "axios";
 import { ClientResponse } from "../entities/Client";
 import RoomResponse from "../entities/Room";
 import { Order, OrderResponse } from "../entities/Order";
-import { OrderDTO } from "../entities/OrderForm";
+import { OrderDTO } from "../entities/OrderDTO";
 
 const baseUrl = process.env.REACT_APP_API_URL;
 const api = {

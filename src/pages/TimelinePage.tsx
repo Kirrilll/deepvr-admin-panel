@@ -12,7 +12,7 @@ import Timeline from "../features/timeline/ui/Timeline";
 import { TimelineType } from "../entities/TimelineTypes";
 import StorageService from "../common/services/StorageService";
 import { closeWarning, unselectCell } from "../features/selection/redux/slice";
-import BookingCreateForm from "../features/booking-creator/ui/BookingCreateForm";
+import OrderCreationForm from "../features/booking-creator/ui/OrderCreateForm";
 const { Sider, Content } = Layout;
 
 const TimelinePage: React.FC = () => {
@@ -74,11 +74,12 @@ const TimelinePage: React.FC = () => {
                     theme='light'
                     collapsed={!isOpen}
                     collapsedWidth={0}
-                    width={500}
+                    width={700}
                     trigger={<div>Закрыть</div>}
+                    // className = {'creating-sider'}
                 >
                     <Button onClick={onCancel}>Закрыть</Button>
-                    <BookingCreateForm></BookingCreateForm>
+                    <OrderCreationForm></OrderCreationForm>
                 </Sider>
 
             </Layout>

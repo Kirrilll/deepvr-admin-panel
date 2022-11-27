@@ -11,6 +11,7 @@ export const enum EConfirmStatus {
     CANCELED = 'Отменено'
 }
 
+
 interface OrderView {
     id: number,
     date: moment.Moment,

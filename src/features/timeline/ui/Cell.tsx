@@ -8,6 +8,7 @@ import CellContentFactory from '../../../common/utils/cell/CellContentFactory';
 import CellModeFactory from '../../../common/utils/cell/CellModeFactory';
 import { CellIndeficator } from '../redux/slice';
 import { selectMode } from '../../selection/redux/selectors';
+import OrderMapper from '../../../common/mappers/OrderMapper';
 
 export const DEFAULT_CELL_CLASSNAME = 'table__cell';
 
@@ -44,12 +45,7 @@ const Cell: React.FC<CellProps> = ({ pivot, time, roomId }) => {
 
 
     const onButtonClick = () => {
-        dispatch(open({
-            initialTime: time,
-            initialRoomId: roomId,
-            initialDate: selectedDate,
-            initialData: pivot?.order ?? null
-        }))
+        dispatch(open(OrderMapper.fromCells(selectedCells)));
     }
 
     return (

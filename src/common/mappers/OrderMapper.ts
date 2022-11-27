@@ -11,6 +11,8 @@ import { Order } from "../../entities/Order";
 import TimeHelper from "../helpers/TimeHelper";
 import ColorPool from "../utils/color/ColorPool";
 import TimeMapper from "./TimeMapper";
+import OrderCreation from "../../entities/OrderCreation";
+import { CellIndeficator } from "../../features/timeline/redux/slice";
 
 
 //BookingInfo - сущночть плиточки(заказ), имеет цвет(он конструируется относительно id брони)
@@ -60,6 +62,21 @@ export default class OrderMapper {
                 roomId: booking.room_id,
                 gameId: booking.game.id,
                 comment: booking.comment,
+            }))
+        })
+    }
+
+    static fromViewToCreation(orderView: OrderView): OrderCreation {
+        return orderView;
+    }
+
+    static fromCells(cells: CellIndeficator[]): OrderCreation{
+        const unionDate = cells[0].date;
+        return ({
+            date: moment(unionDate),
+            bookings: cells.map(cell => ({
+                startTime: TimeHelper.transformStringToTime(cell.time),
+                roomId: cell.roomId
             }))
         })
     }

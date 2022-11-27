@@ -51,12 +51,7 @@ const BookingPopoverContent: React.FC<{ order: OrderView }> = ({ order }) => {
     }, [order.paymentStatus]);
 
     //ПОФИКСИТЬ!!!
-    const onClick = () => dispatch(open({
-        initialData: order,
-        initialTime: order.bookings[0].startTime.time,
-        initialRoomId: order.bookings[0].gameId,
-        initialDate: currentDate
-    }));
+    const onClick = () => dispatch(open(order));
 
     // const buildTimeInterval = () => {
     //     return `${bookingInfo.timeStart}-${bookingInfo.timeEnd}`;

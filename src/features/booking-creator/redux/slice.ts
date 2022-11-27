@@ -1,34 +1,23 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { OrderResponse } from "../../../entities/Order"
+import OrderCreation from "../../../entities/OrderCreation"
 import OrderView from "../../../entities/OrderView"
 import { FetchingStatus } from "../../timeline/redux/slice"
 import {createBooking, fetchBookings } from "./asyncActions"
 
 interface ModalState{
     isOpen: boolean,
-    initialData: OrderView | null,
-    initialDate: moment.Moment | null
-    initialTime: string | null,
-    initialRoomId: number | null,
+    initialData: OrderCreation | null,
     bookingsFetchingStatus: FetchingStatus,
     createBookingStatus: FetchingStatus,
     message?: string,
     bookings: OrderResponse
 }
 
-interface OpenArgs{
-    initialData: OrderView | null,
-    initialDate: moment.Moment | null,
-    initialTime: string | null,
-    initialRoomId: number | null, 
-}
 
 const initialState: ModalState = {
     isOpen: false,
     initialData: null,
-    initialDate: null,
-    initialTime: null,
-    initialRoomId: null,
     createBookingStatus: FetchingStatus.NEVER,
     bookingsFetchingStatus: FetchingStatus.NEVER,
     bookings: []
@@ -38,12 +27,10 @@ const modalSlice = createSlice({
     name: 'modalSlice',
     initialState: initialState,
     reducers: {
-        open: (state, action: PayloadAction<OpenArgs>) => {
+        open: (state, action: PayloadAction<OrderCreation>) => {
             state.isOpen = true;
-            state.initialData = action.payload.initialData;
-            state.initialRoomId = action.payload.initialRoomId;
-            state.initialTime = action.payload.initialTime;
-            state.initialDate = action.payload.initialDate;
+            state.initialData = action.payload;
+
         },
         close: (state) => {
             state.isOpen = false;
