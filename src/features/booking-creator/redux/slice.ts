@@ -1,72 +1,69 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import moment from "moment"
+import { useAppSelector } from "../../../app/store"
+import OrderMapper from "../../../common/mappers/OrderMapper"
 import { OrderResponse } from "../../../entities/Order"
-import OrderCreation from "../../../entities/OrderCreation"
-import OrderView from "../../../entities/OrderView"
+import OrderCreation, { PrecreateOrder } from "../../../entities/OrderCreation"
+import OrderView, { EConfirmStatus, EPaymentStatus } from "../../../entities/OrderView"
+import { cellsSelector } from "../../selection/redux/selectors"
 import { FetchingStatus } from "../../timeline/redux/slice"
-import {createBooking, fetchBookings } from "./asyncActions"
+import { createOrder, precreateOrder } from "./asyncActions"
 
-interface ModalState{
+interface ModalState {
     isOpen: boolean,
-    initialData: OrderCreation | null,
-    bookingsFetchingStatus: FetchingStatus,
-    createBookingStatus: FetchingStatus,
+    initialData: OrderCreation,
+    orderStatus: FetchingStatus,
+    creationOrderStatus: FetchingStatus,
     message?: string,
-    bookings: OrderResponse
 }
 
 
 const initialState: ModalState = {
     isOpen: false,
-    initialData: null,
-    createBookingStatus: FetchingStatus.NEVER,
-    bookingsFetchingStatus: FetchingStatus.NEVER,
-    bookings: []
+    initialData: {
+        id: -1,
+        date: moment(),
+        paymentStatus: EPaymentStatus.NOTPAID,
+        confirmStatus: EConfirmStatus.NOTCONFIRM,
+        bookings: []
+    },
+    orderStatus: FetchingStatus.NEVER,
+    creationOrderStatus: FetchingStatus.NEVER
 }
 
 const modalSlice = createSlice({
     name: 'modalSlice',
     initialState: initialState,
     reducers: {
-        open: (state, action: PayloadAction<OrderCreation>) => {
+        editOrder: (state, action: PayloadAction<OrderView>) => {
             state.isOpen = true;
-            state.initialData = action.payload;
-
+            state.initialData = OrderMapper.fromViewToCreation(action.payload);
         },
         close: (state) => {
             state.isOpen = false;
-            state.initialData = null;
-            state.createBookingStatus = FetchingStatus.NEVER;
-            state.bookingsFetchingStatus = FetchingStatus.NEVER;
+            state.orderStatus = FetchingStatus.NEVER;
         },
         creatingPending: (state) => {
-            state.createBookingStatus = FetchingStatus.LOADING;
+            state.orderStatus = FetchingStatus.LOADING;
         },
         creatingFulfilled: (state) => {
-            state.createBookingStatus = FetchingStatus.SUCCESSFULL;
+            state.orderStatus = FetchingStatus.SUCCESSFULL;
         },
         creatingRejected: (state) => {
-            state.createBookingStatus = FetchingStatus.ERROR; 
+            state.orderStatus = FetchingStatus.ERROR;
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(fetchBookings.pending, (state) => {
-            state.bookingsFetchingStatus = FetchingStatus.LOADING;
+        builder.addCase(precreateOrder.pending, (state) => {
+            state.isOpen = true;
+            state.creationOrderStatus = FetchingStatus.LOADING;
         }),
-        builder.addCase(fetchBookings.fulfilled, (state, action:PayloadAction<OrderResponse>) => {
-            state.bookings = action.payload;
-            state.bookingsFetchingStatus = FetchingStatus.SUCCESSFULL;
-        })
-        // builder.addCase(createBooking.pending, (state) => {
-        //     state.createBookingStatus = FetchingStatus.LOADING;
-        // }),
-        // builder.addCase(createBooking.fulfilled, (state) => {
-        //     state.createBookingStatus = FetchingStatus.SUCCESSFULL;
-        // }),
-        // builder.addCase(createBooking.rejected, (state, action) => {
-        //     console.log(action.error);
-        // })
+            builder.addCase(precreateOrder.fulfilled, (state, action: PayloadAction<OrderCreation>) => {
+                state.creationOrderStatus = FetchingStatus.SUCCESSFULL;
+                state.initialData = action.payload;
+            })
     }
 })
 
 export default modalSlice.reducer;
-export const {open, close, creatingPending, creatingFulfilled, creatingRejected } = modalSlice.actions;
+export const { close, creatingPending, creatingFulfilled, editOrder, creatingRejected } = modalSlice.actions;

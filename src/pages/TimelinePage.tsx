@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Button, Layout, Modal, Space } from 'antd';
 import { useAppDispatch, useAppSelector } from "../app/store";
-import { useGetRoomsQuery, useGetWorkingShiftQuery } from "../repositories/TimelineApi";
 import { fetchTimline } from "../features/timeline/redux/asyncActions";
 import { close } from "../features/booking-creator/redux/slice";
 
@@ -13,6 +12,8 @@ import { TimelineType } from "../entities/TimelineTypes";
 import StorageService from "../common/services/StorageService";
 import { closeWarning, unselectCell } from "../features/selection/redux/slice";
 import OrderCreationForm from "../features/booking-creator/ui/OrderCreateForm";
+import { isTimelineReadySelector, selectRooms, selectWorkingParams } from "../features/game/redux/selectors";
+import { getGames, getRooms, getWorkingParams } from "../features/game/redux/asyncActions";
 const { Sider, Content } = Layout;
 
 const TimelinePage: React.FC = () => {
@@ -23,21 +24,26 @@ const TimelinePage: React.FC = () => {
     const isOpen = useAppSelector(state => state.modalReducer.isOpen);
     const currentDate = useAppSelector(state => state.datePickerReducer.currentDate);
 
-    const fetchingRooms = useGetRoomsQuery();
-    const fetchingWorkingShift = useGetWorkingShiftQuery();
+    const workingParams = useAppSelector(selectWorkingParams);
+    const rooms = useAppSelector(selectRooms);
+    const isReady = useAppSelector(isTimelineReadySelector);
+
     const onCancel = () => dispatch(close());
 
     const isWarning = useAppSelector(state => state.selectionReducer.isWarning);
 
     useEffect(() => {
+        dispatch(getGames());
+        dispatch(getRooms());
+        dispatch(getWorkingParams());
+    }, [])
+
+    useEffect(() => {
         dispatch(fetchTimline(currentDate));
     }, [currentDate]);
 
-    const isLoading = fetchingStatus == FetchingStatus.LOADING
-        && fetchingRooms.isLoading
-        && fetchingWorkingShift.isLoading;
 
-    const timelineType: TimelineType = isLoading
+    const timelineType: TimelineType = !isReady
         ? 'loading'
         : type;
 
@@ -63,10 +69,10 @@ const TimelinePage: React.FC = () => {
                             mode={mode}
                             type={timelineType}
                             options={options}
-                            glasses={fetchingWorkingShift.data?.glasses ?? 30}
+                            glasses={workingParams.glasses}
                             data={data}
-                            workingShift={fetchingWorkingShift.data?.time ?? []}
-                            rooms={fetchingRooms.data ?? []}
+                            workingShift={workingParams.time}
+                            rooms={rooms}
                         />
                     </Content>
                 </Layout>

@@ -17,9 +17,9 @@ const LoyaltyGroup: React.FC<LoyaltyGroupProps> = ({ globalForm, isIdentified })
 
 
     return (
-        <>
-            <Col span={12}>
-                <Row justify='space-between'>
+        <div style={{marginTop: '20px'}}>
+            <Col span={12} >
+                <Row justify='space-between' >
                     <div className="creation-form-label" >Лояльность:</div>
                     <Switch
                         className='loyalty-switch'
@@ -81,7 +81,7 @@ const LoyaltyGroup: React.FC<LoyaltyGroupProps> = ({ globalForm, isIdentified })
                         </Row>
                     </>
             }
-        </>
+        </div>
     );
 }
 

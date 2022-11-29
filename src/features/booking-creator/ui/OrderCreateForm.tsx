@@ -6,22 +6,19 @@ import { PlusOutlined, DeleteOutlined, } from '@ant-design/icons';
 import BookingModalService from "../../../services/BookingModalService";
 import { LabeledValue } from "antd/lib/select";
 import Client, { ClientValue } from "../../../entities/Client";
-import { useGetGamesQuery, useGetRoomsQuery, useGetWorkingShiftQuery } from "../../../repositories/TimelineApi";
 import GamesService from "../../../services/GamesService";
 import { Room } from "../../../entities/Room";
-import { createBooking, fetchBookings } from "../redux/asyncActions";
 import { close } from "../redux/slice";
 import MathHelper from "../../../common/helpers/MathHelper";
 import { FetchingStatus } from "../../timeline/redux/slice";
 import CustomDatePicker from "../../date-picker/ui/CustomDatePicker";
 import Layout from "antd/lib/layout/layout";
 import OrderMapper from "../../../common/mappers/OrderMapper";
-import { selectComplexOrder } from "../redux/selectors";
+import {  selectInitialValues } from "../redux/selectors";
 import { useForm } from "antd/es/form/Form";
 import moment from "moment";
 import DateRange from "../../date-picker/ui/DateRange";
 import { selectDate } from "../../date-picker/redux/slice";
-import BookingForm from "./BookingForm";
 import ColorPool from "../../../common/utils/color/ColorPool";
 import { BookingCreation } from "../../../entities/OrderCreation";
 import useDebounceSearch from "../../../common/hooks/useDebounceSearch";
@@ -32,37 +29,9 @@ import CertificatesList from "./CertificateList";
 import PersonalDataGroup from "./PersonalDataGroup";
 import BookingGroup from "./BookingGroup";
 import LoyaltyGroup from "./LoyaltyGroup";
+import { type } from "@testing-library/user-event/dist/type";
 
-interface FormState {
-    employeeCode: string,
-    confirmStatus: number,
-    paymentStatus: number,
-    phone: string,
-    date: moment.Moment,
-    bookings: FormBooking[],
-    promocode?: string,
-    useBonus: boolean
-}
-
-
-interface FormBooking {
-    roomdId: number,
-    gameId: number,
-    time: string,
-    guestCount: number
-}
-
-const initialState: FormState = {
-    employeeCode: '',
-    confirmStatus: 0,
-    paymentStatus: 0,
-    phone: '',
-    date: moment(),
-    bookings: [],
-    useBonus: false
-}
-
-export const EMLOYEE_CODE_PATH = 'employeeCode';
+export const EMLOYEE_CODE_PATH =  'employeeCode';
 export const PAYMENT_STATUS_PATH = 'paymentStatus';
 export const CONFRIM_STATUS_PATH = 'confirmStatus';
 export const DATE_PICKER_PATH = 'datePicker';
@@ -73,28 +42,44 @@ export const BONUS_PATH = 'bonuses';
 export const NAME_PATH = 'name'
 export const IS_USE_BONUSES_PATH = 'isBonuses';
 export const CERTIFACATES_PATH = 'certificates';
+export const ROOM_PATH = 'roomId';
+export const GAME_PATH = 'gameId';
+export const TIME_PATH = 'time';
+export const GUEST_COUNT_PATH = 'guestCount';
+
+
+export interface FormState {
+    [EMLOYEE_CODE_PATH]: string,
+    [CONFRIM_STATUS_PATH]: number,
+    [PAYMENT_STATUS_PATH]: number,
+    [PHONE_PICKER_PATH]: string,
+    [NAME_PATH]: string,
+    [DATE_PICKER_PATH]: moment.Moment,
+    [BOOKING_LIST_PATH]: Booking[],
+    [PROMOCODE_PATH]?: string,
+    [IS_USE_BONUSES_PATH]: boolean,
+    [CERTIFACATES_PATH]: string[]
+}
+
+
+export interface Booking {
+    [ROOM_PATH]: number,
+    [GAME_PATH]: number | null,
+    [TIME_PATH]: string,
+    [GUEST_COUNT_PATH]: number | null
+}
 
 const OrderCreationForm: React.FC = () => {
-
-    const dispatch = useAppDispatch();
     const [form] = useForm<FormState>();
-
     const [client, setClient] = useState<Client | null>(null);
 
-    const order = useAppSelector(selectComplexOrder);
-
-    const isOrderWithId = order?.id != null;
-
-    const onChangeBonus = (value: number) => {
-        form.setFieldValue(BONUS_PATH, value);
-    }
-
-
+    const orderId = useAppSelector(state => state.modalReducer.initialData.id);
+    const order = useAppSelector(selectInitialValues);
 
     useEffect(() => {
-        // console.log(order);
-        form.setFieldValue(BOOKING_LIST_PATH, order?.bookings ?? []);
+        form.setFieldValue(BOOKING_LIST_PATH, order[BOOKING_LIST_PATH])
     }, [order])
+
     // const onFinish = (values: any) => {
     //     dispatch(createBooking({
     //         certificates: null,
@@ -119,42 +104,6 @@ const OrderCreationForm: React.FC = () => {
     //     }));
     // }
 
-
-
-
-    // const onChange = (value: LabeledValue | LabeledValue[]) => {
-    //     const clientValue = value as ClientValue;
-    //     const client = data.find(client => client.id === Number.parseInt(clientValue.key ?? ''));
-    //     form.setFieldValue(NAME_)
-    // }
-
-    // const getSelectedRoom = (field: any): Room | null => {
-    //     const bookings = [...form.getFieldValue('bookings')];
-    //     const currBooking = bookings[field.key];
-    //     const currSelectedRoomValue = currBooking?.room;
-    //     const currSelectedRoom = roomsQuery.data?.find((room) => room.id == currSelectedRoomValue?.key);
-    //     return currSelectedRoom ?? null;
-    // }
-
-    // const buildOnSelectRoom = (field: any) => (room: LabeledValue) => {
-    //     const bookings = [...form.getFieldValue('bookings')];
-    //     const currBooking = bookings[field.key];
-    //     bookings[field.key] = { ...currBooking, game: null };
-    //     form.setFieldValue('bookings', bookings);
-    // }
-
-    // const isRoomSelected = (field: any) => {
-    //     return form.getFieldValue('bookings')[field.key]?.room?.key !== undefined;
-    // }
-
-    // const isTimesLoading = bookingsFetchingStatus == FetchingStatus.LOADING && workingShiftQuery.isLoading;
-
-    // const getAvailableTime = (field: any) => {
-    //     const room = getSelectedRoom(field);
-    //     //const bookedTime = OrderMapper.getBookedTimeByRoom(bookings, room?.id ?? null);
-    //     const bookedTime = ['12:00', '13:00'];
-    //     return MathHelper.getArrDifference(bookedTime, workingShiftQuery.data?.time ?? []);
-    // }
 
     // const buildHandleChange = (field: any) => (e: React.ChangeEvent<HTMLInputElement>) => {
     //     const { value: inputValue } = e.target;
@@ -187,9 +136,12 @@ const OrderCreationForm: React.FC = () => {
             className="sider-content-wrapper"
             form={form}
             onFinish={(values) => console.log(values)}
+            preserve = {false}
+            initialValues = {order}
+            
         >
-            <Row justify='space-between'>
-                {isOrderWithId ? <div>Заказа № {order.id}</div> : null}
+            <Row justify='space-between' align='middle'>
+               <div className="order-id">Заказа № {orderId}</div>
                 <Col span={12} >
                     <Form.Item
                         name={EMLOYEE_CODE_PATH}
@@ -245,7 +197,8 @@ const OrderCreationForm: React.FC = () => {
             />
             <BookingGroup
                 globalForm={form}
-                order={order} />
+                orderId ={orderId}
+                bookings = {order[BOOKING_LIST_PATH]}/>
             <LoyaltyGroup
                 globalForm={form}
                 isIdentified = {client != null}

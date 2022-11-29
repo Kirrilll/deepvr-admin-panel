@@ -35,7 +35,7 @@ const PersonalDataGroup: React.FC<PersonalDataGroupProps> = ({ globalForm, setCl
         <>
             <Form.Item name={PHONE_PICKER_PATH}>
                 <Row gutter={[0, 20]} align='middle'>
-                    <Col span={12} style={{ marginRight: '20px' }}>
+                    <Col span={12} style={{ marginRight: '20px', height: '45px' }}>
                         <Select
                             showSearch
                             popupClassName={'first-plan-object'}

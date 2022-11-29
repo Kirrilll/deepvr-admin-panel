@@ -6,7 +6,7 @@ import PersonIcon from '../../../assets/person.svg';
 import PhoneIcon from '../../../assets/phone.svg';
 import OrderView, { EPaymentStatus } from '../../../entities/OrderView';
 import { useAppDispatch, useAppSelector } from '../../../app/store';
-import {open} from '../../booking-creator/redux/slice';
+import {editOrder} from '../../booking-creator/redux/slice';
 
 type BookingPopupProps = Omit<PopoverProps
     & React.RefAttributes<unknown>
@@ -51,7 +51,7 @@ const BookingPopoverContent: React.FC<{ order: OrderView }> = ({ order }) => {
     }, [order.paymentStatus]);
 
     //ПОФИКСИТЬ!!!
-    const onClick = () => dispatch(open(order));
+    const onClick = () => dispatch(editOrder(order));
 
     // const buildTimeInterval = () => {
     //     return `${bookingInfo.timeStart}-${bookingInfo.timeEnd}`;

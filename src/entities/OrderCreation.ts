@@ -1,12 +1,19 @@
 import { Time } from "../common/helpers/TimeHelper";
 import { EConfirmStatus, EPaymentStatus } from "./OrderView";
 
+export interface PrecreateOrder {
+    id: number,
+    updated_at: string,
+    created_at: string
+}
+
 interface OrderCreation {
-    id?: number,
+    id: number,
     date: moment.Moment,
     clientName?: string,
     comment?: string,
-    paymentStatus?: EPaymentStatus,
+    paymentStatus: EPaymentStatus,
+    confirmStatus: EConfirmStatus,
     phone?: string,
     color?: string,
     bookings: BookingCreation[]

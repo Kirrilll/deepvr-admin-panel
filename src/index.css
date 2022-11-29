@@ -34,10 +34,17 @@ code {
 }
 
 /* Селектор*/
+
+.ant-select{
+  height: 100%;
+}
+
 .ant-select:not(.ant-select-customize-input) .ant-select-selector {
-  /* padding: 14px 16px 14px 24px; */
+ 
   width: 100%;
-  height: 52px !important;
+  max-height: 52px;
+  height: 100%;
+  /* height: 52px !important; */
   background: #F3F5F9;
   border-radius: 15px;
   font-weight: 500;
@@ -45,7 +52,6 @@ code {
   line-height: 140%;
   letter-spacing: 0.002em;
   color: #444656;
-  height: auto;
   display: flex;
   align-items: center;
   border: none;
@@ -512,6 +518,15 @@ td {
   padding: 0;
 }
 
+.order-id {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 180%;
+  letter-spacing: 0.002em;
+  color: #1F2032;
+}
+
 .ant-form-item {
   margin-bottom: 10px;
 }
@@ -716,6 +731,11 @@ td {
 .booking-form__header {
   border-radius: 10px 10px 0px 0px;
   height: 40px;
+  padding: 0 14px;
+}
+
+.booking-form__wrapper{
+  padding: 20px;
 }
 
 /* -----SWITCH------ */

@@ -84,5 +84,5 @@ const timelineSlice = createSlice({
 
 export default timelineSlice.reducer;
 
-export const { toggleFixed, toggleTranspose, addOrder} = timelineSlice.actions;
+export const { toggleFixed, toggleTranspose, addOrder } = timelineSlice.actions;
 

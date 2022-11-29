@@ -8,7 +8,8 @@ interface DatePickerState{
 
 const initialState: DatePickerState = {
     isOpen: false,
-    currentDate: moment()
+    currentDate: moment(),
+    
 }
 
 const datePickerSlice = createSlice({

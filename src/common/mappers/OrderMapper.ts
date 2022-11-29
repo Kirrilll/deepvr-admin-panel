@@ -10,9 +10,10 @@ import OrderView, { EConfirmStatus, EPaymentStatus } from "../../entities/OrderV
 import { Order } from "../../entities/Order";
 import TimeHelper from "../helpers/TimeHelper";
 import ColorPool from "../utils/color/ColorPool";
-import TimeMapper from "./TimeMapper";
+import WorkingParamsMapper from "./WorkingParamsMapper";
 import OrderCreation from "../../entities/OrderCreation";
 import { CellIndeficator } from "../../features/timeline/redux/slice";
+import { Booking, FormState } from "../../features/booking-creator/ui/OrderCreateForm";
 
 
 //BookingInfo - сущночть плиточки(заказ), имеет цвет(он конструируется относительно id брони)
@@ -26,6 +27,7 @@ export default class OrderMapper {
     private static readonly _colorPool = ColorPool.instance;
 
 
+
     private static _transformConfirmStatus(status: string): EConfirmStatus {
         switch (status) {
             case '-1':
@@ -36,6 +38,19 @@ export default class OrderMapper {
                 return EConfirmStatus.CONFIRM;
             default:
                 throw Error('Wrong status code');
+        }
+    }
+
+    private static _confirmStatusToNum(status: EConfirmStatus): number {
+        switch (status) {
+            case EConfirmStatus.CANCELED:
+                return -1;
+            case EConfirmStatus.NOTCONFIRM:
+                return 0;
+            case EConfirmStatus.CONFIRM:
+                return 1;
+            default:
+                throw Error('Wrong status');
         }
     }
 
@@ -66,18 +81,45 @@ export default class OrderMapper {
         })
     }
 
+    //Fix this, get confirmStatus from orderView
     static fromViewToCreation(orderView: OrderView): OrderCreation {
-        return orderView;
+        return {
+            confirmStatus: EConfirmStatus.NOTCONFIRM,
+            ...orderView
+        };
     }
 
-    static fromCells(cells: CellIndeficator[]): OrderCreation{
+    static fromCells(cells: CellIndeficator[], id: number): OrderCreation {
         const unionDate = cells[0].date;
         return ({
+            id: id,
+            paymentStatus: EPaymentStatus.NOTPAID,
+            confirmStatus: EConfirmStatus.CONFIRM,
             date: moment(unionDate),
             bookings: cells.map(cell => ({
                 startTime: TimeHelper.transformStringToTime(cell.time),
                 roomId: cell.roomId
             }))
         })
+    }
+
+    static fromCreationToForm(order: OrderCreation): FormState {
+        return ({
+            employeeCode: '',
+            paymentStatus: order.paymentStatus == EPaymentStatus.PAID ? 1 : 0,
+            confirmStatus: OrderMapper._confirmStatusToNum(order.confirmStatus),
+            phonePicker: order.phone ?? '',
+            name: order.clientName ?? '',
+            datePicker: order.date,
+            certificates: [],
+            isBonuses: false,
+            bookings: order.bookings.map<Booking>(booking => ({
+                time: booking.startTime.time,
+                gameId: booking.gameId ?? null,
+                roomId: booking.roomId,
+                guestCount: booking.guestCount ?? null
+            }))
+        
+        });
     }
 }

@@ -1,9 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AppDispatch } from "../../../app/store";
 import { OrderDTO } from "../../../entities/OrderDTO";
-import { addOrder } from "../../timeline/redux/slice";
+import { addOrder, CellIndeficator } from "../../timeline/redux/slice";
 import api from "../../../repositories/Api";
 import { creatingFulfilled, creatingPending, creatingRejected } from "./slice";
+import OrderMapper from "../../../common/mappers/OrderMapper";
 
 
 interface CreateBookingArgs {
@@ -16,18 +17,10 @@ interface DefaultErrorMessage{
     error_text: string
 }
 
-export const fetchBookings = createAsyncThunk(
-    'fetchTimeline',
-    async (date: moment.Moment) => {
-        const response = await api.getTimeline(date);
-        return response.data;
-    }
-)
 
-
-export const createBooking = (order: OrderDTO) => (dispatch: AppDispatch) => {
+export const createOrder = (order: OrderDTO) => (dispatch: AppDispatch) => {
     dispatch(creatingPending());
-    api.createBooking(order)
+    api.createOrder(order)
         .then(
             res => {
                 // if(res.status === 200){
@@ -39,11 +32,10 @@ export const createBooking = (order: OrderDTO) => (dispatch: AppDispatch) => {
         .catch(er => dispatch(creatingRejected()))
 }
 
-// export const createBooking = createAsyncThunk(
-//     'createBooking',
-//     async (args: CreateBookingArgs) => {
-//         const { order } = args;
-//         const response = await api.createBooking(order);
-//         return response.data;
-//     }
-// )
+export const precreateOrder = createAsyncThunk(
+    'precreateOrder',
+    async (selectedCells: CellIndeficator[]) => {
+        const res = await api.precreateOrder();
+        return OrderMapper.fromCells(selectedCells, res.data.id);
+    }
+)

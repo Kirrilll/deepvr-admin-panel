@@ -27,7 +27,10 @@ class CellModeFactory {
                 return ({
                     isLastSelected: false,
                     className: `${DEFAULT_CELL_CLASSNAME}`,
-                    onClick: () => dispatch(startSelecting(cellId))
+                    onClick: (e: React.MouseEvent<HTMLDivElement>) => {
+                        e.preventDefault();
+                        dispatch(startSelecting(cellId))
+                    }
                 })
         }
     }

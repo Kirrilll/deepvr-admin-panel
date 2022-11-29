@@ -1,3 +1,4 @@
+import { LabeledValue } from "antd/lib/select";
 import { Room } from "./Room";
 
 export interface Pivot {

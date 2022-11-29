@@ -2,23 +2,22 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import timeLineReducer from '../features/timeline/redux/slice';
 import datePickerReducer from '../features/date-picker/redux/slice';
-import { timelineApi } from "../repositories/TimelineApi";
 import modalReducer from '../features/booking-creator/redux/slice';
 import selectionReducer from '../features/selection/redux/slice';
+import jobDataReducer from '../features/game/redux/slice';
 
 const rootReducer = combineReducers({
     timeLineReducer,
     datePickerReducer,
     modalReducer,
     selectionReducer,
-    [timelineApi.reducerPath]: timelineApi.reducer
+    jobDataReducer,
 });
 
 export const setupStore = () => {
     return configureStore({
         reducer: rootReducer,
         middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false })
-            .concat(timelineApi.middleware)
     });
 }
 

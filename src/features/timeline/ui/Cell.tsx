@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react';
-import { open } from '../../booking-creator/redux/slice';
 import { useAppDispatch, useAppSelector } from '../../../app/store';
 import { CellPivot } from '../../../entities/TimelineTypes';
 import { Button, Modal, Tooltip } from 'antd';
 import useTimeChecker from '../../../common/hooks/useTimeChecker';
 import CellContentFactory from '../../../common/utils/cell/CellContentFactory';
-import CellModeFactory from '../../../common/utils/cell/CellModeFactory';
+import CellModeFactory, { TimelineModeExtended } from '../../../common/utils/cell/CellModeFactory';
 import { CellIndeficator } from '../redux/slice';
 import { selectMode } from '../../selection/redux/selectors';
-import OrderMapper from '../../../common/mappers/OrderMapper';
+import { precreateOrder } from '../../booking-creator/redux/asyncActions';
+import { selectIsCreating } from '../../booking-creator/redux/selectors';
 
 export const DEFAULT_CELL_CLASSNAME = 'table__cell';
 
@@ -21,37 +21,37 @@ interface CellProps {
 const Cell: React.FC<CellProps> = ({ pivot, time, roomId }) => {
 
     const dispatch = useAppDispatch();
-    const selectedDate = useAppSelector(state => state.datePickerReducer.currentDate);
 
+    const selectedDate = useAppSelector(state => state.datePickerReducer.currentDate);
     const selectedCells = useAppSelector(state => state.selectionReducer.selectedCells);
     const modeType = useAppSelector(selectMode);
-    
-    const isAfter = useTimeChecker({ time: time, date: selectedDate });
+    const isCreating = useAppSelector(selectIsCreating);
 
+    const isAfter = useTimeChecker({ time: time, date: selectedDate });
+    
     const cellid = useMemo<CellIndeficator>(
         () => ({ time: time, date: selectedDate.format('DD-MM-YYYY'), roomId: roomId }),
         [time, roomId, selectedDate.format('DD-MM-YYYY')]
     );
 
-    
-
     const cellContent = useMemo(() => CellContentFactory.createContent(pivot), [pivot]);
     const cellMode = useMemo(() => CellModeFactory.createMode(
-        !isAfter ? { type: 'overpast' } : {type: modeType, extraData: selectedCells},
+        !isAfter ? { type: 'overpast' } : { type: modeType, extraData: selectedCells },
         cellid,
         pivot,
         dispatch
-    ), [isAfter, cellid, pivot, modeType, selectedCells]);
+    ), [cellid, pivot, selectedCells, modeType, isAfter]);
 
+    const isVisible = cellMode.isLastSelected && !isCreating;
 
     const onButtonClick = () => {
-        dispatch(open(OrderMapper.fromCells(selectedCells)));
+        dispatch(precreateOrder(selectedCells));
     }
 
     return (
         <>
             <div style={{ position: 'relative' }}>
-                <CreateOrderButton isVisible={cellMode.isLastSelected} onClick={onButtonClick} />
+                <CreateOrderButton isVisible={isVisible} onClick={onButtonClick} />
                 <div onClick={cellMode.onClick} className={cellMode.className}>
                     {cellContent}
                 </div>

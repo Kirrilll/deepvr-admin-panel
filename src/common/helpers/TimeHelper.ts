@@ -10,7 +10,6 @@ export default class TimeHelper {
     private static readonly MAX_DAY_MINUTES: number = 1439;
 
 
-
     static getTimeDiff(tFirstStr: string, tSecondStr: string): number {
         const tFirst = TimeHelper.transformStringToTime(tFirstStr);
         const tSecond = TimeHelper.transformStringToTime(tSecondStr);
@@ -53,5 +52,16 @@ export default class TimeHelper {
             minutes: restMinutes,
             time: hoursStr + ':' + minutesStr
         });
+    }
+
+    static getTimeInMinutes(time: string) {
+        const _time = TimeHelper.transformStringToTime(time);
+        return _time.hours*60+ _time.minutes;
+    }
+
+    static getTimeFromMinutes(minutes: number) {
+        const hours = Math.floor(minutes / 60);
+        const mins = minutes - hours * 60;
+        return `${TimeHelper.transformTimeNumToTimeStr(hours)}:${TimeHelper.transformTimeNumToTimeStr(mins)}`;
     }
 }
