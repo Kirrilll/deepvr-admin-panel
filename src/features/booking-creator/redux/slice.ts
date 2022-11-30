@@ -31,7 +31,7 @@ const initialState: ModalState = {
     creationOrderStatus: FetchingStatus.NEVER
 }
 
-const modalSlice = createSlice({
+const orderCreationSlice = createSlice({
     name: 'modalSlice',
     initialState: initialState,
     reducers: {
@@ -65,5 +65,5 @@ const modalSlice = createSlice({
     }
 })
 
-export default modalSlice.reducer;
-export const { close, creatingPending, creatingFulfilled, editOrder, creatingRejected } = modalSlice.actions;
+export default orderCreationSlice.reducer;
+export const { close, creatingPending, creatingFulfilled, editOrder, creatingRejected } = orderCreationSlice.actions;

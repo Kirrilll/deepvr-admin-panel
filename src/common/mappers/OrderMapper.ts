@@ -11,9 +11,10 @@ import { Order } from "../../entities/Order";
 import TimeHelper from "../helpers/TimeHelper";
 import ColorPool from "../utils/color/ColorPool";
 import WorkingParamsMapper from "./WorkingParamsMapper";
-import OrderCreation from "../../entities/OrderCreation";
+import OrderCreation, { BookingCreation } from "../../entities/OrderCreation";
 import { CellIndeficator } from "../../features/timeline/redux/slice";
-import { Booking, FormState } from "../../features/booking-creator/ui/OrderCreateForm";
+import { FormBooking, FormState } from "../../features/booking-creator/ui/OrderCreateForm";
+import BookingMapper from "./BookingMapper";
 
 
 //BookingInfo - сущночть плиточки(заказ), имеет цвет(он конструируется относительно id брони)
@@ -25,8 +26,6 @@ import { Booking, FormState } from "../../features/booking-creator/ui/OrderCreat
 export default class OrderMapper {
 
     private static readonly _colorPool = ColorPool.instance;
-
-
 
     private static _transformConfirmStatus(status: string): EConfirmStatus {
         switch (status) {
@@ -91,15 +90,13 @@ export default class OrderMapper {
 
     static fromCells(cells: CellIndeficator[], id: number): OrderCreation {
         const unionDate = cells[0].date;
+        console.log(moment(new Date(unionDate)))
         return ({
             id: id,
             paymentStatus: EPaymentStatus.NOTPAID,
             confirmStatus: EConfirmStatus.CONFIRM,
-            date: moment(unionDate),
-            bookings: cells.map(cell => ({
-                startTime: TimeHelper.transformStringToTime(cell.time),
-                roomId: cell.roomId
-            }))
+            date: moment(new Date(unionDate)),
+            bookings: cells.map(cell => BookingMapper.bookingFromCell(cell))
         })
     }
 
@@ -113,13 +110,7 @@ export default class OrderMapper {
             datePicker: order.date,
             certificates: [],
             isBonuses: false,
-            bookings: order.bookings.map<Booking>(booking => ({
-                time: booking.startTime.time,
-                gameId: booking.gameId ?? null,
-                roomId: booking.roomId,
-                guestCount: booking.guestCount ?? null
-            }))
-        
+            bookings: order.bookings.map<FormBooking>(booking => BookingMapper.bookingToFormBooking(booking))
         });
     }
 }

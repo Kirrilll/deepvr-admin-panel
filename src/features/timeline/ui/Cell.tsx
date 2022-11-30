@@ -8,30 +8,32 @@ import CellModeFactory, { TimelineModeExtended } from '../../../common/utils/cel
 import { CellIndeficator } from '../redux/slice';
 import { selectMode } from '../../selection/redux/selectors';
 import { precreateOrder } from '../../booking-creator/redux/asyncActions';
-import { selectIsCreating } from '../../booking-creator/redux/selectors';
+import { selectIsOpen } from '../../booking-creator/redux/selectors';
+import CellHelper from '../../../common/helpers/CellHelper';
 
 export const DEFAULT_CELL_CLASSNAME = 'table__cell';
 
-interface CellProps {
+export interface CellProps {
     pivot: CellPivot | null,
     time: string,
     roomId: number
 }
 
-const Cell: React.FC<CellProps> = ({ pivot, time, roomId }) => {
+
+const Cell: React.FC<CellProps> = React.memo(({ pivot, time, roomId }) => {
 
     const dispatch = useAppDispatch();
 
     const selectedDate = useAppSelector(state => state.datePickerReducer.currentDate);
     const selectedCells = useAppSelector(state => state.selectionReducer.selectedCells);
     const modeType = useAppSelector(selectMode);
-    const isCreating = useAppSelector(selectIsCreating);
+    const isCreating = useAppSelector(selectIsOpen);
 
     const isAfter = useTimeChecker({ time: time, date: selectedDate });
-    
+
     const cellid = useMemo<CellIndeficator>(
-        () => ({ time: time, date: selectedDate.format('DD-MM-YYYY'), roomId: roomId }),
-        [time, roomId, selectedDate.format('DD-MM-YYYY')]
+        () => ({ time: time, date: selectedDate.format('YYYY-MM-DD'), roomId: roomId }),
+        [time, roomId, selectedDate.format('YYYY-MM-DD')]
     );
 
     const cellContent = useMemo(() => CellContentFactory.createContent(pivot), [pivot]);
@@ -60,7 +62,7 @@ const Cell: React.FC<CellProps> = ({ pivot, time, roomId }) => {
 
 
     )
-}
+}, (prevProps: Readonly<CellProps>, nextProps: Readonly<CellProps>) => CellHelper.isPropsEquals(prevProps, nextProps))
 
 interface CreateOrderButtonProps {
     onClick: () => void,

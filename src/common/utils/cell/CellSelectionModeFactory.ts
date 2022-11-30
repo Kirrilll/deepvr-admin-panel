@@ -5,10 +5,6 @@ import { CellIndeficator } from "../../../features/timeline/redux/slice";
 import { DEFAULT_CELL_CLASSNAME } from "../../../features/timeline/ui/Cell";
 import CellHelper from "../../helpers/CellHelper";
 
-
-
-type SelectableRule = (...args: any) => boolean;
-
 interface CreateSelectionModeAttrs {
     selectedCells: CellIndeficator[],
     cellId: CellIndeficator,
@@ -22,7 +18,6 @@ const timeRule = (selectedCells: CellIndeficator[], cellId: CellIndeficator) => 
     .reduce((prev, next) => prev || next);
 
 const pivotRule = (pivot: CellPivot | null) => pivot === null;
-
 
 class CellSelectionModeFactory {
     static createSelectionMode(attrs: CreateSelectionModeAttrs) {

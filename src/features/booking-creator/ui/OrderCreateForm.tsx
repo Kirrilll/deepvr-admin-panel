@@ -14,7 +14,7 @@ import { FetchingStatus } from "../../timeline/redux/slice";
 import CustomDatePicker from "../../date-picker/ui/CustomDatePicker";
 import Layout from "antd/lib/layout/layout";
 import OrderMapper from "../../../common/mappers/OrderMapper";
-import {  selectInitialValues } from "../redux/selectors";
+import { selectInitialValues } from "../redux/selectors";
 import { useForm } from "antd/es/form/Form";
 import moment from "moment";
 import DateRange from "../../date-picker/ui/DateRange";
@@ -30,8 +30,11 @@ import PersonalDataGroup from "./PersonalDataGroup";
 import BookingGroup from "./BookingGroup";
 import LoyaltyGroup from "./LoyaltyGroup";
 import { type } from "@testing-library/user-event/dist/type";
+import { selectCells } from "../../selection/redux/selectors";
+import BookingMapper from "../../../common/mappers/BookingMapper";
+import BookingHelper from "../../../common/helpers/BookingHelper";
 
-export const EMLOYEE_CODE_PATH =  'employeeCode';
+export const EMLOYEE_CODE_PATH = 'employeeCode';
 export const PAYMENT_STATUS_PATH = 'paymentStatus';
 export const CONFRIM_STATUS_PATH = 'confirmStatus';
 export const DATE_PICKER_PATH = 'datePicker';
@@ -55,30 +58,40 @@ export interface FormState {
     [PHONE_PICKER_PATH]: string,
     [NAME_PATH]: string,
     [DATE_PICKER_PATH]: moment.Moment,
-    [BOOKING_LIST_PATH]: Booking[],
+    [BOOKING_LIST_PATH]: FormBooking[],
     [PROMOCODE_PATH]?: string,
     [IS_USE_BONUSES_PATH]: boolean,
     [CERTIFACATES_PATH]: string[]
 }
 
 
-export interface Booking {
+export interface FormBooking {
     [ROOM_PATH]: number,
     [GAME_PATH]: number | null,
     [TIME_PATH]: string,
-    [GUEST_COUNT_PATH]: number | null
+    [GUEST_COUNT_PATH]: number | null,
 }
 
 const OrderCreationForm: React.FC = () => {
     const [form] = useForm<FormState>();
     const [client, setClient] = useState<Client | null>(null);
+    const selectedCells = useAppSelector(selectCells);
 
-    const orderId = useAppSelector(state => state.modalReducer.initialData.id);
+    const { id, date } = useAppSelector(state => state.orderCreationReducer.initialData);
     const order = useAppSelector(selectInitialValues);
 
     useEffect(() => {
-        form.setFieldValue(BOOKING_LIST_PATH, order[BOOKING_LIST_PATH])
-    }, [order])
+        form.setFieldValue(BOOKING_LIST_PATH, order[BOOKING_LIST_PATH]);
+    }, [])
+
+    useEffect(() => {
+        const bookings = BookingMapper.toFormBookings(selectedCells);
+        //console.log(bookings);
+        const prevBookings = form.getFieldValue(BOOKING_LIST_PATH);
+        const joinedBookings = BookingHelper.bookingsRightJoin(prevBookings, bookings);
+        console.log(joinedBookings);
+        form.setFieldValue(BOOKING_LIST_PATH, joinedBookings);
+    }, [selectedCells]);
 
     // const onFinish = (values: any) => {
     //     dispatch(createBooking({
@@ -136,12 +149,12 @@ const OrderCreationForm: React.FC = () => {
             className="sider-content-wrapper"
             form={form}
             onFinish={(values) => console.log(values)}
-            preserve = {false}
-            initialValues = {order}
-            
+            preserve={false}
+            initialValues={order}
+
         >
             <Row justify='space-between' align='middle'>
-               <div className="order-id">Заказа № {orderId}</div>
+                <div className="order-id">Заказа № {id}</div>
                 <Col span={12} >
                     <Form.Item
                         name={EMLOYEE_CODE_PATH}
@@ -197,11 +210,12 @@ const OrderCreationForm: React.FC = () => {
             />
             <BookingGroup
                 globalForm={form}
-                orderId ={orderId}
-                bookings = {order[BOOKING_LIST_PATH]}/>
+                orderId={id}
+                date={date}
+            />
             <LoyaltyGroup
                 globalForm={form}
-                isIdentified = {client != null}
+                isIdentified={client != null}
             />
             <CertificatesList globalForm={form} />
 

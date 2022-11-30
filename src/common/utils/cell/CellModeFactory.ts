@@ -4,6 +4,7 @@ import { CellPivot } from "../../../entities/TimelineTypes";
 import { startSelecting } from "../../../features/selection/redux/slice";
 import { CellIndeficator } from "../../../features/timeline/redux/slice";
 import { DEFAULT_CELL_CLASSNAME } from "../../../features/timeline/ui/Cell";
+import CellIdleModeFactory from "./CellIdleModeFactory";
 import CellSelectionModeFactory from "./CellSelectionModeFactory";
 export type TimelineModeExtended = Omit<TimelineMode, 'type'> & { type: TimelineModeType | 'overpast' };
 
@@ -24,13 +25,10 @@ class CellModeFactory {
                     pivot: pivot
                 });
             default:
-                return ({
-                    isLastSelected: false,
-                    className: `${DEFAULT_CELL_CLASSNAME}`,
-                    onClick: (e: React.MouseEvent<HTMLDivElement>) => {
-                        e.preventDefault();
-                        dispatch(startSelecting(cellId))
-                    }
+                return CellIdleModeFactory.createIdleMode({
+                    dispatch: dispatch,
+                    cellId: cellId,
+                    pivot: pivot
                 })
         }
     }

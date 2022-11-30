@@ -8,6 +8,29 @@
   box-sizing: border-box;
 }
 
+/* Scrollbar */
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #bdbdbd #F3F5F9;
+}
+
+*::-webkit-scrollbar {
+  width: 0px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #bdbdbd;
+  border-radius: 10px;
+  border: 3px solid #ffffff;
+}
+
 .first-plan-object {
   z-index: 6000;
 }
@@ -35,12 +58,12 @@ code {
 
 /* Селектор*/
 
-.ant-select{
+.ant-select {
   height: 100%;
 }
 
 .ant-select:not(.ant-select-customize-input) .ant-select-selector {
- 
+
   width: 100%;
   max-height: 52px;
   height: 100%;
@@ -734,7 +757,7 @@ td {
   padding: 0 14px;
 }
 
-.booking-form__wrapper{
+.booking-form__wrapper {
   padding: 20px;
 }
 

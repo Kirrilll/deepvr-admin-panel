@@ -7,16 +7,16 @@ import ColorPool from '../../../common/utils/color/ColorPool';
 import OrderCreation from '../../../entities/OrderCreation';
 import { selectDate } from '../../date-picker/redux/slice';
 import CustomDatePicker from '../../date-picker/ui/CustomDatePicker';
-import BookingForm, { FormListBooking } from './BookingForm';
-import { DATE_PICKER_PATH, BOOKING_LIST_PATH, Booking, ROOM_PATH } from './OrderCreateForm';
+import BookingForm from './BookingForm';
+import { DATE_PICKER_PATH, BOOKING_LIST_PATH, FormBooking } from './OrderCreateForm';
 
 interface BookingGroupProps {
     globalForm: FormInstance,
-    bookings: Booking[],
+    date: moment.Moment,
     orderId: number
 }
 
-const BookingGroup: React.FC<BookingGroupProps> = ({ globalForm, orderId, bookings }) => {
+const BookingGroup: React.FC<BookingGroupProps> = ({ globalForm, orderId, date }) => {
     const dispatch = useAppDispatch();
     const selectedDate = useAppSelector(state => state.datePickerReducer.currentDate);
     const color = ColorPool.instance.getColor(orderId);
@@ -25,6 +25,7 @@ const BookingGroup: React.FC<BookingGroupProps> = ({ globalForm, orderId, bookin
     useEffect(() => {
         globalForm.setFieldValue(DATE_PICKER_PATH, selectedDate);
     }, [selectedDate])
+
 
     return (
         <>
@@ -46,8 +47,10 @@ const BookingGroup: React.FC<BookingGroupProps> = ({ globalForm, orderId, bookin
                                 return (<Col>
                                     <BookingForm
                                         key={index}
-                                        field = {field}
-                                        booking={bookings[index]}
+                                        remove = {() => remove(index)}
+                                        date = {date}
+                                        booking = {globalForm.getFieldValue(BOOKING_LIST_PATH)[index]}
+                                        field={field}
                                         orderId={orderId}
                                         color={color} />
                                 </Col>)
