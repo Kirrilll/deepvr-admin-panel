@@ -15,6 +15,7 @@ import OrderCreationForm from "../features/booking-creator/ui/OrderCreateForm";
 import { isTimelineReadySelector, selectRooms, selectWorkingParams } from "../features/game/redux/selectors";
 import { getGames, getRooms, getWorkingParams } from "../features/game/redux/asyncActions";
 import { selectIsCreated } from "../features/booking-creator/redux/selectors";
+import WarningModal from "../features/warning-modal/ui/WarningModal";
 const { Sider, Content } = Layout;
 
 const TimelinePage: React.FC = () => {
@@ -56,12 +57,7 @@ const TimelinePage: React.FC = () => {
 
     return (
         <>
-            <Modal
-                onOk={onOk}
-                onCancel={() => dispatch(closeWarning())}
-                open={isWarning}>
-                <div>У вас образуется временная яма</div>
-            </Modal>
+            <WarningModal/>
 
             <Layout hasSider>
                 <Layout>

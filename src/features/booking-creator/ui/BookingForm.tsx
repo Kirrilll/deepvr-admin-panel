@@ -12,7 +12,7 @@ import { useMemo } from "react";
 import GameMapper from "../../../common/mappers/GameMapper";
 import RoomMapper from "../../../common/mappers/RoomMapper";
 import { FormInstance } from "antd/es/form/Form";
-import { unselectCellSafety } from "../../selection/redux/slice";
+import { unselectCell } from "../../selection/redux/slice";
 import BookingMapper from "../../../common/mappers/BookingMapper";
 
 
@@ -39,7 +39,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ color, orderId, field, date, 
     const dispatch = useAppDispatch();
     const onOnDeleteItem = () => {
         remove();
-        dispatch(unselectCellSafety(BookingMapper.toCell(booking, date.format('YYYY-MM-DD'))))
+        dispatch(unselectCell(BookingMapper.toCell(booking, date.format('YYYY-MM-DD'))))
     }
 
     return (

@@ -19,8 +19,7 @@ const initilaState: SelectionState = {
 export const startSelecting = createAction<CellIndeficator>('startSelecting');
 export const endSelecting = createAction('endSelectiong');
 export const selectCell = createAction<CellIndeficator>('selectCell');
-export const unselectCellSafety = createAction<CellIndeficator>('unselectCellSafety');
-export const unselectCell = createAction<CellIndeficator>('unselectCell');
+export const unselectCell = createAction<CellIndeficator>('unselectCellSafety');
 export const closeWarning = createAction('closeWarning');
 
 
@@ -44,28 +43,20 @@ const selectionSlice = createSlice({
             .addCase(closeWarning, (state) => {
                 state.isWarning = false;
             })
-            .addCase(unselectCellSafety, (state, action) => {
-                const cells = getFiltredCells(state.selectedCells, action.payload);
-                if(!CellHelper.isSequence(cells)){
-                    state.isWarning = true;
-                }
-                else{
-                    state.selectedCells = cells;
-                }
-            })
             .addCase(unselectCell, (state, action) => {
-                state.selectedCells = getFiltredCells(state.selectedCells, action.payload);
+                const cells = getFiltredCells(state.selectedCells, action.payload);
+                state.selectedCells = cells;
             })
             .addMatcher(
-                isAnyOf(unselectCell, unselectCellSafety), 
+                isAnyOf(unselectCell, unselectCell),
                 (state) => {
-                    if(state.selectedCells.length === 0){
+                    if (state.selectedCells.length === 0) {
                         state.isSelection = false;
                     }
                 }
             )
             .addMatcher(
-                isAnyOf(selectCell, startSelecting, unselectCellSafety),
+                isAnyOf(selectCell, startSelecting, unselectCell),
                 (state, action) => {
                     StorageService.instance.setItem('lastSelectedItem', action.payload);
                 }

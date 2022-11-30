@@ -6,7 +6,6 @@ import { PlusOutlined, DeleteOutlined, } from '@ant-design/icons';
 import BookingModalService from "../../../services/BookingModalService";
 import { LabeledValue } from "antd/lib/select";
 import Client, { ClientValue } from "../../../entities/Client";
-import GamesService from "../../../services/GamesService";
 import { Room } from "../../../entities/Room";
 import { close } from "../redux/slice";
 import MathHelper from "../../../common/helpers/MathHelper";

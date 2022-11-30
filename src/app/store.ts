@@ -5,6 +5,8 @@ import datePickerReducer from '../features/date-picker/redux/slice';
 import orderCreationReducer from '../features/booking-creator/redux/slice';
 import selectionReducer from '../features/selection/redux/slice';
 import jobDataReducer from '../features/game/redux/slice';
+import warningReducer from '../features/warning-modal/redux/slice';
+import warningMiddleware from "../common/middlewares/warningMiddleware";
 
 const rootReducer = combineReducers({
     timeLineReducer,
@@ -12,12 +14,14 @@ const rootReducer = combineReducers({
     orderCreationReducer,
     selectionReducer,
     jobDataReducer,
+    warningReducer
 });
 
 export const setupStore = () => {
     return configureStore({
         reducer: rootReducer,
-        middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false })
+        middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }).
+            prepend(warningMiddleware)
     });
 }
 
