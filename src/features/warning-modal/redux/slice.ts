@@ -4,8 +4,8 @@ import { message } from "antd";
 interface WarningState{
     isWarning: boolean,
     message: string,
-    interruptedActionType: string | null,
-    interruptedActionPayload: any
+    onOkActionType: string | null,
+    onOkActionPayload: any
 }
 
 interface InterruptedAction{
@@ -16,8 +16,8 @@ interface InterruptedAction{
 const initialState: WarningState = {
     isWarning: false,
     message: '',
-    interruptedActionPayload: null,
-    interruptedActionType: null
+    onOkActionPayload: null,
+    onOkActionType: null
 }
 
 const warningSlice = createSlice({
@@ -29,14 +29,14 @@ const warningSlice = createSlice({
             const {type, payload} = interruptedAction;
             state.isWarning = true;
             state.message = message;
-            state.interruptedActionPayload = payload;
-            state.interruptedActionType = type;
+            state.onOkActionPayload = payload;
+            state.onOkActionType = type;
         },
         removeWarning(state){
             state.isWarning = false;
             state.message = '';
-            state.interruptedActionPayload = null;
-            state.interruptedActionType = null;
+            state.onOkActionPayload = null;
+            state.onOkActionType = null;
         }
     }
 })

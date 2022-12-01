@@ -1,23 +1,25 @@
 import { Row, Col, Input, Button, Checkbox, Slider, Form, Switch } from 'antd';
 import { FormInstance } from 'antd/es/form/Form';
 import React, { useMemo, useState } from 'react';
+import Client from '../../../entities/Client';
+import BonusGroup from './BonusGroup';
 import { PROMOCODE_PATH, IS_USE_BONUSES_PATH, BONUS_PATH, PHONE_PICKER_PATH } from './OrderCreateForm';
 
 interface LoyaltyGroupProps {
     globalForm: FormInstance,
-    isIdentified: boolean
+    clientId: number | null
 }
 
 
-
-const LoyaltyGroup: React.FC<LoyaltyGroupProps> = ({ globalForm, isIdentified }) => {
+const LoyaltyGroup: React.FC<LoyaltyGroupProps> = ({ globalForm, clientId }) => {
 
     const [isUsePromocode, setUsePromocode] = useState<boolean>(true);
     const onChangeToggle = (checked: boolean) => setUsePromocode(checked);
 
 
+
     return (
-        <div style={{marginTop: '20px'}}>
+        <div style={{ marginTop: '20px' }}>
             <Col span={12} >
                 <Row justify='space-between' >
                     <div className="creation-form-label" >Лояльность:</div>
@@ -33,8 +35,9 @@ const LoyaltyGroup: React.FC<LoyaltyGroupProps> = ({ globalForm, isIdentified })
             {
                 isUsePromocode
                     ? <Form.Item
+                        dependencies={[PHONE_PICKER_PATH]}
                         name={PROMOCODE_PATH}
-                        label={<div className="creation-form-label">Введите промокоды:</div>}
+                        label={<div className="creation-form-label">Введите промокоды: {globalForm.getFieldValue(PHONE_PICKER_PATH)}</div>}
                     >
                         <Row gutter={[20, 20]}>
                             <Col span={12}>
@@ -49,37 +52,7 @@ const LoyaltyGroup: React.FC<LoyaltyGroupProps> = ({ globalForm, isIdentified })
                             </Col>
                         </Row>
                     </Form.Item>
-                    : <>
-                        <div className="creation-form-label">
-                            На эту бронь можно потратить не более 600 бонусов из 2300 доступных Бонусных
-                        </div>
-                        <Row gutter={[20, 20]}>
-                            <Col span={12}>
-                                <Form.Item name={BONUS_PATH}>
-                                    <Input
-                                        className="default-input"
-                                        bordered={false} />
-                                </Form.Item>
-                            </Col>
-                            <Col span={6}>
-                                <Button className="default-btn">
-                                    Применить
-                                </Button>
-                            </Col>
-                        </Row>
-                        <Form.Item name={BONUS_PATH}>
-                            <Slider
-                                className="bonus-slider"
-                                tooltip={{ formatter: null }}
-                                min={0}
-                                max={100}
-                            />
-                        </Form.Item>
-                        <Row justify='space-between'>
-                            <div>0</div>
-                            <div>100</div>
-                        </Row>
-                    </>
+                    : <BonusGroup />
             }
         </div>
     );

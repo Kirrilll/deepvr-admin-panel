@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ClientResponse } from "../entities/Client";
+import { ClientResponse, CreatedClient } from "../entities/Client";
 import RoomResponse from "../entities/Room";
 import { Order, OrderResponse } from "../entities/Order";
 import { OrderDTO } from "../entities/OrderDTO";
@@ -56,6 +56,20 @@ const api = {
     precreateOrder: async () => {
         return await axios.post<PrecreateOrder>(
             `${baseUrl}/v2/orders/createEmpty`
+        )
+    },
+    getBonusInfo: async () => {
+        
+    },
+    hotRegister: async (name: string, phone: string) => {
+        return await axios.get<CreatedClient>(
+            `${baseUrl}/v2/client/hotRegister`,
+            {
+                params: {
+                    name: name,
+                    phone: phone
+                }
+            }
         )
     }
 }

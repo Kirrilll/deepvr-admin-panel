@@ -16,6 +16,16 @@ interface Client {
 }
 
 
-export type ClientValue = LabeledValue & {client: Client};
+export interface CreatedClient {
+    name: string;
+    phone: string;
+    role_id: number;
+    updated_at: Date;
+    created_at: Date;
+    id: number;
+}
+
+
+export type ClientValue = LabeledValue & { client: Client };
 export type ClientResponse = Client[];
 export default Client;

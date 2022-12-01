@@ -9,14 +9,12 @@ import { removeWarning } from '../redux/slice';
 const WarningModal: React.FC = () => {
 
     const warningState = useAppSelector(selectWarningState);
-    const { isWarning, message, interruptedActionPayload, interruptedActionType } = warningState;
+    const { isWarning, message, onOkActionPayload, onOkActionType } = warningState;
 
     const dispatch = useAppDispatch();
     const onClose = () => dispatch(removeWarning());
     const onOk = () => {
-        console.log(interruptedActionPayload);
-        console.log(interruptedActionPayload);
-        dispatch({type: interruptedActionType, payload: interruptedActionPayload});
+        dispatch({type: onOkActionType, payload: onOkActionPayload});
         onClose();
     }
 

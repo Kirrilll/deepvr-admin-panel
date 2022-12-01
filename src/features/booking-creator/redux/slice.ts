@@ -58,10 +58,10 @@ const orderCreationSlice = createSlice({
             state.isOpen = true;
             state.creationOrderStatus = FetchingStatus.LOADING;
         }),
-            builder.addCase(precreateOrder.fulfilled, (state, action: PayloadAction<OrderCreation>) => {
-                state.creationOrderStatus = FetchingStatus.SUCCESSFULL;
-                state.initialData = action.payload;
-            })
+        builder.addCase(precreateOrder.fulfilled, (state, action: PayloadAction<OrderCreation>) => {
+            state.creationOrderStatus = FetchingStatus.SUCCESSFULL;
+            state.initialData = action.payload;
+        })
     }
 })
 

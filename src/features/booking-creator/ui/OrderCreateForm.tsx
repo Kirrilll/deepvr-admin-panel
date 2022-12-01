@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../../app/store";
 import { PlusOutlined, DeleteOutlined, } from '@ant-design/icons';
 import BookingModalService from "../../../services/BookingModalService";
 import { LabeledValue } from "antd/lib/select";
-import Client, { ClientValue } from "../../../entities/Client";
+import Client, { ClientValue, CreatedClient } from "../../../entities/Client";
 import { Room } from "../../../entities/Room";
 import { close } from "../redux/slice";
 import MathHelper from "../../../common/helpers/MathHelper";
@@ -73,7 +73,7 @@ export interface FormBooking {
 
 const OrderCreationForm: React.FC = () => {
     const [form] = useForm<FormState>();
-    const [client, setClient] = useState<Client | null>(null);
+    const [client, setClient] = useState<Client | CreatedClient | null>(null);
     const selectedCells = useAppSelector(selectCells);
 
     const { id, date } = useAppSelector(state => state.orderCreationReducer.initialData);
@@ -88,7 +88,7 @@ const OrderCreationForm: React.FC = () => {
         //console.log(bookings);
         const prevBookings = form.getFieldValue(BOOKING_LIST_PATH);
         const joinedBookings = BookingHelper.bookingsRightJoin(prevBookings, bookings);
-        console.log(joinedBookings);
+        // console.log(joinedBookings);
         form.setFieldValue(BOOKING_LIST_PATH, joinedBookings);
     }, [selectedCells]);
 
@@ -205,7 +205,6 @@ const OrderCreationForm: React.FC = () => {
             <PersonalDataGroup
                 globalForm={form}
                 setClient={setClient}
-                client={client}
             />
             <BookingGroup
                 globalForm={form}
@@ -214,7 +213,7 @@ const OrderCreationForm: React.FC = () => {
             />
             <LoyaltyGroup
                 globalForm={form}
-                isIdentified={client != null}
+                clientId = {client?.id ?? null}
             />
             <CertificatesList globalForm={form} />
 
