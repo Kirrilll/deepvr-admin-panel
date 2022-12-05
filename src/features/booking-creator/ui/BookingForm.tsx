@@ -1,11 +1,9 @@
 import { Button, Form, FormListFieldData, Input, InputNumber, Row, Select } from "antd";
-import { BookingCreation } from "../../../entities/OrderCreation";
 import REMOVE_ICON from '../../../assets/remove.svg';
 import GUEST_ICON from '../../../assets/person.svg';
 import TIME_ICON from '../../../assets/clock.svg';
 import { FormBooking, BOOKING_LIST_PATH, GAME_PATH, GUEST_COUNT_PATH, ROOM_PATH, TIME_PATH } from "./OrderCreateForm";
-import { LabeledValue } from "antd/lib/select";
-import { GameValue } from "../../../entities/GameView";
+
 import { useAppDispatch, useAppSelector } from "../../../app/store";
 import { buildGamesByRoomSelector, buildRoomByIdSelector, selectRooms } from "../../game/redux/selectors";
 import { useMemo } from "react";

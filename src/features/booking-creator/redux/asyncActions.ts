@@ -1,17 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AppDispatch } from "../../../app/store";
-import { OrderDTO } from "../../../entities/OrderDTO";
 import { addOrder, CellIndeficator } from "../../timeline/redux/slice";
 import api from "../../../repositories/Api";
 import { creatingFulfilled, creatingPending, creatingRejected } from "./slice";
 import OrderMapper from "../../../common/mappers/OrderMapper";
-import { Order } from "../../../entities/Order";
+import { Order, OrderDto } from "../../../entities/Order";
 import { resetSelection } from "../../selection/redux/slice";
 
-
-interface CreateBookingArgs {
-    order: OrderDTO,
-}
 
 export interface ErrorResponse {
     error: number,
@@ -20,7 +15,7 @@ export interface ErrorResponse {
 
 
 
-export const createOrder = (order: OrderDTO) => (dispatch: AppDispatch) => {
+export const createOrder = (order: OrderDto) => (dispatch: AppDispatch) => {
     dispatch(creatingPending());
     api.createOrder(order)
         .then(

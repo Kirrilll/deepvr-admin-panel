@@ -4,9 +4,11 @@ import ClockIcon from '../../../assets/clock.svg';
 import GameIcon from '../../../assets/game.svg';
 import PersonIcon from '../../../assets/person.svg';
 import PhoneIcon from '../../../assets/phone.svg';
-import OrderView, { EPaymentStatus } from '../../../entities/OrderView';
+
 import { useAppDispatch, useAppSelector } from '../../../app/store';
 import {editOrder} from '../../booking-creator/redux/slice';
+import { OrderView } from '../../../entities/Order';
+import { EPaymentStatus } from '../../../entities/PaymentInfo';
 
 type BookingPopupProps = Omit<PopoverProps
     & React.RefAttributes<unknown>

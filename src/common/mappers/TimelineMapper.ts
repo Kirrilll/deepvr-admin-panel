@@ -1,4 +1,5 @@
-import OrderView from "../../entities/OrderView"
+
+import { OrderView } from "../../entities/Order";
 import { Room } from "../../entities/Room";
 import { CellPivot, OrderCellMatrix } from "../../entities/TimelineTypes";
 

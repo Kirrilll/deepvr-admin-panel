@@ -1,7 +1,6 @@
-import { createDraftSafeSelector, createSelector } from "@reduxjs/toolkit";
+import {  createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../../../app/store";
 import GameMapper from "../../../common/mappers/GameMapper";
-import TimelineMapper from "../../../common/mappers/TimelineMapper";
 import WorkingParamsMapper from "../../../common/mappers/WorkingParamsMapper";
 import { FetchingStatus } from "../../timeline/redux/slice";
 

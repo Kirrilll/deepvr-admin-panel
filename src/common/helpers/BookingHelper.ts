@@ -1,6 +1,5 @@
-import { Game } from "../../entities/Game";
-import GameView from "../../entities/GameView";
-import { BookingView } from "../../entities/OrderView";
+import { BookingView } from "../../entities/Booking";
+import { GameView } from "../../entities/Game";
 import { FormBooking, GAME_PATH, GUEST_COUNT_PATH, ROOM_PATH, TIME_PATH } from "../../features/booking-creator/ui/OrderCreateForm";
 
 export default class BookingHelper {
@@ -41,14 +40,7 @@ export default class BookingHelper {
         return fBooking[ROOM_PATH] === sBooking[ROOM_PATH] && fBooking[TIME_PATH] === sBooking[TIME_PATH];
     }
 
-
-    static bookingIntersection(prevBookings: FormBooking[], bookings: FormBooking[]) {
-        return prevBookings.filter(prevBooking => bookings.findIndex(booking => ~BookingHelper.isSame(booking, prevBooking)));
-    }
-
     static bookingsRightJoin(prevBookings: FormBooking[], bookings: FormBooking[]): FormBooking[] {
-        // console.log(prevBookings);
-        // console.log(bookings);
         const bookingJoined: FormBooking[] = []
         for (const booking of bookings) {
             const prevBookingIndex = prevBookings.findIndex(prevBooking => BookingHelper.isSame(booking, prevBooking));

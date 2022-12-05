@@ -1,9 +1,7 @@
 import { createReducer, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import TimeHelper from "../../../common/helpers/TimeHelper";
 import OrderMapper from "../../../common/mappers/OrderMapper";
 import ColorPool from "../../../common/utils/color/ColorPool";
-import { Order, OrderResponse } from "../../../entities/Order";
-import OrderView from "../../../entities/OrderView";
+import { Order, OrderResponse, OrderView } from "../../../entities/Order";
 import { TimelineMode, TimelineOptions } from "../../../entities/TimelineOptions";
 import { TimelineType } from "../../../entities/TimelineTypes";
 import { fetchTimline } from "./asyncActions";

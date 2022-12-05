@@ -1,7 +1,7 @@
 import { Table } from 'antd';
 import React, { useMemo } from 'react';
 import TimelineFactory from '../../../common/utils/timeline/TimlineFactory';
-import OrderView from '../../../entities/OrderView';
+import { OrderView } from '../../../entities/Order';
 import { Room } from '../../../entities/Room';
 import { TimelineMode, TimelineOptions } from '../../../entities/TimelineOptions';
 import { TimelineType } from '../../../entities/TimelineTypes';

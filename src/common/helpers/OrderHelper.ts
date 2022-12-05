@@ -1,4 +1,5 @@
-import OrderView from "../../entities/OrderView";
+
+import { OrderView } from "../../entities/Order";
 import BookingHelper from "./BookingHelper";
 
 export default class OrderHelper{

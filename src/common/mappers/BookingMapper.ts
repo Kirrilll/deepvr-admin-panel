@@ -1,8 +1,9 @@
-import { BookingCreation } from "../../entities/OrderCreation";
+
+import { BookingCreation } from "../../entities/Booking";
 import { FormBooking, ROOM_PATH, TIME_PATH } from "../../features/booking-creator/ui/OrderCreateForm";
 import { CellIndeficator } from "../../features/timeline/redux/slice";
 import TimeHelper from "../helpers/TimeHelper";
-import OrderMapper from "./OrderMapper";
+
 
 export default class BookingMapper {
 

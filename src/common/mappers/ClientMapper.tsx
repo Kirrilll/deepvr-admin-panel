@@ -1,4 +1,3 @@
-import { LabeledValue } from "antd/lib/select"
 import Client, { ClientValue } from "../../entities/Client";
 
 class ClientMapper {

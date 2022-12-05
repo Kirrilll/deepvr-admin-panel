@@ -43,4 +43,21 @@ export interface Game {
     game_type: GameType;
 }
 
+export interface GameOrder {
+    id: number;
+    title: string;
+}
+
+export interface GameView{
+    id: number;
+    title: string;
+    guest_min?: number;
+    guest_max?: number;
+    price: number,
+    rooms: Room[];
+}
+
+
+
+export type GameValue = LabeledValue | {game: GameView}
 export type GameResponse = Game[];

@@ -6,16 +6,15 @@
 //Время указано в большой сущности
 
 import moment from "moment";
-import OrderView, { EConfirmStatus, EPaymentStatus } from "../../entities/OrderView";
-import { Order } from "../../entities/Order";
+
+import { Order, OrderCreation, OrderDto, OrderView } from "../../entities/Order";
 import TimeHelper from "../helpers/TimeHelper";
 import ColorPool from "../utils/color/ColorPool";
-import WorkingParamsMapper from "./WorkingParamsMapper";
-import OrderCreation, { BookingCreation } from "../../entities/OrderCreation";
 import { CellIndeficator } from "../../features/timeline/redux/slice";
 import { BOOKING_LIST_PATH, CERTIFACATES_PATH, CONFRIM_STATUS_PATH, DATE_PICKER_PATH, FormBooking, GAME_PATH, GUEST_COUNT_PATH, NAME_PATH, OrderFormState, ORDER_ID_PATH, PHONE_PICKER_PATH, PROMOCODE_PATH, ROOM_PATH, TIME_PATH } from "../../features/booking-creator/ui/OrderCreateForm";
 import BookingMapper from "./BookingMapper";
-import { OrderDTO } from "../../entities/OrderDTO";
+import { EConfirmStatus, EPaymentStatus } from "../../entities/PaymentInfo";
+
 
 
 //BookingInfo - сущночть плиточки(заказ), имеет цвет(он конструируется относительно id брони)
@@ -118,7 +117,7 @@ export default class OrderMapper {
         });
     }
 
-    static toDtoFromForm(order: OrderFormState): OrderDTO {
+    static toDtoFromForm(order: OrderFormState): OrderDto {
         return({
             id: order[ORDER_ID_PATH],
             name: order[NAME_PATH],

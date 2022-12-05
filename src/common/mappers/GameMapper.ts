@@ -1,5 +1,5 @@
-import { Game, GameResponse } from "../../entities/Game";
-import GameView, { GameValue } from "../../entities/GameView";
+import { Game, GameResponse, GameValue, GameView } from "../../entities/Game";
+
 
 
 class GameMapper {

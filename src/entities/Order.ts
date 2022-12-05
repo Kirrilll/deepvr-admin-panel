@@ -1,73 +1,17 @@
+import { Booking, BookingCreation, BookingDto, BookingView } from "./Booking";
+import Client from "./Client";
+import { EConfirmStatus, EPaymentStatus, PaymentInfo } from "./PaymentInfo";
 
-export interface Cart {
-    title: string;
-    quantity: number;
-    amount: number;
-}
-
-export interface PaymentInfo {
-    order_id: number;
-    is_payed: boolean;
-    accepted?: any;
-    instance?: any;
-    client_id: number;
-    transactions: any[];
-    promo?: any;
-    bonus: number;
-    amount: number;
-    amount_without_discount: number;
-    payed_real: number;
-    need_to_pay: number;
-    cart: Cart[];
-}
 
 export interface Pivot {
     order_id: number;
     booking_id: number;
 }
 
-export interface Game {
-    id: number;
-    title: string;
-}
-
-export interface Booking {
-    id: number;
-    booking_date: Date;
-    game_id: number;
-    room_id: number;
-    guest_quantity: number;
-    price: number;
-    comment?: any;
-    status: string;
-    deleted_at?: any;
-    created_at: Date;
-    updated_at: Date;
-    comment_user?: any;
-    user_id?: any;
-    user_name?: any;
-    user_phone: string;
-    time_duration: number;
-    room_blocked: number;
-    external_id?: any;
-    client_id: number;
-    pivot: Pivot;
-    game: Game;
-}
-
-export interface Client {
-    id: number;
-    role_id: number;
-    name: string;
-    email?: any;
-    avatar: string;
-    email_verified_at?: any;
-    temp_password?: any;
-    settings: any[];
-    created_at: Date;
-    updated_at: Date;
-    phone: string;
-    category_loyalty_id?: any;
+export interface EmptyOrder {
+    id: number,
+    updated_at: string,
+    created_at: string
 }
 
 export interface Order {
@@ -89,6 +33,45 @@ export interface Order {
     promo?: any;
     comment?: string;
     transactions: any[];
+}
+
+export interface OrderView {
+    id: number,
+    date: moment.Moment,
+    clientName: string,
+    comment?: string,
+    paymentStatus: EPaymentStatus,
+    phone: string,
+    color: string,
+    bookings: BookingView[]
+}
+
+
+export interface OrderCreation {
+    id: number,
+    date: moment.Moment,
+    clientName?: string,
+    comment?: string,
+    paymentStatus: EPaymentStatus,
+    confirmStatus: EConfirmStatus,
+    phone?: string,
+    color?: string,
+    bookings: BookingCreation[]
+}
+
+export interface OrderDto {
+    id: number;
+    token: string;
+    status: string;
+    name: string;
+    phone: string;
+    bonus: string | null;
+    employee_code: string,
+    date: string;
+    bookings: BookingDto[];
+    promo_code?: string | null;
+    comment: string | null;
+    certificates: {code: string}[] | null
 }
 
 export type OrderResponse = Order[];

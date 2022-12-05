@@ -1,5 +1,4 @@
 import { LabeledValue } from "antd/lib/select";
-import { type } from "os";
 
 interface Client {
     id: number;

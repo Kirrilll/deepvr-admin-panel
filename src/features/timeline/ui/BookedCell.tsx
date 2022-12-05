@@ -1,5 +1,4 @@
 import React from 'react';
-import OrderView, { EConfirmStatus } from '../../../entities/OrderView';
 import { CellPivot } from '../../../entities/TimelineTypes';
 import BookingPopover from './BookingPopover';
 import ConfirmStatusTag from './ConfirmStatusTag'

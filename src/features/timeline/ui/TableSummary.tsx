@@ -1,6 +1,7 @@
 import { Table } from 'antd';
 import React from 'react';
-import OrderView from '../../../entities/OrderView';
+import { OrderView } from '../../../entities/Order';
+
 
 
 interface TableSummaryProps {

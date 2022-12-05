@@ -1,9 +1,7 @@
 import axios from "axios";
 import { ClientResponse, CreatedClient } from "../entities/Client";
 import RoomResponse from "../entities/Room";
-import { Order, OrderResponse } from "../entities/Order";
-import { OrderDTO } from "../entities/OrderDTO";
-import { PrecreateOrder } from "../entities/OrderCreation";
+import { EmptyOrder, Order, OrderDto, OrderResponse } from "../entities/Order";
 import { GameResponse } from "../entities/Game";
 import WorkingShiftResponse from "../entities/WorkingShift";
 
@@ -43,7 +41,7 @@ const api = {
             }
         )
     },
-    createOrder: async (order: OrderDTO) => {
+    createOrder: async (order: OrderDto) => {
         return await axios.post<Order | ErrorResponse>(
             `${baseUrl}/v2/booking/admin`,
             order
@@ -61,7 +59,7 @@ const api = {
         )
     },
     precreateOrder: async () => {
-        return await axios.post<PrecreateOrder>(
+        return await axios.post<EmptyOrder>(
             `${baseUrl}/v2/orders/createEmpty`
         )
     },
