@@ -11,11 +11,13 @@ import Timeline from "../features/timeline/ui/Timeline";
 import { TimelineType } from "../entities/TimelineTypes";
 import StorageService from "../common/services/StorageService";
 import { closeWarning, unselectCell } from "../features/selection/redux/slice";
-import OrderCreationForm from "../features/booking-creator/ui/OrderCreateForm";
+import OrderCreationForm, { OrderFormState } from "../features/booking-creator/ui/OrderCreateForm";
 import { isTimelineReadySelector, selectRooms, selectWorkingParams } from "../features/game/redux/selectors";
 import { getGames, getRooms, getWorkingParams } from "../features/game/redux/asyncActions";
-import { selectIsCreated } from "../features/booking-creator/redux/selectors";
+import { selectIsCreated, selectIsOpen } from "../features/booking-creator/redux/selectors";
 import WarningModal from "../features/warning-modal/ui/WarningModal";
+import { createOrder } from "../features/booking-creator/redux/asyncActions";
+import OrderMapper from "../common/mappers/OrderMapper";
 const { Sider, Content } = Layout;
 
 const TimelinePage: React.FC = () => {
@@ -23,17 +25,18 @@ const TimelinePage: React.FC = () => {
     const dispatch = useAppDispatch();
 
     const { fetchingStatus, options, type, mode, data } = useAppSelector(state => state.timeLineReducer);
-    const isOpen = useAppSelector(state => state.orderCreationReducer.isOpen);
+    const isOpen = useAppSelector(state => state.orderCreationReducer.isCreating);
     const currentDate = useAppSelector(state => state.datePickerReducer.currentDate);
 
     const workingParams = useAppSelector(selectWorkingParams);
     const rooms = useAppSelector(selectRooms);
     const isReady = useAppSelector(isTimelineReadySelector);
-    const isCreated = useAppSelector(selectIsCreated);
 
     const onCancel = () => dispatch(close());
 
-    const isWarning = useAppSelector(state => state.selectionReducer.isWarning);
+    const onFinish = (value: OrderFormState) => {
+        dispatch(createOrder(OrderMapper.toDtoFromForm(value)));
+    }
 
     useEffect(() => {
         dispatch(getGames());
@@ -49,11 +52,6 @@ const TimelinePage: React.FC = () => {
     const timelineType: TimelineType = !isReady
         ? 'loading'
         : type;
-
-    const onOk = () => {
-        dispatch(unselectCell(StorageService.instance.getItem('lastSelectedItem')!));
-        dispatch(closeWarning())
-    }
 
     return (
         <>
@@ -91,8 +89,8 @@ const TimelinePage: React.FC = () => {
                     >
                         <Button onClick={onCancel}>Закрыть</Button>
                         {
-                            isCreated
-                                ? <OrderCreationForm />
+                            isOpen
+                                ? <OrderCreationForm onFinish={onFinish}/>
                                 : <Spin></Spin>
                         }
                     </Sider>

@@ -1,8 +1,9 @@
 import { AppDispatch } from "../../../app/store";
 import { CellPivot } from "../../../entities/TimelineTypes";
-import { startSelecting } from "../../../features/selection/redux/slice";
+import { multiSelectCells, startSelecting } from "../../../features/selection/redux/slice";
 import { CellIndeficator } from "../../../features/timeline/redux/slice";
 import { DEFAULT_CELL_CLASSNAME } from "../../../features/timeline/ui/Cell";
+import OrderMapper from "../../mappers/OrderMapper";
 
 interface FactoryAttrs {
     dispatch: AppDispatch,
@@ -26,7 +27,7 @@ export default class CellIdleModeFactory {
             return ({
                 isLastSelected: false,
                 className: `${DEFAULT_CELL_CLASSNAME}`,
-                onClick: ()=> {}
+                onClick: () => dispatch(startSelecting(cellId))
             })
         }
     }

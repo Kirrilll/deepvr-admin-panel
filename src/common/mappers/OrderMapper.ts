@@ -13,8 +13,9 @@ import ColorPool from "../utils/color/ColorPool";
 import WorkingParamsMapper from "./WorkingParamsMapper";
 import OrderCreation, { BookingCreation } from "../../entities/OrderCreation";
 import { CellIndeficator } from "../../features/timeline/redux/slice";
-import { FormBooking, FormState } from "../../features/booking-creator/ui/OrderCreateForm";
+import { BOOKING_LIST_PATH, CERTIFACATES_PATH, CONFRIM_STATUS_PATH, DATE_PICKER_PATH, FormBooking, GAME_PATH, GUEST_COUNT_PATH, NAME_PATH, OrderFormState, ORDER_ID_PATH, PHONE_PICKER_PATH, PROMOCODE_PATH, ROOM_PATH, TIME_PATH } from "../../features/booking-creator/ui/OrderCreateForm";
 import BookingMapper from "./BookingMapper";
+import { OrderDTO } from "../../entities/OrderDTO";
 
 
 //BookingInfo - сущночть плиточки(заказ), имеет цвет(он конструируется относительно id брони)
@@ -60,7 +61,7 @@ export default class OrderMapper {
     static fromEntity(order: Order): OrderView {
         return ({
             id: order.id,
-            phone: `8 ${order.client.phone}`,
+            phone: `${order.client.phone}`,
             clientName: order.client.name,
             comment: order.comment,
             date: moment(new Date(order.booking_date)),
@@ -70,6 +71,7 @@ export default class OrderMapper {
                 id: booking.id,
                 confirmStatus: OrderMapper._transformConfirmStatus(booking.status),
                 gameTitle: booking.game.title,
+                price: booking.price,
                 guestCount: booking.guest_quantity,
                 startTime: TimeHelper.fromDateToTime(new Date(booking.booking_date)),
                 durationMin: booking.time_duration,
@@ -100,8 +102,10 @@ export default class OrderMapper {
         })
     }
 
-    static fromCreationToForm(order: OrderCreation): FormState {
+
+    static fromCreationToForm(order: OrderCreation): OrderFormState {
         return ({
+            id: order.id,
             employeeCode: '',
             paymentStatus: order.paymentStatus == EPaymentStatus.PAID ? 1 : 0,
             confirmStatus: OrderMapper._confirmStatusToNum(order.confirmStatus),
@@ -112,5 +116,30 @@ export default class OrderMapper {
             isBonuses: false,
             bookings: order.bookings.map<FormBooking>(booking => BookingMapper.bookingToFormBooking(booking))
         });
+    }
+
+    static toDtoFromForm(order: OrderFormState): OrderDTO {
+        return({
+            id: order[ORDER_ID_PATH],
+            name: order[NAME_PATH],
+            phone: order[PHONE_PICKER_PATH],
+            status: order[CONFRIM_STATUS_PATH].toString(),
+            employee_code: '735',
+            token: '6bc8a47477b1427a6ae7f4e13789aea32c77ec29',
+            date: order[DATE_PICKER_PATH].format('YYYY-MM-DD'),
+            certificates: order[CERTIFACATES_PATH].map(certificate => ({
+                code: certificate
+            })),
+            bonus: null,
+            promo_code: order[PROMOCODE_PATH] ?? '',
+            bookings: order[BOOKING_LIST_PATH].map(booking => ({
+                id: null,
+                game_id: booking[GAME_PATH] ?? -1,
+                room_id: booking[ROOM_PATH],
+                time: booking[TIME_PATH],
+                guest_quantity: booking[GUEST_COUNT_PATH] ?? 0
+            })),
+            comment: ''
+        })
     }
 }

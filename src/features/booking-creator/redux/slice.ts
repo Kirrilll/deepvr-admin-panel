@@ -9,8 +9,9 @@ import { cellsSelector } from "../../selection/redux/selectors"
 import { FetchingStatus } from "../../timeline/redux/slice"
 import { createOrder, precreateOrder } from "./asyncActions"
 
-interface ModalState {
-    isOpen: boolean,
+
+interface OrderCreatorState {
+    isCreating: boolean,
     initialData: OrderCreation,
     orderStatus: FetchingStatus,
     creationOrderStatus: FetchingStatus,
@@ -18,8 +19,8 @@ interface ModalState {
 }
 
 
-const initialState: ModalState = {
-    isOpen: false,
+const initialState: OrderCreatorState = {
+    isCreating: false,
     initialData: {
         id: -1,
         date: moment(),
@@ -36,11 +37,11 @@ const orderCreationSlice = createSlice({
     initialState: initialState,
     reducers: {
         editOrder: (state, action: PayloadAction<OrderView>) => {
-            state.isOpen = true;
+            state.isCreating = true;
             state.initialData = OrderMapper.fromViewToCreation(action.payload);
         },
         close: (state) => {
-            state.isOpen = false;
+            state.isCreating = false;
             state.orderStatus = FetchingStatus.NEVER;
         },
         creatingPending: (state) => {
@@ -48,6 +49,7 @@ const orderCreationSlice = createSlice({
         },
         creatingFulfilled: (state) => {
             state.orderStatus = FetchingStatus.SUCCESSFULL;
+            state.isCreating = false;
         },
         creatingRejected: (state) => {
             state.orderStatus = FetchingStatus.ERROR;
@@ -55,10 +57,10 @@ const orderCreationSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(precreateOrder.pending, (state) => {
-            state.isOpen = true;
             state.creationOrderStatus = FetchingStatus.LOADING;
         }),
         builder.addCase(precreateOrder.fulfilled, (state, action: PayloadAction<OrderCreation>) => {
+            state.isCreating = true;
             state.creationOrderStatus = FetchingStatus.SUCCESSFULL;
             state.initialData = action.payload;
         })

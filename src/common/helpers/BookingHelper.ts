@@ -1,22 +1,36 @@
+import { Game } from "../../entities/Game";
+import GameView from "../../entities/GameView";
 import { BookingView } from "../../entities/OrderView";
-import { FormBooking, ROOM_PATH, TIME_PATH } from "../../features/booking-creator/ui/OrderCreateForm";
+import { FormBooking, GAME_PATH, GUEST_COUNT_PATH, ROOM_PATH, TIME_PATH } from "../../features/booking-creator/ui/OrderCreateForm";
 
 export default class BookingHelper {
 
-    static isSameView(fBooking: BookingView, sBooking: BookingView){
-        if(fBooking.id != sBooking.id) return false;
-        if(fBooking.comment != sBooking.comment) return false;
-        if(fBooking.confirmStatus != sBooking.confirmStatus) return false;
-        if(fBooking.gameId != sBooking.gameId) return false;
-        if(fBooking.guestCount != sBooking.roomId) return false;
-        if(fBooking.startTime.time != sBooking.startTime.time) return false;
+    static getAmount(games: GameView[], formBookings?: FormBooking[]): number {
+        if(formBookings === undefined) return 0;
+        if(formBookings.length === 0) return 0;
+        return formBookings
+            .map(booking => {
+                const guestCount = booking[GUEST_COUNT_PATH] ?? 0;
+                const price = games.find(game => game.id == booking[GAME_PATH])?.price ?? 0;
+                return guestCount * price;
+            })
+            .reduce((prev, next) => prev + next);
+    }
+
+    static isSameView(fBooking: BookingView, sBooking: BookingView) {
+        if (fBooking.id != sBooking.id) return false;
+        if (fBooking.comment != sBooking.comment) return false;
+        if (fBooking.confirmStatus != sBooking.confirmStatus) return false;
+        if (fBooking.gameId != sBooking.gameId) return false;
+        if (fBooking.guestCount != sBooking.roomId) return false;
+        if (fBooking.startTime.time != sBooking.startTime.time) return false;
         return true;
     }
 
-    static isSameViews(fBookings: BookingView[], sBooking: BookingView[]): boolean{
-        if(fBookings.length != sBooking.length) return false;
-        for(let index =0; index < fBookings.length; index++){
-            if(!BookingHelper.isSameView(fBookings[index], sBooking[index])){
+    static isSameViews(fBookings: BookingView[], sBooking: BookingView[]): boolean {
+        if (fBookings.length != sBooking.length) return false;
+        for (let index = 0; index < fBookings.length; index++) {
+            if (!BookingHelper.isSameView(fBookings[index], sBooking[index])) {
                 return false;
             }
         }
@@ -28,7 +42,7 @@ export default class BookingHelper {
     }
 
 
-    static bookingIntersection(prevBookings: FormBooking[], bookings: FormBooking[]){
+    static bookingIntersection(prevBookings: FormBooking[], bookings: FormBooking[]) {
         return prevBookings.filter(prevBooking => bookings.findIndex(booking => ~BookingHelper.isSame(booking, prevBooking)));
     }
 
@@ -36,9 +50,9 @@ export default class BookingHelper {
         // console.log(prevBookings);
         // console.log(bookings);
         const bookingJoined: FormBooking[] = []
-        for(const booking of bookings){
+        for (const booking of bookings) {
             const prevBookingIndex = prevBookings.findIndex(prevBooking => BookingHelper.isSame(booking, prevBooking));
-            if(~prevBookingIndex) bookingJoined.push(prevBookings[prevBookingIndex]);
+            if (~prevBookingIndex) bookingJoined.push(prevBookings[prevBookingIndex]);
             else bookingJoined.push(booking)
         }
         return bookingJoined;

@@ -7,6 +7,11 @@ import { PrecreateOrder } from "../entities/OrderCreation";
 import { GameResponse } from "../entities/Game";
 import WorkingShiftResponse from "../entities/WorkingShift";
 
+export interface ErrorResponse {
+    error: number,
+    error_text: string
+}
+
 const baseUrl = process.env.REACT_APP_API_URL;
 const api = {
     getTimeline: async (date: moment.Moment) => {
@@ -14,7 +19,7 @@ const api = {
             `${baseUrl}/v2/orders/test`,
             {
                 params: {
-                    date: date.calendar({ sameDay: (today) => 'YYYY-MM-DD' })
+                    date: date.format('YYYY-MM-DD' )
                 }
             }
         )
@@ -39,17 +44,19 @@ const api = {
         )
     },
     createOrder: async (order: OrderDTO) => {
-        return await axios.post<Order>(
+        return await axios.post<Order | ErrorResponse>(
             `${baseUrl}/v2/booking/admin`,
             order
         )
     },
-    validatePromoCode: async (promoCode: string) => {
+    validatePromoCode: async (promoCode: string, price: number, gameId: number) => {
         return await axios.post(
             `${baseUrl}/v2/promo/activate`,
             {
                 token: '6bc8a47477b1427a6ae7f4e13789aea32c77ec29',
-                promoCode: promoCode
+                promo_code: promoCode,
+                price: price,
+                game: gameId
             }
         )
     },

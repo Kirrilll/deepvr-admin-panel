@@ -7,7 +7,7 @@ import OrderMapper from "./OrderMapper";
 export default class BookingMapper {
 
 
-    
+
     static bookingFromCell(cell: CellIndeficator): BookingCreation {
         return ({
             startTime: TimeHelper.transformStringToTime(cell.time),
@@ -24,35 +24,28 @@ export default class BookingMapper {
         })
     }
 
-    static toFormBookingFromCells(cell: CellIndeficator): FormBooking{
-        return ({
-            time: cell.time,
-            gameId: null,
-            roomId: cell.roomId,
-            guestCount: null,
-        })
-    }
-
-    static toFormBooking(cell: CellIndeficator): FormBooking{
-        
+    static toFormBooking(cell: CellIndeficator): FormBooking {
         return BookingMapper.bookingToFormBooking(BookingMapper.bookingFromCell(cell));
     }
 
     static toFormBookings(cells: CellIndeficator[]): FormBooking[] {
-        //console.log(cells);
-
-        const formBookings =  cells.map(cell => BookingMapper.toFormBookingFromCells(cell));
-        //console.log(formBookings);
+        const formBookings = cells.map<FormBooking>(cell => ({
+            time: cell.time,
+            roomId: cell.roomId,
+            gameId: null,
+            guestCount: null
+        }));
         return formBookings;
     }
 
-    static toCell (booking: FormBooking, date: string): CellIndeficator {
+    static toCell(booking: FormBooking, date: string): CellIndeficator {
         return ({
             time: booking[TIME_PATH],
             roomId: booking[ROOM_PATH],
             date: date
         })
     }
+
 
 
 }

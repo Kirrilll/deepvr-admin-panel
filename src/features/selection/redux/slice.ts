@@ -7,21 +7,20 @@ import { CellIndeficator } from "../../timeline/redux/slice";
 export interface SelectionState {
     isSelection: boolean,
     selectedCells: CellIndeficator[],
-    isWarning: boolean
 }
 
 const initilaState: SelectionState = {
     isSelection: false,
     selectedCells: [],
-    isWarning: false
 }
 
 export const startSelecting = createAction<CellIndeficator>('startSelecting');
+export const multiSelectCells = createAction<CellIndeficator[]>('multiSelect')
 export const endSelecting = createAction('endSelectiong');
 export const selectCell = createAction<CellIndeficator>('selectCell');
 export const unselectCell = createAction<CellIndeficator>('unselectCellSafety');
 export const closeWarning = createAction('closeWarning');
-
+export const resetSelection = createAction('resetSelection');
 
 const getFiltredCells = (selectedCells: CellIndeficator[], unselectedCell: CellIndeficator) => {
     return selectedCells.filter(cell => !CellHelper.isSame(cell, unselectedCell));
@@ -40,15 +39,20 @@ const selectionSlice = createSlice({
                 state.isSelection = true;
                 state.selectedCells = [action.payload];
             })
-            .addCase(closeWarning, (state) => {
-                state.isWarning = false;
-            })
             .addCase(unselectCell, (state, action) => {
                 const cells = getFiltredCells(state.selectedCells, action.payload);
                 state.selectedCells = cells;
             })
+            .addCase(resetSelection, state => {
+                state.isSelection = false;
+                state.selectedCells = [];
+            })
+            .addCase(multiSelectCells, (state, action) => {
+                state.isSelection = true;
+                state.selectedCells = [...action.payload];
+            })
             .addMatcher(
-                isAnyOf(unselectCell, unselectCell),
+                isAnyOf(unselectCell),
                 (state) => {
                     if (state.selectedCells.length === 0) {
                         state.isSelection = false;

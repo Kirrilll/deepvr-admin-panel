@@ -30,6 +30,7 @@ export interface BookingView {
     guestCount: number,
     startTime: Time,
     durationMin: number,
+    price: number,
     roomId: number,
     gameId: number,
     comment?: string,

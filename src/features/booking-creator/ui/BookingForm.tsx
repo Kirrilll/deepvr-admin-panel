@@ -23,22 +23,18 @@ interface BookingFormProps {
     color: string,
     date: moment.Moment
     orderId: number,
-    remove: () => void
 }
 
 
-const BookingForm: React.FC<BookingFormProps> = ({ color, orderId, field, date, booking, remove }) => {
+const BookingForm: React.FC<BookingFormProps> = ({ color, orderId, field, date, booking }) => {
     const games = useAppSelector(buildGamesByRoomSelector(booking[ROOM_PATH]));
     const rooms = useAppSelector(selectRooms);
     // const room = useAppSelector(buildRoomByIdSelector(booking[ROOM_PATH]));
     const gamesOptions = useMemo(() => GameMapper.gamesToValues(games), [games])
     const roomsOptions = useMemo(() => RoomMapper.gamesToValues(rooms), [rooms]);
 
-
-
     const dispatch = useAppDispatch();
     const onOnDeleteItem = () => {
-        remove();
         dispatch(unselectCell(BookingMapper.toCell(booking, date.format('YYYY-MM-DD'))))
     }
 
@@ -47,7 +43,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ color, orderId, field, date, 
             <div style={{ backgroundColor: color }} className="booking-form__header">
                 <Row justify='space-between' align='middle' style={{ height: '100%' }}>
                     <div>Заказ {orderId}</div>
-                    <div style ={{cursor: 'pointer'}} onClick={onOnDeleteItem}>
+                    <div style={{ cursor: 'pointer' }} onClick={onOnDeleteItem}>
                         <img src={REMOVE_ICON} />
                     </div>
 
@@ -55,6 +51,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ color, orderId, field, date, 
             </div>
             <div className="booking-form__wrapper">
                 <Form.Item
+                    initialValue={booking[ROOM_PATH]}
                     key={field.key + '1'}
                     name={[field.name, ROOM_PATH]}
                 >
@@ -70,9 +67,13 @@ const BookingForm: React.FC<BookingFormProps> = ({ color, orderId, field, date, 
                 <Form.Item
                     key={field.key + '2'}
                     name={[field.name, GAME_PATH]}
+                    initialValue={booking[GAME_PATH]}
+                    rules = {[
+                        {required: true}
+                    ]}
                 >
                     <Select
-                        labelInValue
+                        // labelInValue
                         options={gamesOptions}
                         style={{ height: '40px' }}
                         placeholder='Игра'
@@ -80,8 +81,13 @@ const BookingForm: React.FC<BookingFormProps> = ({ color, orderId, field, date, 
                     />
                 </Form.Item>
                 <Form.Item
+                    initialValue={booking[GUEST_COUNT_PATH]}
                     key={field.key + '3'}
                     name={[field.name, GUEST_COUNT_PATH]}
+                    rules = {[
+                        // {type: 'number', max: 10},
+                        {required: true, message: 'Это поле обязательно'},
+                    ]}
                 >
                     <Input
                         bordered={false}
@@ -89,6 +95,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ color, orderId, field, date, 
                         className='default-input' />
                 </Form.Item>
                 <Form.Item
+                    initialValue={booking[TIME_PATH]}
                     key={field.key + '4'}
                     name={[field.name, TIME_PATH]}
                 >

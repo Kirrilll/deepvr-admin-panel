@@ -34,11 +34,11 @@ const CertificatesList: React.FC<CertificateListProps> = ({ globalForm }) => {
 
 
     return (
-            <Form.List name={CERTIFACATES_PATH}>
+            <Form.List name={CERTIFACATES_PATH} >
                 {
                     (fields, { add, remove }) => (
                         <>
-                            <Row gutter={[0, 20]} align='middle'>
+                            <Row style={{marginTop: '20px'}} gutter={[0, 20]} align='middle'>
                                 <Col span={12} style={{ marginRight: '20px' }}>
                                     <Form.Item name={'addInput'}>
                                         <Input

@@ -35,7 +35,7 @@ export default class TimeHelper {
     }
 
     static transformTimeNumToTimeStr(value: number): string {
-        return value > 10 ? value.toString() : `0${value}`;
+        return value >= 10 ? value.toString() : `0${value}`;
     }
 
     static fromDateToMinutes(date: Date): number {
@@ -60,7 +60,7 @@ export default class TimeHelper {
     }
 
     static getTimeFromMinutes(minutes: number) {
-        const hours = Math.floor(minutes / 60);
+        const hours = Math.round(minutes / 60);
         const mins = minutes - hours * 60;
         return `${TimeHelper.transformTimeNumToTimeStr(hours)}:${TimeHelper.transformTimeNumToTimeStr(mins)}`;
     }

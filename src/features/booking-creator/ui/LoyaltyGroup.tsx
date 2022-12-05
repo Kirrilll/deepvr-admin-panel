@@ -16,45 +16,50 @@ const LoyaltyGroup: React.FC<LoyaltyGroupProps> = ({ globalForm, clientId }) => 
     const [isUsePromocode, setUsePromocode] = useState<boolean>(true);
     const onChangeToggle = (checked: boolean) => setUsePromocode(checked);
 
+    const isIdentified = useMemo(() => clientId != null, [clientId]);
 
+    const onPromocodeApply = () =>{
+        globalForm.validateFields([PROMOCODE_PATH]);
+    }
 
     return (
-        <div style={{ marginTop: '20px' }}>
-            <Col span={12} >
-                <Row justify='space-between' >
-                    <div className="creation-form-label" >Лояльность:</div>
-                    <Switch
-                        className='loyalty-switch'
-                        onChange={onChangeToggle}
-                        checkedChildren={'Промокод'}
-                        unCheckedChildren={'Бонусы'}
-                        checked={isUsePromocode}
-                    />
-                </Row>
-            </Col>
-            {
-                isUsePromocode
-                    ? <Form.Item
-                        dependencies={[PHONE_PICKER_PATH]}
-                        name={PROMOCODE_PATH}
-                        label={<div className="creation-form-label">Введите промокоды: {globalForm.getFieldValue(PHONE_PICKER_PATH)}</div>}
-                    >
-                        <Row gutter={[20, 20]}>
-                            <Col span={12}>
-                                <Input
-                                    className="default-input"
-                                    bordered={false} />
-                            </Col>
-                            <Col span={6}>
-                                <Button className="default-btn">
-                                    Применить
-                                </Button>
-                            </Col>
-                        </Row>
-                    </Form.Item>
-                    : <BonusGroup />
-            }
-        </div>
+        isIdentified
+            ? <div style={{ marginTop: '20px' }}>
+                <Col span={12} >
+                    <Row justify='space-between' >
+                        <div className="creation-form-label" >Лояльность:</div>
+                        <Switch
+                            className='loyalty-switch'
+                            onChange={onChangeToggle}
+                            checkedChildren={'Промокод'}
+                            unCheckedChildren={'Бонусы'}
+                            checked={isUsePromocode}
+                        />
+                    </Row>
+                </Col>
+                {
+                    isUsePromocode
+                        ? <Form.Item
+                            name={PROMOCODE_PATH}
+                            label={<div className="creation-form-label">Введите промокоды:</div>}
+                        >
+                            <Row gutter={[20, 20]}>
+                                <Col span={12}>
+                                    <Input
+                                        className="default-input"
+                                        bordered={false} />
+                                </Col>
+                                <Col span={6}>
+                                    <Button onClick={onPromocodeApply} className="default-btn" >
+                                        Применить
+                                    </Button>
+                                </Col>
+                            </Row>
+                        </Form.Item>
+                        : <BonusGroup />
+                }
+            </div>
+            : null
     );
 }
 

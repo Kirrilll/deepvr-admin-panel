@@ -8,8 +8,8 @@ import CellModeFactory, { TimelineModeExtended } from '../../../common/utils/cel
 import { CellIndeficator } from '../redux/slice';
 import { selectMode } from '../../selection/redux/selectors';
 import { precreateOrder } from '../../booking-creator/redux/asyncActions';
-import { selectIsOpen } from '../../booking-creator/redux/selectors';
 import CellHelper from '../../../common/helpers/CellHelper';
+import { selectIsOpen } from '../../booking-creator/redux/selectors';
 
 export const DEFAULT_CELL_CLASSNAME = 'table__cell';
 

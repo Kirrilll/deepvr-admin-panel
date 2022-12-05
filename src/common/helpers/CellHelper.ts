@@ -42,6 +42,12 @@ class CellHelper {
         }
         return isSequence;
     }
+
+    static generateId(identificator: CellIndeficator) {
+        return Number.parseInt(TimeHelper.getTimeInMinutes(identificator.time) 
+        + '' + identificator.roomId 
+        + '' + new Date(identificator.date).getMinutes());
+    }
 }
 
 

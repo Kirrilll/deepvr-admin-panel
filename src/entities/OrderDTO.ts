@@ -1,5 +1,6 @@
 
 export interface BookingShort {
+    id: string | null; 
     time: string;
     room_id: number;
     game_id: number;
@@ -11,6 +12,7 @@ interface Certificate{
 }
 
 export interface OrderDTO {
+    id: number;
     token: string;
     status: string;
     name: string;
