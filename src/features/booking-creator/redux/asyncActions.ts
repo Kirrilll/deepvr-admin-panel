@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AppDispatch } from "../../../app/store";
-import { addOrder, CellIndeficator } from "../../timeline/redux/slice";
+import { insertOrder, CellIndeficator } from "../../timeline/redux/slice";
 import api from "../../../repositories/Api";
 import { creatingFulfilled, creatingPending, creatingRejected } from "./slice";
 import OrderMapper from "../../../common/mappers/OrderMapper";
@@ -26,7 +26,7 @@ export const createOrder = (order: OrderDto) => (dispatch: AppDispatch) => {
                 }
                 // if(res.status === 200){
                 dispatch(creatingFulfilled());
-                dispatch(addOrder(res.data as Order))
+                dispatch(insertOrder(res.data as Order))
                 dispatch(resetSelection());
                 //}
             }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { CellPivot } from '../../../entities/TimelineTypes';
+import { CellPivot } from '../../../entities/Cell';
 import BookingPopover from './BookingPopover';
 import ConfirmStatusTag from './ConfirmStatusTag'
 

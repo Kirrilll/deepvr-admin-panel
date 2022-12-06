@@ -9,6 +9,8 @@ import { useAppDispatch, useAppSelector } from '../../../app/store';
 import {editOrder} from '../../booking-creator/redux/slice';
 import { OrderView } from '../../../entities/Order';
 import { EPaymentStatus } from '../../../entities/PaymentInfo';
+import { multiSelectCells } from '../../selection/redux/slice';
+import CellMapper from '../../../common/mappers/CellMapper';
 
 type BookingPopupProps = Omit<PopoverProps
     & React.RefAttributes<unknown>
@@ -52,8 +54,11 @@ const BookingPopoverContent: React.FC<{ order: OrderView }> = ({ order }) => {
         }
     }, [order.paymentStatus]);
 
-    //ПОФИКСИТЬ!!!
-    const onClick = () => dispatch(editOrder(order));
+
+    const onClick = () => {
+        dispatch(multiSelectCells(CellMapper.toCellFromOrderView(order)))
+        dispatch(editOrder(order))
+    };
 
     // const buildTimeInterval = () => {
     //     return `${bookingInfo.timeStart}-${bookingInfo.timeEnd}`;

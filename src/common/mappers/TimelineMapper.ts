@@ -1,7 +1,8 @@
 
+import { CellPivot } from "../../entities/Cell";
 import { OrderView } from "../../entities/Order";
 import { Room } from "../../entities/Room";
-import { CellPivot, OrderCellMatrix } from "../../entities/TimelineTypes";
+import { OrderCellMatrix } from "../../entities/TimelineTypes";
 
 
 type OrderMapDefault = Map<number, Map<string, CellPivot | null>>;

@@ -1,10 +1,9 @@
 import { ColumnsType, ColumnType } from "antd/lib/table";
-import { ReactNode } from "react";
 import { Room } from "../../../entities/Room";
 import { OrderCellMatrix, Row } from "../../../entities/TimelineTypes";
 import { SummaryCallback, TimelineBuilder } from "../../../entities/TimelineUtilsTypes";
 import Cell from "../../../features/timeline/ui/Cell";
-import MathHelper from "../../helpers/MathHelper";
+
 
 type RowDefault = Row<Room>;
 
@@ -83,11 +82,11 @@ class TimelineDefaultBuilder implements TimelineBuilder {
                 // },
                 dataIndex: time,
                 render: (value, data) => {
-                    return <Cell
-                        time={time}
+                    return (<Cell
                         roomId={data.leadingCol.id}
+                        time={time}
                         pivot={data.shedule.at(index) ?? null}
-                    />
+                    />)
                 }
             }))
         ]

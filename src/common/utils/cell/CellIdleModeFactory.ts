@@ -1,25 +1,22 @@
 import { AppDispatch } from "../../../app/store";
-import { CellPivot } from "../../../entities/TimelineTypes";
-import { multiSelectCells, startSelecting } from "../../../features/selection/redux/slice";
-import { CellIndeficator } from "../../../features/timeline/redux/slice";
-import { DEFAULT_CELL_CLASSNAME } from "../../../features/timeline/ui/Cell";
-import OrderMapper from "../../mappers/OrderMapper";
+import { CellView } from "../../../entities/Cell";
+import { startSelecting } from "../../../features/selection/redux/slice";
+import  { DEFAULT_CELL_CLASSNAME } from "../../../features/timeline/ui/Cell";
 
 interface FactoryAttrs {
     dispatch: AppDispatch,
-    pivot: CellPivot | null,
-    cellId: CellIndeficator
+    cell: CellView
 }
 
 export default class CellIdleModeFactory {
     static createIdleMode(attrs: FactoryAttrs) {
-        const { dispatch, pivot, cellId } = attrs;
-        if (pivot == null) {
+        const { dispatch, cell } = attrs;
+        if (cell.pivot == null) {
             return ({
                 isLastSelected: false,
                 className: `${DEFAULT_CELL_CLASSNAME}`,
                 onClick: (e: React.MouseEvent<HTMLDivElement>) => {
-                    dispatch(startSelecting(cellId))
+                    dispatch(startSelecting(cell))
                 }
             })
         }
@@ -27,7 +24,7 @@ export default class CellIdleModeFactory {
             return ({
                 isLastSelected: false,
                 className: `${DEFAULT_CELL_CLASSNAME}`,
-                onClick: () => dispatch(startSelecting(cellId))
+                onClick: () => {}
             })
         }
     }

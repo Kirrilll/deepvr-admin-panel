@@ -1,19 +1,19 @@
 import { AppDispatch } from "../../../app/store";
-import { CellPivot } from "../../../entities/TimelineTypes";
+import { CellView, CellPivot } from "../../../entities/Cell";
 import { selectCell, unselectCell, } from "../../../features/selection/redux/slice";
 import { CellIndeficator } from "../../../features/timeline/redux/slice";
 import { DEFAULT_CELL_CLASSNAME } from "../../../features/timeline/ui/Cell";
 import CellHelper from "../../helpers/CellHelper";
 
 interface CreateSelectionModeAttrs {
-    selectedCells: CellIndeficator[],
-    cellId: CellIndeficator,
+    selectedCells: CellView[],
+    cell: CellView,
     dispatch: AppDispatch,
-    pivot: CellPivot | null
 }
 
 
-const timeRule = (selectedCells: CellIndeficator[], cellId: CellIndeficator) => selectedCells
+const timeRule = (selectedCells: CellView[], cellId: CellIndeficator) => selectedCells
+    .map(cell => cell.id)
     .map(selectedCellId => CellHelper.isNextOrPrev(cellId, selectedCellId))
     .reduce((prev, next) => prev || next);
 
@@ -21,25 +21,25 @@ const pivotRule = (pivot: CellPivot | null) => pivot === null;
 
 class CellSelectionModeFactory {
     static createSelectionMode(attrs: CreateSelectionModeAttrs) {
-        const {selectedCells, cellId, dispatch, pivot} = attrs;
-        if (~selectedCells.findIndex(selectedCellid => CellHelper.isSame(selectedCellid, cellId))) {
+        const { selectedCells, cell, dispatch } = attrs;
+        if (~selectedCells.findIndex(selectedCell => CellHelper.isSame(selectedCell.id, cell.id))) {
             return ({
-                isLastSelected: CellHelper.isSame(selectedCells[selectedCells.length-1], cellId),
+                isLastSelected: CellHelper.isSame(selectedCells[selectedCells.length - 1].id, cell.id),
                 className: DEFAULT_CELL_CLASSNAME + ' selected',
-                onClick: () => dispatch(unselectCell(cellId))
+                onClick: () => dispatch(unselectCell(cell))
             })
         }
-        if (timeRule(selectedCells, cellId) && pivotRule(pivot)) {
+        if (timeRule(selectedCells, cell.id) && pivotRule(cell.pivot)) {
             return ({
                 isLastSelected: false,
                 className: DEFAULT_CELL_CLASSNAME + ' selectable',
-                onClick: () => dispatch(selectCell(cellId))
+                onClick: () => dispatch(selectCell(cell))
             })
         }
         return ({
             isLastSelected: false,
             className: DEFAULT_CELL_CLASSNAME,
-            onClick: () =>  dispatch(selectCell(cellId))
+            onClick: () => dispatch(selectCell(cell))
         })
     }
 }

@@ -1,20 +1,10 @@
 import { ColumnsType } from "antd/lib/table"
-import { OrderView } from "./Order";
+import { CellPivot } from "./Cell";
 import { Room } from "./Room"
 
 
 export type TimelineType = 'loading' | 'transposed' | 'default';
 
-
-interface BookingInfo {
-    order: OrderView,
-    bookingIndex: number
-}
-
-export interface CellPivot {
-    order: OrderView,
-    bookingIndex: number
-}
 
 export type OrderCellMatrix = (CellPivot | null)[][];
 

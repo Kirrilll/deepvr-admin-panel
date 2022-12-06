@@ -1,12 +1,12 @@
-import { AnyAction, createAction, createSlice, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
+import { createAction, createSlice, isAnyOf } from "@reduxjs/toolkit";
 import CellHelper from "../../../common/helpers/CellHelper";
-import TimeHelper from "../../../common/helpers/TimeHelper";
 import StorageService from "../../../common/services/StorageService";
+import { CellView } from "../../../entities/Cell";
 import { CellIndeficator } from "../../timeline/redux/slice";
 
 export interface SelectionState {
     isSelection: boolean,
-    selectedCells: CellIndeficator[],
+    selectedCells: CellView[],
 }
 
 const initilaState: SelectionState = {
@@ -14,16 +14,16 @@ const initilaState: SelectionState = {
     selectedCells: [],
 }
 
-export const startSelecting = createAction<CellIndeficator>('startSelecting');
-export const multiSelectCells = createAction<CellIndeficator[]>('multiSelect')
+export const startSelecting = createAction<CellView>('startSelecting');
+export const multiSelectCells = createAction<CellView[]>('multiSelect')
 export const endSelecting = createAction('endSelectiong');
-export const selectCell = createAction<CellIndeficator>('selectCell');
-export const unselectCell = createAction<CellIndeficator>('unselectCellSafety');
+export const selectCell = createAction<CellView>('selectCell');
+export const unselectCell = createAction<CellView>('unselectCellSafety');
 export const closeWarning = createAction('closeWarning');
 export const resetSelection = createAction('resetSelection');
 
-const getFiltredCells = (selectedCells: CellIndeficator[], unselectedCell: CellIndeficator) => {
-    return selectedCells.filter(cell => !CellHelper.isSame(cell, unselectedCell));
+const getFiltredCells = (selectedCells: CellView[], unselectedCell: CellView) => {
+    return selectedCells.filter(cell => !CellHelper.isSame(cell.id, unselectedCell.id));
 }
 
 const selectionSlice = createSlice({
@@ -62,7 +62,7 @@ const selectionSlice = createSlice({
             .addMatcher(
                 isAnyOf(selectCell, startSelecting, unselectCell),
                 (state, action) => {
-                    StorageService.instance.setItem('lastSelectedItem', action.payload);
+                    StorageService.instance.setItem('lastSelectedItem', action.payload.id);
                 }
             )
 

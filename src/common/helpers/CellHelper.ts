@@ -1,6 +1,6 @@
-import { CellPivot } from "../../entities/TimelineTypes";
+
+import { CellPivot } from "../../entities/Cell";
 import { CellIndeficator } from "../../features/timeline/redux/slice";
-import { CellProps } from "../../features/timeline/ui/Cell";
 import OrderHelper from "./OrderHelper";
 import TimeHelper from "./TimeHelper";
 
@@ -13,12 +13,6 @@ class CellHelper {
         return true;
     }
 
-    static isPropsEquals(cellPropsOne: Readonly<CellProps>, cellPropsSecond: Readonly<CellProps>): boolean {
-        if(cellPropsOne.roomId != cellPropsSecond.roomId) return false;
-        if(cellPropsOne.time != cellPropsSecond.time) return false;
-        if(!CellHelper.isCellsPivotsEquals(cellPropsOne.pivot, cellPropsSecond.pivot)) return false;
-        return true;
-    }
 
     static isSame(cellOne: CellIndeficator, cellTwo: CellIndeficator): boolean {
         return cellOne.date === cellTwo.date && cellOne.roomId === cellTwo.roomId && cellOne.time === cellTwo.time;

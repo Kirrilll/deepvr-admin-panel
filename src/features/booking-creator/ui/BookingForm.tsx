@@ -12,6 +12,7 @@ import RoomMapper from "../../../common/mappers/RoomMapper";
 import { FormInstance } from "antd/es/form/Form";
 import { unselectCell } from "../../selection/redux/slice";
 import BookingMapper from "../../../common/mappers/BookingMapper";
+import CellMapper from "../../../common/mappers/CellMapper";
 
 
 
@@ -33,7 +34,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ color, orderId, field, date, 
 
     const dispatch = useAppDispatch();
     const onOnDeleteItem = () => {
-        dispatch(unselectCell(BookingMapper.toCell(booking, date.format('YYYY-MM-DD'))))
+        dispatch(unselectCell(CellMapper.toCellFromFormBooking(booking, date)))
     }
 
     return (

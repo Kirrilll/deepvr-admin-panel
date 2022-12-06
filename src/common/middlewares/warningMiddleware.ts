@@ -1,6 +1,7 @@
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "@reduxjs/toolkit";
 import { valueType } from "antd/lib/statistic/utils";
 import { AppDispatch, RootState } from "../../app/store";
+import { CellView } from "../../entities/Cell";
 import { selectCells } from "../../features/selection/redux/selectors";
 import { selectCell, startSelecting, unselectCell } from "../../features/selection/redux/slice";
 import { CellIndeficator } from "../../features/timeline/redux/slice";
@@ -13,23 +14,23 @@ interface WarningRule<T> {
     warningMessage: string,
 }
 
-const selectionRule: WarningRule<CellIndeficator[]> = {
+const selectionRule: WarningRule<CellView[]> = {
     actions: [startSelecting, selectCell],
-    isWarningRule: (selectedCells: CellIndeficator[]) => !CellHelper.isSequence(selectedCells),
+    isWarningRule: (selectedCells: CellView[]) => !CellHelper.isSequence(selectedCells.map(cell => cell.id)),
     warningMessage: 'Может образоваться временная яма'
 }
 
-const unselectRule: WarningRule<CellIndeficator[]> = {
+const unselectRule: WarningRule<CellView[]> = {
     actions: [unselectCell],
-    isWarningRule: (selectedCells: CellIndeficator[]) => !CellHelper.isSequence(selectedCells),
+    isWarningRule: (selectedCells: CellView[]) => !CellHelper.isSequence(selectedCells.map(cell => cell.id)),
     warningMessage: 'Может образоваться временная яма'
 }
 
-const selectWithDiffDateRule: WarningRule<CellIndeficator[]> = {
+const selectWithDiffDateRule: WarningRule<CellView[]> = {
     actions: [selectCell],
-    isWarningRule: (selectedCells: CellIndeficator[]) => {
-        const baseCellDate = selectedCells[0].date;
-        const lastCellDate = selectedCells[selectedCells.length - 1].date;
+    isWarningRule: (selectedCells: CellView[]) => {
+        const baseCellDate = selectedCells[0].id.date;
+        const lastCellDate = selectedCells[selectedCells.length - 1].id.date;
         return baseCellDate != lastCellDate;
     },
     warningMessage: `Вы уверены что хотите создать бронь на эту дату.
@@ -43,7 +44,7 @@ const warningMiddleware: Middleware = (storeApi: MiddlewareAPI<AppDispatch>) => 
         return next(action);
     }
     if(~selectWithDiffDateRule.actions.findIndex(act => act.type === action.type)){
-        const selectedItem = action.payload as CellIndeficator;
+        const selectedItem = action.payload as CellView;
         const selectedCells = selectCells(state);
         const newSelectedCells = [...selectedCells, selectedItem];
         if(selectWithDiffDateRule.isWarningRule(newSelectedCells)){
@@ -57,7 +58,7 @@ const warningMiddleware: Middleware = (storeApi: MiddlewareAPI<AppDispatch>) => 
         }
     }
     if (~selectionRule.actions.findIndex(act => act.type == action.type)) {
-        const selectedItem = action.payload as CellIndeficator;
+        const selectedItem = action.payload as CellView;
         const selectedCells = selectCells(state);
         const newSelectedCells = [...selectedCells, selectedItem];
         if (selectionRule.isWarningRule(newSelectedCells)) {
@@ -71,9 +72,9 @@ const warningMiddleware: Middleware = (storeApi: MiddlewareAPI<AppDispatch>) => 
         }
     }
     if (~unselectRule.actions.findIndex(act => act.type === action.type)) {
-        const selectedItem = action.payload as CellIndeficator;
+        const selectedItem = action.payload as CellView;
         const selectedCells = selectCells(state);
-        const newSelectedCells = selectedCells.filter(cell => !CellHelper.isSame(selectedItem, cell));
+        const newSelectedCells = selectedCells.filter(cell => !CellHelper.isSame(selectedItem.id, cell.id));
         if (unselectRule.isWarningRule(newSelectedCells)) {
             return dispatch(addWarning({
                 message: unselectRule.warningMessage,

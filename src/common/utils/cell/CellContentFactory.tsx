@@ -1,4 +1,5 @@
-import { CellPivot } from "../../../entities/TimelineTypes";
+
+import { CellPivot } from "../../../entities/Cell";
 import BookedCell from "../../../features/timeline/ui/BookedCell";
 
 class CellContentFactory {

@@ -1,5 +1,6 @@
 
 import { BookingCreation } from "../../entities/Booking";
+import { CellView } from "../../entities/Cell";
 import { FormBooking, ROOM_PATH, TIME_PATH } from "../../features/booking-creator/ui/OrderCreateForm";
 import { CellIndeficator } from "../../features/timeline/redux/slice";
 import TimeHelper from "../helpers/TimeHelper";
@@ -29,12 +30,12 @@ export default class BookingMapper {
         return BookingMapper.bookingToFormBooking(BookingMapper.bookingFromCell(cell));
     }
 
-    static toFormBookings(cells: CellIndeficator[]): FormBooking[] {
+    static toFormBookings(cells: CellView[]): FormBooking[] {
         const formBookings = cells.map<FormBooking>(cell => ({
-            time: cell.time,
-            roomId: cell.roomId,
-            gameId: null,
-            guestCount: null
+            time: cell.id.time,
+            roomId: cell.id.roomId,
+            gameId: cell.pivot?.order.bookings.at(cell.pivot.bookingIndex)?.gameId ?? null,
+            guestCount: cell.pivot?.order.bookings.at(cell.pivot.bookingIndex)?.guestCount ?? null
         }));
         return formBookings;
     }

@@ -63,8 +63,16 @@ const timelineSlice = createSlice({
         toggleFixed: (state) => {
             state.options.isFixed = !state.options.isFixed;
         },
-        addOrder: (state, action: PayloadAction<Order>) => {
-            state.data = [...state.data, OrderMapper.fromEntity(action.payload)];
+        insertOrder: (state, action: PayloadAction<Order>) => {
+            const insertedOrder =  OrderMapper.fromEntity(action.payload);
+            const insertedOrderDuplicateIndex = state.data.findIndex(order => order.id === insertedOrder.id);
+            if(~insertedOrderDuplicateIndex){
+                state.data = [...state.data.slice(0, insertedOrderDuplicateIndex), insertedOrder, ...state.data.slice(insertedOrderDuplicateIndex+1)];
+            }
+            else{
+                state.data = [...state.data, insertedOrder];
+            }
+            
         }
     },
     extraReducers: (builder) => {
@@ -82,5 +90,5 @@ const timelineSlice = createSlice({
 
 export default timelineSlice.reducer;
 
-export const { toggleFixed, toggleTranspose, addOrder } = timelineSlice.actions;
+export const { toggleFixed, toggleTranspose, insertOrder } = timelineSlice.actions;
 

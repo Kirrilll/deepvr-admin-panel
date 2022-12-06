@@ -1,6 +1,10 @@
 import { BookingView } from "./Booking"
 import { OrderView } from "./Order"
 
+export interface CellPivot {
+    order: OrderView,
+    bookingIndex: number
+}
 
 export interface CellIndeficator {
     time: string,
@@ -8,10 +12,7 @@ export interface CellIndeficator {
     date: string
 }
 
-export interface Cell{
+export interface CellView {
     id: CellIndeficator,
-    pivot: {
-        order: Omit<OrderView, 'bookings'>,
-        booking: BookingView
-    }
+    pivot: CellPivot | null
 }
