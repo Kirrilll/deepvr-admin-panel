@@ -40,7 +40,6 @@ const BookingPopoverContent: React.FC<{ order: OrderView }> = ({ order }) => {
 
     const dispatch = useAppDispatch();
     const currentDate = order.date
-
     const paymentStatusView = useMemo(() => {
         if (order.paymentStatus == EPaymentStatus.PAID) {
             return {

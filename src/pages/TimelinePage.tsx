@@ -10,7 +10,7 @@ import SettingContainer from "../features/timeline/ui/SettingsContainer";
 import Timeline from "../features/timeline/ui/Timeline";
 import { TimelineType } from "../entities/TimelineTypes";
 import StorageService from "../common/services/StorageService";
-import { closeWarning, unselectCell } from "../features/selection/redux/slice";
+import { closeWarning, resetSelection, unselectCell } from "../features/selection/redux/slice";
 import OrderCreationForm, { OrderFormState } from "../features/booking-creator/ui/OrderCreateForm";
 import { isTimelineReadySelector, selectRooms, selectWorkingParams } from "../features/game/redux/selectors";
 import { getGames, getRooms, getWorkingParams } from "../features/game/redux/asyncActions";
@@ -24,7 +24,7 @@ const TimelinePage: React.FC = () => {
 
     const dispatch = useAppDispatch();
 
-    const { fetchingStatus, options, type, mode, data } = useAppSelector(state => state.timeLineReducer);
+    const { options, type, data } = useAppSelector(state => state.timeLineReducer);
     const isOpen = useAppSelector(state => state.orderCreationReducer.isCreating);
     const currentDate = useAppSelector(state => state.datePickerReducer.currentDate);
 
@@ -32,7 +32,10 @@ const TimelinePage: React.FC = () => {
     const rooms = useAppSelector(selectRooms);
     const isReady = useAppSelector(isTimelineReadySelector);
 
-    const onCancel = () => dispatch(close());
+    const onCancel = () => {
+        dispatch(close());
+        dispatch(resetSelection());
+    };
 
     const onFinish = (value: OrderFormState) => {
         dispatch(createOrder(OrderMapper.toDtoFromForm(value)));
@@ -62,7 +65,6 @@ const TimelinePage: React.FC = () => {
                     <Content style={{ padding: 60 }}>
                         <SettingContainer />
                         <Timeline
-                            mode={mode}
                             type={timelineType}
                             options={options}
                             glasses={workingParams.glasses}

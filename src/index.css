@@ -172,13 +172,13 @@ code {
   letter-spacing: 0.002em;
 }
 
-
+/*Календарь*/
 
 td {
   padding: 0;
 }
 
-/*Календарь*/
+
 
 .date-picker-input {
   background: #F3F5F9;

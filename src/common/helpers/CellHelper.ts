@@ -10,6 +10,7 @@ class CellHelper {
         if(cellPivotOne ==  null && cellPivotSecond == null) return true;
         if(cellPivotOne?.order.id != cellPivotSecond?.order.id) return false;
         if(!OrderHelper.isOrdersSame(cellPivotOne!.order, cellPivotSecond!.order)) return false;
+        if(cellPivotOne?.bookingIndex != cellPivotSecond?.bookingIndex) return false;
         return true;
     }
 
@@ -17,6 +18,8 @@ class CellHelper {
     static isSame(cellOne: CellIndeficator, cellTwo: CellIndeficator): boolean {
         return cellOne.date === cellTwo.date && cellOne.roomId === cellTwo.roomId && cellOne.time === cellTwo.time;
     }
+
+
 
     static isNextOrPrev(cellOne: CellIndeficator, cellTwo: CellIndeficator): boolean {
         return cellOne.date == cellTwo.date && TimeHelper.isNextOrPrev(cellOne.time, cellTwo.time);

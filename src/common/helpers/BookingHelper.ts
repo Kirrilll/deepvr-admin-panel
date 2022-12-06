@@ -5,8 +5,8 @@ import { FormBooking, GAME_PATH, GUEST_COUNT_PATH, ROOM_PATH, TIME_PATH } from "
 export default class BookingHelper {
 
     static getAmount(games: GameView[], formBookings?: FormBooking[]): number {
-        if(formBookings === undefined) return 0;
-        if(formBookings.length === 0) return 0;
+        if (formBookings === undefined) return 0;
+        if (formBookings.length === 0) return 0;
         return formBookings
             .map(booking => {
                 const guestCount = booking[GUEST_COUNT_PATH] ?? 0;
@@ -48,5 +48,12 @@ export default class BookingHelper {
             else bookingJoined.push(booking)
         }
         return bookingJoined;
+    }
+
+    static isCanUsePromocode(bookings: FormBooking[]): boolean {
+        if (bookings.length == 0) return false;
+        return bookings
+            .map(booking => booking[GAME_PATH] ?? -1)
+            .reduce((prevGameId, nextGameId) => prevGameId  & nextGameId) == bookings[0][GAME_PATH];
     }
 }

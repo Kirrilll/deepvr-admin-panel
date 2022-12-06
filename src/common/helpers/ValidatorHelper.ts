@@ -6,8 +6,9 @@ const INVALID_PROMOCODE_DEFAULT_MESSAGE = 'Промокод не активен'
 
 export class ValidatorHelper {
     static isPhoneValid(value: string):boolean {
-        const regExp = /^[\+]?[0-9]?[0-9]{3}[0-9]{3}[0-9]{4}$/;
-        return regExp.test(value);
+        const cutRegEx: RegExp = /^8|(\+7)/;
+        const phone = value.trim().replace(cutRegEx, '');
+        return phone.length == 10;
     }
 
     static phoneValidator(rule: RuleObject, value: string): Promise<any> {

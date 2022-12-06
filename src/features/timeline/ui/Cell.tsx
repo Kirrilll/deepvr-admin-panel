@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/store';
 import { Button, Modal, Tooltip } from 'antd';
 import useTimeChecker from '../../../common/hooks/useTimeChecker';
@@ -45,6 +45,7 @@ const Cell: React.FC<CellProps> = ({roomId, time, pivot}) => {
     const onButtonClick = () => {
         dispatch(precreateOrder(selectedCells.map(cell => cell.id)));
     }
+
 
     return (
         <>

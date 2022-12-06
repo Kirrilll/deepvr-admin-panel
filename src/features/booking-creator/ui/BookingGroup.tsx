@@ -44,7 +44,6 @@ const BookingGroup: React.FC<BookingGroupProps> = ({ globalForm, orderId, date }
                     {(fields, { add, remove, move }) => (
                         <Row gutter={[20, 0]} wrap={false}>
                             {fields.map((field, index) => {
-                                console.log(fields);
                                 return (<Col>
                                     <BookingForm
                                         key={index}

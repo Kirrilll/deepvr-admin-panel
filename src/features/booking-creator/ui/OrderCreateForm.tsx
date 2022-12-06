@@ -1,5 +1,5 @@
 import { Button, Checkbox, Col, Drawer, Form, Input, InputNumber, ModalProps, Radio, Row, Select, Slider, Space, Tag } from "antd";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useState } from "react";
 
 import { AppDispatch, useAppDispatch, useAppSelector } from "../../../app/store";
 import { PlusOutlined, DeleteOutlined, } from '@ant-design/icons';
@@ -76,7 +76,7 @@ const OrderCreationForm: React.FC<{ onFinish: (form: OrderFormState) => void }> 
     const selectedCells = useAppSelector(selectCells);
     const games = useAppSelector(selectGames);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         form.setFieldsValue(order);
     }, [])
 
@@ -103,6 +103,9 @@ const OrderCreationForm: React.FC<{ onFinish: (form: OrderFormState) => void }> 
                 <Col span={12} >
                     <Form.Item
                         name={EMLOYEE_CODE_PATH}
+                        rules = {[
+                            {required: true, message: 'Не указан код сотрудника'}
+                        ]}
                     >
                         <div className="gradient-border">
                             <Input
@@ -159,20 +162,20 @@ const OrderCreationForm: React.FC<{ onFinish: (form: OrderFormState) => void }> 
                 clientId={client?.id ?? null}
             />
             <CertificatesList globalForm={form} />
-            <Form.Item shouldUpdate>
+            {/* <Form.Item shouldUpdate>
                 {
                     // () => <div>
                     //     Стоимость:
                     //     {BookingHelper.getAmount(games, form.getFieldValue(BOOKING_LIST_PATH) as FormBooking[])}
                     // </div>
-                    () => <div>
-                        <div>
-                            {(form.getFieldValue(BOOKING_LIST_PATH) as FormBooking[])?.map(booking => `${booking[GAME_PATH]} ${booking[GUEST_COUNT_PATH]}`)}
-                        </div>
-                        <div>{form.getFieldValue(PROMOCODE_PATH)}</div>
-                    </div>
+                    // () => <div>
+                    //     <div>
+                    //         {(form.getFieldValue(BOOKING_LIST_PATH) as FormBooking[])?.map(booking => `${booking[GAME_PATH]} ${booking[GUEST_COUNT_PATH]}`)}
+                    //     </div>
+                    //     <div>{form.getFieldValue(PROMOCODE_PATH)}</div>
+                    // </div>
                 }
-            </Form.Item>
+            </Form.Item> */}
             <Button htmlType='submit'>
                 Сохранить
             </Button>

@@ -1,9 +1,10 @@
 import { Row, Col, Input, Button, Checkbox, Slider, Form, Switch } from 'antd';
 import { FormInstance } from 'antd/es/form/Form';
 import React, { useMemo, useState } from 'react';
+import BookingHelper from '../../../common/helpers/BookingHelper';
 import Client from '../../../entities/Client';
 import BonusGroup from './BonusGroup';
-import { PROMOCODE_PATH, IS_USE_BONUSES_PATH, BONUS_PATH, PHONE_PICKER_PATH } from './OrderCreateForm';
+import { PROMOCODE_PATH, IS_USE_BONUSES_PATH, BONUS_PATH, PHONE_PICKER_PATH, FormBooking, BOOKING_LIST_PATH } from './OrderCreateForm';
 
 interface LoyaltyGroupProps {
     globalForm: FormInstance,
@@ -17,6 +18,12 @@ const LoyaltyGroup: React.FC<LoyaltyGroupProps> = ({ globalForm, clientId }) => 
     const onChangeToggle = (checked: boolean) => setUsePromocode(checked);
 
     const isIdentified = useMemo(() => clientId != null, [clientId]);
+
+
+    const isCanUsePromocode = (bookings?: FormBooking[]) => {
+        if(bookings == undefined) return false;
+        return BookingHelper.isCanUsePromocode(bookings)
+    }
 
     const onPromocodeApply = () =>{
         globalForm.validateFields([PROMOCODE_PATH]);

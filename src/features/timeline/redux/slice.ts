@@ -23,32 +23,20 @@ export interface CellIndeficator {
 }
 
 interface TimelineState {
-    mode: TimelineMode,
     type: TimelineStateType,
     options: TimelineOptions
     fetchingStatus: FetchingStatus,
     data: OrderView[],
-
-    isWarningOpen: boolean,
-    lastUnselectedItem: CellIndeficator | null
 
 }
 
 
 const initialState: TimelineState = {
     options: { isFixed: true },
-
     type: 'default',
     fetchingStatus: FetchingStatus.NEVER,
     data: [],
-
-    //Вынести в другой слайс
-    isWarningOpen: false,
-    mode: { type: 'idle' },
-    lastUnselectedItem: null
 }
-
-type UnselectMode = 'hard' | 'light';
 
 const colorPool: ColorPool = ColorPool.instance;
 

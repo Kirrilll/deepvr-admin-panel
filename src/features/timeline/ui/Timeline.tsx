@@ -10,7 +10,6 @@ import { TimelineType } from '../../../entities/TimelineTypes';
 interface TimelineProps {
     options: TimelineOptions,
     glasses: number,
-    mode: TimelineMode,
     data: OrderView[],
     workingShift: string[],
     rooms: Room[],
@@ -30,7 +29,7 @@ interface TimelineProps {
 
 const REFERENCE_CELL_WIDTH = 190;
 
-const Timeline: React.FC<TimelineProps> = ({ options, mode, data, workingShift, rooms, glasses, type }) => {
+const Timeline: React.FC<TimelineProps> = ({ options, data, workingShift, rooms, glasses, type }) => {
     const director = useMemo(() => TimelineFactory.createTimeline(type), [type]);
 
     const timeline = useMemo(() => director.construct(workingShift, rooms, data, glasses), [data, type]); 

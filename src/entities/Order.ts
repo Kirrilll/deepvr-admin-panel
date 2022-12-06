@@ -73,5 +73,4 @@ export interface OrderDto {
     comment: string | null;
     certificates: {code: string}[] | null
 }
-
 export type OrderResponse = Order[];

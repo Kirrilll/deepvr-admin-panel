@@ -1,8 +1,10 @@
 import { ColumnsType, ColumnType } from "antd/lib/table";
+import { CellPivot } from "../../../entities/Cell";
 import { Room } from "../../../entities/Room";
 import { OrderCellMatrix, Row } from "../../../entities/TimelineTypes";
 import { SummaryCallback, TimelineBuilder } from "../../../entities/TimelineUtilsTypes";
 import Cell from "../../../features/timeline/ui/Cell";
+import TableSummary from "../../../features/timeline/ui/TableSummary";
 
 
 type RowDefault = Row<Room>;
@@ -19,14 +21,23 @@ type RowDefault = Row<Room>;
 class TimelineDefaultBuilder implements TimelineBuilder {
 
     buildSummary(glasses: number, workingShift: string[]): SummaryCallback {
-
         return (data: readonly RowDefault[]) => {
-            for (const time of workingShift) {
+            const columns = new Map<string, Array<number>>();
+            for (let timeColIndex = 0; timeColIndex < workingShift.length; timeColIndex++) {
+                const time = workingShift[timeColIndex];
                 for (const row of data) {
-
+                    let bookedGlasses = row.shedule[timeColIndex] === null
+                        ? 0
+                        : row.shedule[timeColIndex]!.order.bookings[row.shedule[timeColIndex]!.bookingIndex].guestCount;
+                    columns.set(time, [...(columns.get(time) ?? []), bookedGlasses]);
                 }
             }
-            return <div>adad</div>
+            return <TableSummary
+                columns={Array
+                    .from(columns.values())
+                    .map(col => col
+                        .reduce((prev, next) => prev + next))}
+                glasses={glasses} />
         }
     };
 
@@ -74,12 +85,6 @@ class TimelineDefaultBuilder implements TimelineBuilder {
             ...workingShift.map<ColumnType<RowDefault>>((time, index) => ({
                 title: time,
                 key: time,
-                // onCell: (data, index) => {
-                //     if(index == 2) {
-                //         return {colSpan: 2}
-                //     }
-                //     return {colSpan: 1};
-                // },
                 dataIndex: time,
                 render: (value, data) => {
                     return (<Cell

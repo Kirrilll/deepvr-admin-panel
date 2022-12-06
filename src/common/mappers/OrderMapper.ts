@@ -11,7 +11,7 @@ import { Order, OrderCreation, OrderDto, OrderView } from "../../entities/Order"
 import TimeHelper from "../helpers/TimeHelper";
 import ColorPool from "../utils/color/ColorPool";
 import { CellIndeficator } from "../../features/timeline/redux/slice";
-import { BOOKING_LIST_PATH, CERTIFACATES_PATH, CONFRIM_STATUS_PATH, DATE_PICKER_PATH, FormBooking, GAME_PATH, GUEST_COUNT_PATH, NAME_PATH, OrderFormState, ORDER_ID_PATH, PHONE_PICKER_PATH, PROMOCODE_PATH, ROOM_PATH, TIME_PATH } from "../../features/booking-creator/ui/OrderCreateForm";
+import { BOOKING_LIST_PATH, CERTIFACATES_PATH, CONFRIM_STATUS_PATH, DATE_PICKER_PATH, EMLOYEE_CODE_PATH, FormBooking, GAME_PATH, GUEST_COUNT_PATH, NAME_PATH, OrderFormState, ORDER_ID_PATH, PHONE_PICKER_PATH, PROMOCODE_PATH, ROOM_PATH, TIME_PATH } from "../../features/booking-creator/ui/OrderCreateForm";
 import BookingMapper from "./BookingMapper";
 import { EConfirmStatus, EPaymentStatus } from "../../entities/PaymentInfo";
 
@@ -123,7 +123,7 @@ export default class OrderMapper {
             name: order[NAME_PATH],
             phone: order[PHONE_PICKER_PATH],
             status: order[CONFRIM_STATUS_PATH].toString(),
-            employee_code: '735',
+            employee_code: order[EMLOYEE_CODE_PATH],
             token: '6bc8a47477b1427a6ae7f4e13789aea32c77ec29',
             date: order[DATE_PICKER_PATH].format('YYYY-MM-DD'),
             certificates: order[CERTIFACATES_PATH].map(certificate => ({

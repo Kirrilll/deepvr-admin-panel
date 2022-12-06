@@ -16,7 +16,8 @@ const useHotRegister = (args: HotRegArgs<ResponseType>) => {
     const { onSuccessfull, onError } = args;
     const onErrorMemorised = useCallback(onError, [onError]);
     const onSuccessfullMemorised = useCallback(onSuccessfull, [onSuccessfull]);
-    return (params: HotRegCallbackParametrs) => hotRegister(params[0], params[1])
+    const cutRegEx: RegExp = /^8|(\+7)/;
+    return (params: HotRegCallbackParametrs) => hotRegister(params[0], params[1].trim().replace(cutRegEx, ''))
         .then((value) => onSuccessfullMemorised(value.data))
         .catch((reason) => onErrorMemorised(reason))
 }

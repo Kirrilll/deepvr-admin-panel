@@ -11,6 +11,7 @@ export interface ErrorResponse {
 }
 
 const baseUrl = process.env.REACT_APP_API_URL;
+const globalUrl = process.env.REACT_APP_API_GLOBAL_URL;
 const api = {
     getTimeline: async (date: moment.Moment) => {
         return await axios.get<OrderResponse>(
@@ -68,7 +69,7 @@ const api = {
     },
     hotRegister: async (name: string, phone: string) => {
         return await axios.get<CreatedClient>(
-            `${baseUrl}/v2/client/hotRegister`,
+            `${globalUrl}/v2/client/hotRegister`,
             {
                 params: {
                     name: name,

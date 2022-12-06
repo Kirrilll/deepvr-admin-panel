@@ -13,6 +13,8 @@ import { FormInstance } from "antd/es/form/Form";
 import { unselectCell } from "../../selection/redux/slice";
 import BookingMapper from "../../../common/mappers/BookingMapper";
 import CellMapper from "../../../common/mappers/CellMapper";
+import TimelineHelper from "../../../common/helpers/TimelineHelper";
+import { selectOrders } from "../../timeline/redux/selectors";
 
 
 
@@ -26,11 +28,15 @@ interface BookingFormProps {
 
 
 const BookingForm: React.FC<BookingFormProps> = ({ color, orderId, field, date, booking }) => {
+
+    const orders = useAppSelector(selectOrders);
+
     const games = useAppSelector(buildGamesByRoomSelector(booking[ROOM_PATH]));
     const rooms = useAppSelector(selectRooms);
     // const room = useAppSelector(buildRoomByIdSelector(booking[ROOM_PATH]));
     const gamesOptions = useMemo(() => GameMapper.gamesToValues(games), [games])
     const roomsOptions = useMemo(() => RoomMapper.gamesToValues(rooms), [rooms]);
+
 
     const dispatch = useAppDispatch();
     const onOnDeleteItem = () => {
@@ -59,7 +65,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ color, orderId, field, date, 
                         labelInValue
                         style={{ height: '40px' }}
                         placeholder='Зал'
-                        disabled
+                        // disabled
                         popupClassName={'first-plan-object'}
                     />
                 </Form.Item>
@@ -99,7 +105,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ color, orderId, field, date, 
                     name={[field.name, TIME_PATH]}
                 >
                     <Input
-                        disabled
+                        // disabled
                         bordered={false}
                         prefix={<img src={TIME_ICON} />}
                         className='default-input' />

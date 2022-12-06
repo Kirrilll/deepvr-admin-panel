@@ -5,7 +5,7 @@ import { OrderView } from '../../../entities/Order';
 
 
 interface TableSummaryProps {
-    columns: Array<OrderView | null>[];
+    columns: Array<number>
     glasses: number
 }
 
@@ -30,7 +30,7 @@ const TableSummary: React.FC<TableSummaryProps> = ({ columns, glasses }) => {
                     .map((col, index) => <Table.Summary.Cell 
                         key={index}
                         index={index + 1}>
-                        {/* {buildFreeGlassesCount(col)} */}
+                        {glasses - col}
                     </Table.Summary.Cell>)}
             </Table.Summary.Row>
         </Table.Summary>

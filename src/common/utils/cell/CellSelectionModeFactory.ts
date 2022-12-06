@@ -36,6 +36,13 @@ class CellSelectionModeFactory {
                 onClick: () => dispatch(selectCell(cell))
             })
         }
+        if (!pivotRule(cell.pivot)) {
+            return ({
+                isLastSelected: false,
+                className: DEFAULT_CELL_CLASSNAME,
+                onClick: () => {}
+            })
+        }
         return ({
             isLastSelected: false,
             className: DEFAULT_CELL_CLASSNAME,
