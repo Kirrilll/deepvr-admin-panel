@@ -27,6 +27,12 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
+    "rules": {
+      "semi": "off",
+      "@typescript-eslint/semi": "warn",
+      "no-unused-expressions": "off",
+      "@typescript-eslint/no-unused-expressions": "warn"
+    },
     "extends": [
       "react-app",
       "react-app/jest"
