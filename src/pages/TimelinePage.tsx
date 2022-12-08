@@ -56,18 +56,6 @@ const TimelinePage: React.FC = () => {
         ? 'loading'
         : type;
 
-    const onOk = () => {
-        dispatch(unselectCell({
-            cell: {
-                time: lastUnselectedItem!.time,
-                roomId: lastUnselectedItem!.roomId,
-                date: lastUnselectedItem!.date
-            },
-            mode: 'hard'
-        }));
-        dispatch(closeWarning());
-    }
-
     return (
         <>
             <WarningModal/>
