@@ -18,6 +18,7 @@ import { selectIsCreated, selectIsOpen } from "../features/booking-creator/redux
 import WarningModal from "../features/warning-modal/ui/WarningModal";
 import { createOrder } from "../features/booking-creator/redux/asyncActions";
 import OrderMapper from "../common/mappers/OrderMapper";
+import Uncompressor from "../common/utils/Uncomprossor";
 const { Sider, Content } = Layout;
 
 const TimelinePage: React.FC = () => {
@@ -40,6 +41,8 @@ const TimelinePage: React.FC = () => {
     const onFinish = (value: OrderFormState) => {
         dispatch(createOrder(OrderMapper.toDtoFromForm(value)));
     }
+
+    console.log(Uncompressor.uncompress('H4sIAAAAAAACA42MSwqAMAxE75K1SpKWWnsOVyJItQUFf4iuxLvb6sKtWTyG4U1OmO3kwUB9oCQbKXSkxC+L9iUksPbLHHVdUF5oTRJVaLdl9M3gwHACx+rs7l1j96AxMqfEKaqSlCE2kjJ8rgqzbvN/1fhcXDeedLf9rgAAAA=='))
 
     useEffect(() => {
         dispatch(getGames());
