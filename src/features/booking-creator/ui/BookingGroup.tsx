@@ -1,7 +1,8 @@
+import { useDrag } from '@use-gesture/react';
 import { Col, Form, FormListFieldData, Row } from 'antd';
 import { FormInstance } from 'antd/es/form/Form';
 import moment from 'moment';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/store';
 import ColorPool from '../../../common/utils/color/ColorPool';
 import { selectDate } from '../../date-picker/redux/slice';
@@ -17,6 +18,8 @@ interface BookingGroupProps {
     orderId: number
 }
 
+const DRAGGING_SENSITY = 0.1;
+
 const BookingGroup: React.FC<BookingGroupProps> = ({ globalForm, orderId, date }) => {
     const dispatch = useAppDispatch();
     const selectedDate = useAppSelector(state => state.datePickerReducer.currentDate);
@@ -26,6 +29,15 @@ const BookingGroup: React.FC<BookingGroupProps> = ({ globalForm, orderId, date }
     useEffect(() => {
         globalForm.setFieldValue(DATE_PICKER_PATH, selectedDate);
     }, [selectedDate])
+
+    const bookingsContainerRef = useRef<HTMLDivElement>(null);
+
+    const bind = useDrag(({dragging, active ,movement}) => {
+        bookingsContainerRef.current?.style.setProperty('cursor', 'drag');
+        bookingsContainerRef.current?.scrollBy(-movement[0]* DRAGGING_SENSITY, 0);
+    });
+
+   
 
     return (
         <>
@@ -39,10 +51,10 @@ const BookingGroup: React.FC<BookingGroupProps> = ({ globalForm, orderId, date }
                     </Form.Item>
                 </Col>
             </Row>
-            <div className="bookings-wrapper">
+            <div {...bind()} ref={bookingsContainerRef} className="bookings-wrapper">
                 <Form.List name={BOOKING_LIST_PATH}>
                     {(fields, { add, remove, move }) => (
-                        <Row gutter={[20, 0]} wrap={false}>
+                        <Row  gutter={[20, 0]} wrap={false}>
                             {fields.map((field, index) => {
                                 return (<Col>
                                     <BookingForm
