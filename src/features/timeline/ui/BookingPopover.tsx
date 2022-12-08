@@ -11,6 +11,8 @@ import { OrderView } from '../../../entities/Order';
 import { EPaymentStatus } from '../../../entities/PaymentInfo';
 import { multiSelectCells } from '../../selection/redux/slice';
 import CellMapper from '../../../common/mappers/CellMapper';
+import { selectRooms } from '../../game/redux/selectors';
+import RoomMapper from '../../../common/mappers/RoomMapper';
 
 type BookingPopupProps = Omit<PopoverProps
     & React.RefAttributes<unknown>
@@ -40,6 +42,9 @@ const BookingPopoverContent: React.FC<{ order: OrderView }> = ({ order }) => {
 
     const dispatch = useAppDispatch();
     const currentDate = order.date
+
+    const globalRooms = useAppSelector(selectRooms);
+
     const paymentStatusView = useMemo(() => {
         if (order.paymentStatus == EPaymentStatus.PAID) {
             return {
@@ -77,7 +82,7 @@ const BookingPopoverContent: React.FC<{ order: OrderView }> = ({ order }) => {
     */
 
     //Написать селектор с комнатами
-    const rooms = useMemo<string>(() => order.bookings.map(booking => booking.roomId).join(','), [order.id]);
+    const rooms = useMemo<string>(() => RoomMapper.roomsToPopoverView(globalRooms, order.bookings), [order.id]);
 
     return (
         <>

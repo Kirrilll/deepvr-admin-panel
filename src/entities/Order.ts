@@ -17,6 +17,7 @@ export interface EmptyOrder {
 export interface Order {
     id: number;
     client_id: number;
+    status: number;
     promo_id?: any;
     booking_date: string;
     accepted: number;
@@ -41,6 +42,7 @@ export interface OrderView {
     clientName: string,
     comment?: string,
     paymentStatus: EPaymentStatus,
+    confirmStatus: EConfirmStatus
     phone: string,
     color: string,
     bookings: BookingView[]

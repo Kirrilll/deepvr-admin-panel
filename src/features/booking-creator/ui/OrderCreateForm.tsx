@@ -176,7 +176,7 @@ const OrderCreationForm: React.FC<{ onFinish: (form: OrderFormState) => void }> 
                     // </div>
                 }
             </Form.Item> */}
-            <Button htmlType='submit'>
+            <Button style={{marginTop: '20px'}} className='default-btn' htmlType='submit'>
                 Сохранить
             </Button>
         </Form >

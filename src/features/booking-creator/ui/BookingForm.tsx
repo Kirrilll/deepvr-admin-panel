@@ -65,7 +65,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ color, orderId, field, date, 
                         labelInValue
                         style={{ height: '40px' }}
                         placeholder='Зал'
-                        // disabled
+                        disabled
                         popupClassName={'first-plan-object'}
                     />
                 </Form.Item>
@@ -105,7 +105,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ color, orderId, field, date, 
                     name={[field.name, TIME_PATH]}
                 >
                     <Input
-                        // disabled
+                        disabled
                         bordered={false}
                         prefix={<img src={TIME_ICON} />}
                         className='default-input' />

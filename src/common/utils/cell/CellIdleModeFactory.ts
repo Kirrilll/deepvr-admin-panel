@@ -24,7 +24,7 @@ export default class CellIdleModeFactory {
             return ({
                 isLastSelected: false,
                 className: `${DEFAULT_CELL_CLASSNAME}`,
-                onClick: () => dispatch(startSelecting(cell))
+                onClick: () => {}
             })
         }
     }

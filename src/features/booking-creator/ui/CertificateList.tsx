@@ -27,6 +27,7 @@ const CertificatesList: React.FC<CertificateListProps> = ({ globalForm }) => {
     }
 
     const addCertificate = (add: AddListCallback) => {
+        return;
         setCertificate('');
         add(certificate);
     }
@@ -42,6 +43,7 @@ const CertificatesList: React.FC<CertificateListProps> = ({ globalForm }) => {
                                 <Col span={12} style={{ marginRight: '20px' }}>
                                     <Form.Item name={'addInput'}>
                                         <Input
+                                            disabled
                                             value={certificate}
                                             onChange={(e) => setCertificate(e.target.value)}
                                             className="default-input"

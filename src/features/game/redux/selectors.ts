@@ -22,6 +22,7 @@ export const isTimelineReadySelector = createSelector(
     (isGames, isRooms, isWorkingParams) => isGames && isRooms && isWorkingParams
 );
 
+
 export const buildRoomByIdSelector = (id: number) => createSelector(
     [(state: RootState) => state.jobDataReducer.rooms.filter(room => room.id === id).at(0)],
     (room) => room

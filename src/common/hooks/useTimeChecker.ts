@@ -2,7 +2,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import TimeHelper from "../helpers/TimeHelper";
 
-export const MAX_SELECTABLE_TIME_DIFF = -50 / 60;
+export const MAX_SELECTABLE_TIME_DIFF = -0 / 60;
 
 interface HookAttrs {
     maxTimeDiff?: number,
