@@ -1,3 +1,6 @@
+import { LabeledValue } from "antd/lib/select";
+import { type } from "os";
+
 export interface Room {
     id: number;
     title: string;
@@ -5,5 +8,6 @@ export interface Room {
 }
 
 type RoomResponse = Room[];
+export type RoomValue = LabeledValue | {room: Room};
 
 export default RoomResponse;

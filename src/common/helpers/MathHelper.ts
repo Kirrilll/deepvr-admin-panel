@@ -12,4 +12,18 @@ export default class MathHelper {
             .map((col, i) => matrix
                 .map(row => row[i]));
     }
+
+    static clamp(value: number, lower: number, upper: number){
+        if(value > upper) return upper;
+        if(value < lower) return lower;
+        return Math.abs(value);
+    }
+
+    static swap(array: any[], from:number, to: number ){
+        const copiedArr = [...array];
+        const tempValue = copiedArr[from];
+        copiedArr[from] =  copiedArr[to];
+        copiedArr[to] = tempValue;
+        return copiedArr;
+    }
 }

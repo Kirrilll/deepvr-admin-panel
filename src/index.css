@@ -1,16 +1,42 @@
 @import '~antd/dist/antd.css';
 
+
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-.first-plan-object{
+/* Scrollbar */
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #bdbdbd #F3F5F9;
+}
+
+*::-webkit-scrollbar {
+  width: 0px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #bdbdbd;
+  border-radius: 10px;
+  border: 3px solid #ffffff;
+}
+
+.first-plan-object {
   z-index: 6000;
 }
 
-html, body {
+html,
+body {
   min-height: 100vh;
   width: 100%;
 }
@@ -31,10 +57,17 @@ code {
 }
 
 /* Селектор*/
-/* .ant-select:not(.ant-select-customize-input) .ant-select-selector {
-  padding: 14px 16px 14px 24px;
-  width: 255px;
-  height: 52px !important;
+
+.ant-select {
+  height: 100%;
+}
+
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+
+  width: 100%;
+  max-height: 52px;
+  height: 100%;
+  /* height: 52px !important; */
   background: #F3F5F9;
   border-radius: 15px;
   font-weight: 500;
@@ -42,29 +75,23 @@ code {
   line-height: 140%;
   letter-spacing: 0.002em;
   color: #444656;
-  height: auto;
   display: flex;
   align-items: center;
   border: none;
 }
 
+.ant-select-single.ant-select-show-arrow .ant-select-selection-item,
+.ant-select-single.ant-select-show-arrow .ant-select-selection-placeholder {
+  display: flex;
+  align-items: center;
+}
+
 .ant-select-single:not(.ant-select-customize-input) .ant-select-selector .ant-select-selection-search-input {
-  height: auto;
+  height: 100%;
+  position: inherit
 }
 
-.ant-select-arrow {
-  width: 16px;
-  height: 8px;
-  transform: translateX(-100%);
-  transition: transform 0.5s ease;
-  right: 0;
-  margin: 0;
-  color: inherit;
-}
 
-.ant-select-open .ant-select-arrow {
-  transform: rotateZ(180deg) translateX(100%);
-}
 
 .ant-select-dropdown {
   background: #F3F5F9;
@@ -88,9 +115,10 @@ code {
   background: #444656;
   border-radius: 15px;
   color: #F3F5F9;
-} */
+}
 
 
+/* Ячейки */
 .cell__container {
   background-color: #FAFAFC;
   border-radius: 15px;
@@ -120,7 +148,7 @@ code {
   flex-grow: 1;
 }
 
-.booked-item{
+.booked-item {
   cursor: pointer;
 }
 
@@ -144,11 +172,14 @@ code {
   letter-spacing: 0.002em;
 }
 
+/*Календарь*/
+
+>>>>>>> refactoring
 td {
   padding: 0;
 }
 
-/*Календарь*/
+
 
 .date-picker-input {
   background: #F3F5F9;
@@ -323,16 +354,24 @@ td {
   height: 130px;
 }
 
-.table__cell.selectable{
+
+.table__cell.selectable {
   background-color: #e9ffef;
 }
 
-.table__cell.unselectable{
-  background-color: #888faa;
+.table__cell.unselectable {
+  /* background-color: #888faa; */
 }
 
-.table__cell.selected{
-  border: 2px solid #962FF3;
+.table__cell.unselectable--idle {
+  background-color: #ededed;
+  opacity: 0.4
+}
+
+.table__cell.selected {
+
+  /* border: 2px solid #962FF3; */
+  background-color: #FFE9EF;
 }
 
 
@@ -465,12 +504,12 @@ td {
   letter-spacing: 0.002em;
 }
 
-.payment-status.paid{
+.payment-status.paid {
   color: #65BD79;
 }
 
-.payment-status.notpaid{
-  color:#EE6E7E;
+.payment-status.notpaid {
+  color: #EE6E7E;
 }
 
 /*Общие*/
@@ -485,4 +524,267 @@ td {
   height: 46px;
   background: linear-gradient(90deg, #36C0E7 6.68%, #4B51EA 84.84%, #4B51EA 87.36%);
   border-radius: 15px;
+}
+
+/* -------------------------------SIDER--------------------------- */
+.creating-sider {
+  background-color: #FFFFFF;
+}
+
+.sider-content-wrapper {
+  padding: 64px 50px;
+}
+
+/* ---SIDER-FORM----- */
+.ant-form-vertical .ant-form-item-label,
+.ant-col-24.ant-form-item-label,
+.ant-col-xl-24.ant-form-item-label {
+  padding: 0;
+}
+
+.order-id {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 180%;
+  letter-spacing: 0.002em;
+  color: #1F2032;
+}
+
+.ant-form-item {
+  margin-bottom: 10px;
+}
+
+.creation-form-label {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 180%;
+  letter-spacing: 0.002em;
+  color: #444656;
+  ;
+  margin-bottom: 10px;
+}
+
+
+/* ---INPUT------ */
+.default-input {
+  border-radius: 15px;
+  padding: 11px 16px;
+  background-color: #F3F5F9;
+}
+
+.default-input.ant-input-status-error {
+  background-color: rgba(252, 91, 86, 0.1);
+  border: 2px solid #FC5B56;
+  color: #FC5B56;
+}
+
+.default-input:hover,
+.default-input:focus {
+  color: rgba(0, 0, 0, 0.85);
+  background-color: #F3F5F9;
+}
+
+.default-input:focus,
+.ant-input-focused {
+  border-color: #40a9ff;
+  box-shadow: 0 0 0 2px rgb(24 144 255 / 20%);
+  border-right-width: 1px;
+}
+
+.default-input::selection {
+  border: 2px solid #2F80ED;
+  background: inherit;
+}
+
+/* -----EMPLOYEE INPUT */
+
+.employee-input::placeholder {
+  color: #2F80ED;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 140%;
+  text-align: center;
+  letter-spacing: 0.002em;
+}
+
+/* -----BONUS-SLIDER */
+.bonus-slider .ant-slider-handle {
+  box-sizing: border-box;
+  width: 24px;
+  height: 24px;
+  transform: translate(-50%, -25%) !important;
+  background: linear-gradient(white, white) padding-box,
+    linear-gradient(90deg, #36C0E7 6.68%, #4B51EA 84.84%, #4B51EA 87.36%) border-box;
+  border-radius: 50em;
+  border: 3px solid transparent;
+}
+
+.bonus-slider .ant-slider-rail {
+  background: linear-gradient(90deg, rgba(54, 192, 231, 0.5) 6.68%, rgba(75, 81, 234, 0.5) 84.84%, rgba(75, 81, 234, 0.5) 87.36%);
+  border-radius: 5px;
+}
+
+/* ----BONUS-CHECKBOX----- */
+.bonus-checkbox:hover * {
+  border: none
+}
+
+.bonus-checkbox .ant-checkbox-inner {
+  box-sizing: border-box;
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(white, white) padding-box,
+    linear-gradient(90deg, #36C0E7 6.68%, #4B51EA 84.84%, #4B51EA 87.36%) border-box;
+  border-radius: 50em;
+  border: 3px solid transparent;
+}
+
+.bonus-checkbox .ant-checkbox-wrapper.ant-checkbox-wrapper-in-form-item input[type='checkbox'] {
+  width: 24px;
+  height: 24px;
+}
+
+.bonus-checkbox .ant-checkbox-checked .ant-checkbox-inner::after {
+  border: 2px solid #2F80ED;
+  border-top: 0;
+  border-left: 0;
+  transform: rotate(45deg) scale(1) translate(-25%, -50%);
+}
+
+
+.bonus-checkbox .ant-checkbox-wrapper:hover .ant-checkbox-inner,
+.bonus-checkbox .ant-checkbox:hover .ant-checkbox-inner,
+.bonus-checkbox .ant-checkbox-input:focus+.ant-checkbox-inner .bonus-checkbox .ant-checkbox-checked::after {
+  background: linear-gradient(white, white) padding-box,
+    linear-gradient(90deg, #36C0E7 6.68%, #4B51EA 84.84%, #4B51EA 87.36%) border-box;
+  border-radius: 50em;
+  border: 3px solid transparent;
+}
+
+
+.bonus-checkbox .ant-checkbox-checked::after {
+  border-radius: 50%;
+}
+
+/* ADD BUTTON */
+
+.gradient-border {
+  border-radius: 15px;
+  background: linear-gradient(90deg, #36C0E7 6.68%, #4B51EA 84.84%, #4B51EA 87.36%);
+  padding: 2px;
+}
+
+.add-btn {
+  background-color: #F0F8FE !important;
+  border-radius: 14px;
+  height: 100%;
+  width: 100%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Certificate tag */
+.certificate-tag {
+  background-color: #F091AA;
+  border-radius: 15px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 140%;
+  letter-spacing: 0.002em;
+  color: #FFFFFF;
+  padding: 8px 16px;
+}
+
+.certificate-tag .anticon.anticon-close.ant-tag-close-icon {
+  margin-left: 25px;
+  color: #FFFFFF;
+  font-size: 16px;
+}
+
+
+
+/* ----RADIO BUTTON-- */
+.ant-radio-button-wrapper {
+  box-sizing: border-box;
+  padding: 12px 20px;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 140%;
+  align-items: center;
+  letter-spacing: 0.002em;
+  color: #8A929E;
+  height: auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #F3F5F9;
+  border-radius: 15px !important;
+  border: 2px solid transparent;
+}
+
+.ant-radio-button-wrapper:first-child {
+  border: 2px solid transparent
+}
+
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+  color: #2F80ED;
+  background-color: #F0F8FE;
+  border: 2px solid #2F80ED;
+}
+
+/* ---------BOOKING-FORM---------------*/
+
+.bookings-wrapper {
+  padding: 20px;
+  background-color: #F3F5F9;
+  border-radius: 15px;
+  overflow: auto;
+}
+
+.booking-form {
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  width: 270px;
+  height: 270px;
+}
+
+.booking-form__header {
+  border-radius: 10px 10px 0px 0px;
+  height: 40px;
+  padding: 0 14px;
+}
+
+.booking-form__wrapper {
+  padding: 20px;
+}
+
+/* -----SWITCH------ */
+.loyalty-switch {
+  box-sizing: border-box;
+  height: 30px;
+  width: 110px;
+  background: linear-gradient(#F3F5F9, #F3F5F9) padding-box,
+    linear-gradient(90deg, #36C0E7 6.68%, #4B51EA 84.84%, #4B51EA 87.36%) border-box;
+  border-radius: 50em;
+  border: 3px solid transparent
+}
+
+.loyalty-switch .ant-switch-handle {
+  top: 3px
+}
+
+.loyalty-switch .ant-switch-handle::before {
+  border: 2px solid #4B51EA;
+}
+
+.loyalty-switch .ant-switch-inner {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 180%;
+  letter-spacing: 0.002em;
+  color: #444656;
 }

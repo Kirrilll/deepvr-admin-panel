@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
 import { selectOptions, selectType } from "../redux/selectors";
 import { toggleFixed, toggleTranspose } from '../redux/slice';
-import DateRange from "./DateRange";
+import DateRange from "../../date-picker/ui/DateRange";
 
 const { Option } = Select;
 

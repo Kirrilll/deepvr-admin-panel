@@ -4,9 +4,13 @@ import ClockIcon from '../../../assets/clock.svg';
 import GameIcon from '../../../assets/game.svg';
 import PersonIcon from '../../../assets/person.svg';
 import PhoneIcon from '../../../assets/phone.svg';
-import OrderView, { EPaymentStatus } from '../../../entities/OrderView';
+
 import { useAppDispatch, useAppSelector } from '../../../app/store';
-import { open } from '../../../store/creation-booking-modal/slice';
+import {editOrder} from '../../booking-creator/redux/slice';
+import { OrderView } from '../../../entities/Order';
+import { EPaymentStatus } from '../../../entities/PaymentInfo';
+import { multiSelectCells } from '../../selection/redux/slice';
+import CellMapper from '../../../common/mappers/CellMapper';
 
 type BookingPopupProps = Omit<PopoverProps
     & React.RefAttributes<unknown>
@@ -36,7 +40,6 @@ const BookingPopoverContent: React.FC<{ order: OrderView }> = ({ order }) => {
 
     const dispatch = useAppDispatch();
     const currentDate = order.date
-
     const paymentStatusView = useMemo(() => {
         if (order.paymentStatus == EPaymentStatus.PAID) {
             return {
@@ -50,13 +53,11 @@ const BookingPopoverContent: React.FC<{ order: OrderView }> = ({ order }) => {
         }
     }, [order.paymentStatus]);
 
-    //ПОФИКСИТЬ!!!
-    const onClick = () => dispatch(open({
-        initialData: order,
-        initialTime: order.bookings[0].startTime.time,
-        initialRoomId: order.bookings[0].gameId,
-        initialDate: currentDate
-    }));
+
+    const onClick = () => {
+        dispatch(multiSelectCells(CellMapper.toCellFromOrderView(order)))
+        dispatch(editOrder(order))
+    };
 
     // const buildTimeInterval = () => {
     //     return `${bookingInfo.timeStart}-${bookingInfo.timeEnd}`;

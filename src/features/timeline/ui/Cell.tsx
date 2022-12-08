@@ -1,58 +1,85 @@
 import React, { useMemo, useRef } from 'react';
-import { open } from '../../../store/creation-booking-modal/slice';
 import { useAppDispatch, useAppSelector } from '../../../app/store';
-import BookedCell from './BookedCell';
-import { CellPivot } from '../../../entities/TimelineTypes';
-import moment from 'moment';
-import { selectSelectedCells } from '../redux/selectors';
+import { Button, Modal, Tooltip } from 'antd';
+import useTimeChecker from '../../../common/hooks/useTimeChecker';
+import CellContentFactory from '../../../common/utils/cell/CellContentFactory';
+import CellModeFactory from '../../../common/utils/cell/CellModeFactory';
+import { selectMode } from '../../selection/redux/selectors';
+import { precreateOrder } from '../../booking-creator/redux/asyncActions';
+import { selectIsOpen } from '../../booking-creator/redux/selectors';
+import { CellView, CellPivot } from '../../../entities/Cell';
+import CellMapper from '../../../common/mappers/CellMapper';
 
-type CellMode = 'selected' | 'selectable' | 'unselectable'
+export const DEFAULT_CELL_CLASSNAME = 'table__cell';
 
-const selection_selectable_color = '#e9ffef';
-const selected_border_color = '#962FF3';
-const unselectable_background_color = '#888faa';
-
-interface CellProps {
-    pivot: CellPivot | null,
+interface CellProps{
+    roomId: number,
     time: string,
-    roomId: number
+    pivot: CellPivot | null
 }
 
-//Является по сути factory, 
-//Если ячейка selectable
-//Ячейка сама определяет является ли она ВЫБИРАЕМОЙ
-const Cell: React.FC<CellProps> = ({pivot, time, roomId}) => {
-
+const Cell: React.FC<CellProps> = ({roomId, time, pivot}) => {
     const dispatch = useAppDispatch();
+
     const selectedDate = useAppSelector(state => state.datePickerReducer.currentDate);
+    const selectedCells = useAppSelector(state => state.selectionReducer.selectedCells);
+    const modeType = useAppSelector(selectMode);
+    const isCreating = useAppSelector(selectIsOpen);
 
-    
-    const selectedCells = useAppSelector(selectSelectedCells);
+    const isAfter = useTimeChecker({ time: time, date: selectedDate });
 
-    const buildIsSelected = () => {
-        
-    };
+    const cell = useMemo<CellView>(
+        () => CellMapper.toCell(roomId, time, selectedDate, pivot),
+        [time, roomId, selectedDate.format('YYYY-MM-DD'), pivot]
+    );
 
-    const onCellClick = () => {
-        dispatch(open({
-            initialData: null,
-            initialRoomId: roomId,
-            initialTime: time,
-            initialDate: selectedDate
-        }));
+    const cellContent = useMemo(() => CellContentFactory.createContent(pivot), [pivot]);
+    const cellMode = useMemo(() => CellModeFactory.createMode(
+        !isAfter ? { type: 'overpast' } : { type: modeType, extraData: selectedCells },
+        cell,
+        dispatch
+    ), [cell.id, pivot, selectedCells, modeType, isAfter]);
+
+    const isVisible = cellMode.isLastSelected && !isCreating;
+
+    const onButtonClick = () => {
+        dispatch(precreateOrder(selectedCells.map(cell => cell.id)));
     }
 
+
     return (
-        <div onClick={onCellClick} className='table__cell'>
-            {
-                pivot == null
-                    ? null
-                    : <BookedCell  pivot={pivot}/>
-                  
-            }
-        </div>
+        <>
+            <div style={{ position: 'relative' }}>
+                <CreateOrderButton isVisible={isVisible} onClick={onButtonClick} />
+                <div onClick={cellMode.onClick} className={cellMode.className}>
+                    {cellContent}
+                </div>
+            </div>
+        </>
+
 
     )
+}
+
+interface CreateOrderButtonProps {
+    onClick: () => void,
+    isVisible: boolean
+}
+
+const CreateOrderButton: React.FC<CreateOrderButtonProps> = ({ isVisible, onClick }) => {
+    return (
+        isVisible
+            ? <div style={{
+                position: 'absolute',
+                bottom: 0,
+                transform: 'translate(-50%, 100%)',
+                zIndex: 1000,
+                left: 0,
+            }}>
+                <Button onClick={onClick} className='default-btn'>Создать бронь</Button>
+            </div>
+            : null
+    );
 }
 
 export default Cell;

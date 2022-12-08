@@ -1,23 +1,36 @@
 import axios from "axios";
-import { ClientResponse } from "../entities/Client";
+import { ClientResponse, CreatedClient } from "../entities/Client";
 import RoomResponse from "../entities/Room";
-import { Order, OrderResponse } from "../entities/Order";
-import { OrderDTO } from "../entities/OrderForm";
+import { EmptyOrder, Order, OrderDto, OrderResponse } from "../entities/Order";
+import { GameResponse } from "../entities/Game";
+import WorkingShiftResponse from "../entities/WorkingShift";
+
+export interface ErrorResponse {
+    error: number,
+    error_text: string
+}
 
 const baseUrl = process.env.REACT_APP_API_URL;
+const globalUrl = process.env.REACT_APP_API_GLOBAL_URL;
 const api = {
     getTimeline: async (date: moment.Moment) => {
         return await axios.get<OrderResponse>(
             `${baseUrl}/v2/orders/test`,
             {
                 params: {
-                    date: date.calendar({ sameDay: (today) => 'YYYY-MM-DD' })
+                    date: date.format('YYYY-MM-DD' )
                 }
             }
         )
     },
     getRooms: async () => {
         return await axios.get<RoomResponse>(`${baseUrl}/rooms`)
+    },
+    getGames: async () => {
+        return await axios.get<GameResponse>(`${baseUrl}/games`);
+    },
+    getWorkingParams: async () => {
+        return await axios.get<WorkingShiftResponse>(`${baseUrl}/v2/work-times`)
     },
     getClientsByPhone: async (phoneNumber: string) => {
         return await axios.get<ClientResponse>(
@@ -29,18 +42,39 @@ const api = {
             }
         )
     },
-    createBooking: async (order: OrderDTO) => {
-        return await axios.post<Order>(
+    createOrder: async (order: OrderDto) => {
+        return await axios.post<Order | ErrorResponse>(
             `${baseUrl}/v2/booking/admin`,
             order
         )
     },
-    validatePromoCode: async (promoCode: string) => {
+    validatePromoCode: async (promoCode: string, price: number, gameId: number) => {
         return await axios.post(
             `${baseUrl}/v2/promo/activate`,
             {
                 token: '6bc8a47477b1427a6ae7f4e13789aea32c77ec29',
-                promoCode: promoCode
+                promo_code: promoCode,
+                price: price,
+                game: gameId
+            }
+        )
+    },
+    precreateOrder: async () => {
+        return await axios.post<EmptyOrder>(
+            `${baseUrl}/v2/orders/createEmpty`
+        )
+    },
+    getBonusInfo: async () => {
+        
+    },
+    hotRegister: async (name: string, phone: string) => {
+        return await axios.get<CreatedClient>(
+            `${globalUrl}/v2/client/hotRegister`,
+            {
+                params: {
+                    name: name,
+                    phone: phone
+                }
             }
         )
     }
