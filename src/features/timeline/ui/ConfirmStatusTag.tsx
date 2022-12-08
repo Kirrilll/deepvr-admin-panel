@@ -1,5 +1,6 @@
 import React from 'react';
-import { EConfirmStatus } from '../../../entities/OrderView';
+import { EConfirmStatus } from '../../../entities/PaymentInfo';
+
 
 
 const ConfirmStatusTag: React.FC<{status: EConfirmStatus}> = ({status}) => {

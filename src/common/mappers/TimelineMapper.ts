@@ -1,12 +1,15 @@
-import OrderView from "../../entities/OrderView"
+
+import { CellPivot } from "../../entities/Cell";
+import { OrderView } from "../../entities/Order";
 import { Room } from "../../entities/Room";
-import { CellPivot, OrderCellMatrix } from "../../entities/TimelineTypes";
+import { OrderCellMatrix } from "../../entities/TimelineTypes";
 
 
 type OrderMapDefault = Map<number, Map<string, CellPivot | null>>;
 type OrderMapTransposed = Map<string, Map<number, CellPivot | null>>;
 
 export default class TimelineMapper {
+
 
     private static mapToMatrix<KeyOneType, KeyTwoType, ValueType>(map: Map<KeyOneType, Map<KeyTwoType, ValueType>>): ValueType[][] {
         return Array
@@ -15,7 +18,7 @@ export default class TimelineMapper {
                 .from(innerMap.values()))
     }
 
-    static toOrderMatrixDefault(orders: OrderView[], times: string[], rooms: Room[]): OrderCellMatrix {
+    private static toOrderMapDefault(orders: OrderView[], times: string[], rooms: Room[]): OrderMapDefault {
         const defaultSheduleMap = new Map(times.map(time => ([time, null])));
         const map: OrderMapDefault = new Map(
             rooms.map(room => ([
@@ -39,10 +42,10 @@ export default class TimelineMapper {
                 );
             }
         }
-        return TimelineMapper.mapToMatrix<number, string, CellPivot | null>(map);
+        return map;
     }
 
-    static toOrderMatrixTransposed(orders: OrderView[], times: string[], rooms: Room[]): OrderCellMatrix {
+    private static toOrderMapTransposed(orders: OrderView[], times: string[], rooms: Room[]): OrderMapTransposed {
         const defaultRoomMap: Map<number, CellPivot | null> = new Map(rooms.map(room => [room.id, null]));
         const map: OrderMapTransposed = new Map(times.map(time => [
             time,
@@ -58,6 +61,18 @@ export default class TimelineMapper {
                 shedule.set(roomId, { order: order, bookingIndex: bookingIndex })
             }
         }
-        return TimelineMapper.mapToMatrix<string, number, CellPivot | null>(map);
+        return map;
+    }
+
+    static toOrderMatrixDefault(orders: OrderView[], times: string[], rooms: Room[]): OrderCellMatrix {
+        return TimelineMapper
+            .mapToMatrix<number, string, CellPivot | null>(TimelineMapper
+                .toOrderMapDefault(orders, times, rooms));
+    }
+
+    static toOrderMatrixTransposed(orders: OrderView[], times: string[], rooms: Room[]): OrderCellMatrix {
+        return TimelineMapper
+            .mapToMatrix<string, number, CellPivot | null>(TimelineMapper
+                .toOrderMapTransposed(orders, times, rooms));
     }
 }

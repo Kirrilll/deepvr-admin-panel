@@ -1,21 +1,29 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import timeLineReducer from '../features/timeline/redux/slice';
-import datePickerReducer from '../store/date-picker-slice/slice';
-import { timelineApi } from "../repositories/TimelineApi";
-import modalReducer from '../store/creation-booking-modal/slice';
+import datePickerReducer from '../features/date-picker/redux/slice';
+import orderCreationReducer from '../features/booking-creator/redux/slice';
+import selectionReducer from '../features/selection/redux/slice';
+import jobDataReducer from '../features/game/redux/slice';
+import warningReducer from '../features/warning-modal/redux/slice';
+import warningMiddleware from "../common/middlewares/warningMiddleware";
+import replacingReducer from '../features/replacing/slice';
 
 const rootReducer = combineReducers({
     timeLineReducer,
     datePickerReducer,
-    modalReducer,
-    [timelineApi.reducerPath]: timelineApi.reducer
+    orderCreationReducer,
+    selectionReducer,
+    jobDataReducer,
+    replacingReducer,
+    warningReducer
 });
 
 export const setupStore = () => {
     return configureStore({
         reducer: rootReducer,
-        middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false}).concat(timelineApi.middleware)
+        middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }).
+            prepend(warningMiddleware)
     });
 }
 

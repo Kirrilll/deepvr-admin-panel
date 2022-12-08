@@ -1,4 +1,3 @@
-import { LabeledValue } from "antd/lib/select"
 import Client, { ClientValue } from "../../entities/Client";
 
 class ClientMapper {
@@ -13,6 +12,7 @@ class ClientMapper {
     }
 
     static clientsToSelector(clients: Client[]){
+        console.log(clients);
         if(clients.length == 0) return [];
         return clients.map(client => this.clientToSelector(client));
     }

@@ -1,8 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createReducer, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import OrderMapper from "../../../common/mappers/OrderMapper";
 import ColorPool from "../../../common/utils/color/ColorPool";
-import { Order, OrderResponse } from "../../../entities/Order";
-import OrderView from "../../../entities/OrderView";
+import { Order, OrderResponse, OrderView } from "../../../entities/Order";
 import { TimelineMode, TimelineOptions } from "../../../entities/TimelineOptions";
 import { TimelineType } from "../../../entities/TimelineTypes";
 import { fetchTimline } from "./asyncActions";
@@ -19,21 +18,21 @@ type TimelineStateType = Exclude<TimelineType, 'loading'>
 
 export interface CellIndeficator {
     time: string,
-    roomId: number
+    roomId: number,
+    date: string
 }
 
 interface TimelineState {
-    mode: TimelineMode,
     type: TimelineStateType,
     options: TimelineOptions
     fetchingStatus: FetchingStatus,
     data: OrderView[],
+
 }
 
 
 const initialState: TimelineState = {
-    options: { isFixed: false },
-    mode: { type: 'idle' },
+    options: { isFixed: true },
     type: 'default',
     fetchingStatus: FetchingStatus.NEVER,
     data: [],
@@ -45,33 +44,6 @@ const timelineSlice = createSlice({
     name: 'TimelineSlice',
     initialState: initialState,
     reducers: {
-        selectCell: (state, action: PayloadAction<CellIndeficator>) => {
-            const selectedCell = action.payload;
-            let updatedMode: TimelineMode = { ...state.mode };
-            if (state.mode.type == 'idle') {
-                updatedMode = {
-                    type: 'selection',
-                    extraData: [selectedCell]
-                }
-            }
-            else {
-                const selectedCells = updatedMode.extraData as CellIndeficator[];
-                const cellDuplicateIdIndex = selectedCells.findIndex(cellId => cellId.time == selectedCell.time && cellId.roomId == selectedCell.roomId);
-                if (!~cellDuplicateIdIndex) {
-                    const updatedSelectedCells = selectedCells.filter((cell, index) => index != cellDuplicateIdIndex);
-                    if (updatedSelectedCells.length == 0) {
-                        state.mode = { type: 'idle' };
-                    }
-                    else {
-                        state.mode.extraData = updatedSelectedCells;
-                    }
-                }
-                else {
-                    state.mode.extraData = selectedCells.push(selectedCell);
-                }
-                updatedMode.extraData = [...selectedCells, selectedCell];
-            }
-        },
         toggleTranspose: (state, action: PayloadAction<TimelineStateType>) => {
             state.type = action.payload;
             //маппятся данные
@@ -79,9 +51,16 @@ const timelineSlice = createSlice({
         toggleFixed: (state) => {
             state.options.isFixed = !state.options.isFixed;
         },
-        addOrder: (state, action: PayloadAction<Order>) => {
+        insertOrder: (state, action: PayloadAction<Order>) => {
+            const insertedOrder =  OrderMapper.fromEntity(action.payload);
+            const insertedOrderDuplicateIndex = state.data.findIndex(order => order.id === insertedOrder.id);
+            if(~insertedOrderDuplicateIndex){
+                state.data = [...state.data.slice(0, insertedOrderDuplicateIndex), insertedOrder, ...state.data.slice(insertedOrderDuplicateIndex+1)];
+            }
+            else{
+                state.data = [...state.data, insertedOrder];
+            }
             
-            state.data = [...state.data, OrderMapper.fromEntity(action.payload)];
         }
     },
     extraReducers: (builder) => {
@@ -99,4 +78,5 @@ const timelineSlice = createSlice({
 
 export default timelineSlice.reducer;
 
-export const { toggleFixed, toggleTranspose, addOrder } = timelineSlice.actions;
+export const { toggleFixed, toggleTranspose, insertOrder } = timelineSlice.actions;
+

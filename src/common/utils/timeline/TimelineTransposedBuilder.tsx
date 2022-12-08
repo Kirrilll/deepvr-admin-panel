@@ -1,7 +1,7 @@
-
 import { ColumnsType, ColumnType } from "antd/lib/table";
+import { CellPivot } from "../../../entities/Cell";
 import {Room} from "../../../entities/Room";
-import { SheduleTime, CellPivot, OrderCellMatrix, Row } from "../../../entities/TimelineTypes";
+import { SheduleTime, OrderCellMatrix, Row } from "../../../entities/TimelineTypes";
 import { TimelineBuilder } from "../../../entities/TimelineUtilsTypes";
 import Cell from "../../../features/timeline/ui/Cell";
 
@@ -39,6 +39,10 @@ class TimelineTransposedBuilder implements TimelineBuilder {
                 title: 'Залы',
                 key: 'rooms',
                 dataIndex: 'rooms',
+                shouldCellUpdate: (record, prevRecord) => {
+                    
+                    return true;
+                },
                 width: '95px',
                 fixed: 'left',
                 render: (title, data) => <div className="room-name">
@@ -52,8 +56,8 @@ class TimelineTransposedBuilder implements TimelineBuilder {
                 dataIndex: room.id,
                 render: (value, data) => <Cell
                     roomId={room.id}
-                    time={data.leadingCol.time}
-                    pivot={data.shedule[index]}
+                    time = {data.leadingCol.time}
+                    pivot = {data.shedule.at(index) ?? null}
                 />
             }))
         ]
