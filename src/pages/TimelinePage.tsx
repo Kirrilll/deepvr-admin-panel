@@ -14,14 +14,25 @@ import { closeWarning, resetSelection, unselectCell } from "../features/selectio
 import OrderCreationForm, { OrderFormState } from "../features/booking-creator/ui/OrderCreateForm";
 import { isTimelineReadySelector, selectRooms, selectWorkingParams } from "../features/game/redux/selectors";
 import { getGames, getRooms, getWorkingParams } from "../features/game/redux/asyncActions";
-import { selectIsCreated, selectIsOpen } from "../features/booking-creator/redux/selectors";
 import WarningModal from "../features/warning-modal/ui/WarningModal";
 import { createOrder } from "../features/booking-creator/redux/asyncActions";
 import OrderMapper from "../common/mappers/OrderMapper";
-import Uncompressor from "../common/utils/Uncomprossor";
+import useWebSocket, { ReadyState } from 'react-use-websocket';
 const { Sider, Content } = Layout;
 
+
+interface SocketMessage{
+    id: string,
+    channel: number,
+    message: string
+}
+
 const TimelinePage: React.FC = () => {
+
+    const socket = useWebSocket('ws://pusher.creatrix-digital.ru:5000/connect/abc', {
+        onOpen: (event) => console.log(event),
+        onMessage: (event) => console.log(JSON.parse(event.data))
+    });
 
     const dispatch = useAppDispatch();
 
@@ -42,7 +53,6 @@ const TimelinePage: React.FC = () => {
         dispatch(createOrder(OrderMapper.toDtoFromForm(value)));
     }
 
-    console.log(Uncompressor.uncompress('H4sIAAAAAAACA42MSwqAMAxE75K1SpKWWnsOVyJItQUFf4iuxLvb6sKtWTyG4U1OmO3kwUB9oCQbKXSkxC+L9iUksPbLHHVdUF5oTRJVaLdl9M3gwHACx+rs7l1j96AxMqfEKaqSlCE2kjJ8rgqzbvN/1fhcXDeedLf9rgAAAA=='))
 
     useEffect(() => {
         dispatch(getGames());
@@ -61,7 +71,7 @@ const TimelinePage: React.FC = () => {
 
     return (
         <>
-            <WarningModal/>
+            <WarningModal />
 
             <Layout hasSider>
                 <Layout>
@@ -77,28 +87,28 @@ const TimelinePage: React.FC = () => {
                         />
                     </Content>
                 </Layout>
-                    <Sider
-                        style={{
-                            overflow: 'auto',
-                            height: '100vh',
-                            position: 'sticky',
-                            top: 0,
-                            right: 0
-                        }}
-                        theme='light'
-                        collapsed={!isOpen}
-                        collapsedWidth={0}
-                        width={700}
-                        trigger={<div>Закрыть</div>}
-                    // className = {'creating-sider'}
-                    >
-                        <Button onClick={onCancel}>Закрыть</Button>
-                        {
-                            isOpen
-                                ? <OrderCreationForm onFinish={onFinish}/>
-                                : <Spin></Spin>
-                        }
-                    </Sider>
+                <Sider
+                    style={{
+                        overflow: 'auto',
+                        height: '100vh',
+                        position: 'sticky',
+                        top: 0,
+                        right: 0
+                    }}
+                    theme='light'
+                    collapsed={!isOpen}
+                    collapsedWidth={0}
+                    width={700}
+                    trigger={<div>Закрыть</div>}
+                // className = {'creating-sider'}
+                >
+                    <Button onClick={onCancel}>Закрыть</Button>
+                    {
+                        isOpen
+                            ? <OrderCreationForm onFinish={onFinish} />
+                            : <Spin></Spin>
+                    }
+                </Sider>
             </Layout>
         </>
     )

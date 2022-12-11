@@ -8,6 +8,12 @@ export type TimelineType = 'loading' | 'transposed' | 'default';
 
 export type OrderCellMatrix = (CellPivot | null)[][];
 
+export interface TimelineView<HeaderType, PresentColType>{
+    header: HeaderType[],
+    presentCol: PresentColType[],
+    matrix: OrderCellMatrix
+}
+
 export interface SheduleTime {
     time: string,
     restGlasses: number

@@ -121,7 +121,6 @@ code {
 /* Ячейки */
 .cell__container {
   background-color: #FAFAFC;
-  border-radius: 15px;
   overflow: hidden;
   height: 100%;
   display: flex;
@@ -136,6 +135,7 @@ code {
   font-weight: 700;
   font-size: 14px;
   line-height: 120%;
+  flex-grow: 1;
   display: flex;
   align-items: center;
   color: #FFFFFF;
@@ -174,7 +174,6 @@ code {
 
 /*Календарь*/
 
->>>>>>> refactoring
 td {
   padding: 0;
 }
@@ -351,9 +350,12 @@ td {
 
 /* --Ячейки */
 .table__cell {
-  height: 130px;
+  height: 100%;
 }
 
+.ant-table-cell{
+  height: fit-content !important;
+}
 
 .table__cell.selectable {
   background-color: #e9ffef;
@@ -369,8 +371,6 @@ td {
 }
 
 .table__cell.selected {
-
-  /* border: 2px solid #962FF3; */
   background-color: #FFE9EF;
 }
 
@@ -433,7 +433,7 @@ td {
   line-height: 140%;
   text-align: center;
   letter-spacing: 0.002em;
-  padding: 5px;
+  /* padding: 5px; */
 }
 
 .ant-table-measure-row {
@@ -478,6 +478,7 @@ td {
 
 .popover__section {
   margin-bottom: 30px;
+  max-width: 300px;
   align-items: flex-start;
 }
 

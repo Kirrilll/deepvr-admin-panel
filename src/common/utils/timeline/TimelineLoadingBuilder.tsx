@@ -5,7 +5,7 @@ import { TimelineBuilder } from "../../../entities/TimelineUtilsTypes";
 
 
 
-const DefaultTableSkeleton: React.FC = () => {
+export const DefaultTableSkeleton: React.FC = () => {
     return (
         <div style={{ padding: '10px' }}>
             <Skeleton paragraph={false} active />

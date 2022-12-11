@@ -39,10 +39,6 @@ class TimelineTransposedBuilder implements TimelineBuilder {
                 title: 'Залы',
                 key: 'rooms',
                 dataIndex: 'rooms',
-                shouldCellUpdate: (record, prevRecord) => {
-                    
-                    return true;
-                },
                 width: '95px',
                 fixed: 'left',
                 render: (title, data) => <div className="room-name">

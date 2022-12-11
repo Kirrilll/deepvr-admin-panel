@@ -82,7 +82,7 @@ const BookingPopoverContent: React.FC<{ order: OrderView }> = ({ order }) => {
     */
 
     //Написать селектор с комнатами
-    const rooms = useMemo<string>(() => RoomMapper.roomsToPopoverView(globalRooms, order.bookings), [order.id]);
+    const rooms = useMemo<string>(() => RoomMapper.roomsToPopoverView(globalRooms, order.bookings), [order.id, order.bookings]);
 
     return (
         <>
@@ -90,8 +90,8 @@ const BookingPopoverContent: React.FC<{ order: OrderView }> = ({ order }) => {
                 <div className='popover__title'>{`Заказ №${order.id}`}</div>
                 <div className={paymentStatusView.className}>{`• ${paymentStatusView.title}`}</div>
             </section>
-            <section className='popover__section '>
-                <Space style={{ width: '100%' }} direction='vertical' size={9}>
+            <section  className='popover__section '>
+                <Space style={{ width: '100%' }} direction='vertical' size={9} wrap= {true} >
                     {/* <RowInformation
                         iconSrc={ClockIcon}
                         title={buildTimeInterval()}

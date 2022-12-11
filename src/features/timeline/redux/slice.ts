@@ -14,7 +14,7 @@ export enum FetchingStatus {
     SUCCESSFULL
 }
 
-type TimelineStateType = Exclude<TimelineType, 'loading'>
+export type TimelineStateType = Exclude<TimelineType, 'loading'>
 
 export interface CellIndeficator {
     time: string,
@@ -32,7 +32,10 @@ interface TimelineState {
 
 
 const initialState: TimelineState = {
-    options: { isFixed: true },
+    options: { 
+        isFixed: true,
+        isSimpliefied: false
+     },
     type: 'default',
     fetchingStatus: FetchingStatus.NEVER,
     data: [],
@@ -50,6 +53,9 @@ const timelineSlice = createSlice({
         },
         toggleFixed: (state) => {
             state.options.isFixed = !state.options.isFixed;
+        },
+        toggleSimpliefied: (state) => {
+            state.options.isSimpliefied = !state.options.isSimpliefied;
         },
         insertOrder: (state, action: PayloadAction<Order>) => {
             const insertedOrder =  OrderMapper.fromEntity(action.payload);
@@ -78,5 +84,5 @@ const timelineSlice = createSlice({
 
 export default timelineSlice.reducer;
 
-export const { toggleFixed, toggleTranspose, insertOrder } = timelineSlice.actions;
+export const { toggleFixed, toggleTranspose, insertOrder, toggleSimpliefied } = timelineSlice.actions;
 

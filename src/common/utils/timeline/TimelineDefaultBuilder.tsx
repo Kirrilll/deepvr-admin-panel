@@ -1,6 +1,7 @@
 import { ColumnsType, ColumnType } from "antd/lib/table";
 import { CellPivot } from "../../../entities/Cell";
 import { Room } from "../../../entities/Room";
+import { TimelineOptions } from "../../../entities/TimelineOptions";
 import { OrderCellMatrix, Row } from "../../../entities/TimelineTypes";
 import { SummaryCallback, TimelineBuilder } from "../../../entities/TimelineUtilsTypes";
 import Cell from "../../../features/timeline/ui/Cell";
@@ -21,6 +22,7 @@ type RowDefault = Row<Room>;
 class TimelineDefaultBuilder implements TimelineBuilder {
 
     buildSummary(glasses: number, workingShift: string[]): SummaryCallback {
+
         return (data: readonly RowDefault[]) => {
             const columns = new Map<string, Array<number>>();
             for (let timeColIndex = 0; timeColIndex < workingShift.length; timeColIndex++) {
@@ -52,22 +54,6 @@ class TimelineDefaultBuilder implements TimelineBuilder {
         }));
     };
 
-
-
-    // const buildSummary = (data: readonly RowData[]): React.ReactNode => {
-    //     const columns = new Map<string, Array<BookingView | null>>();
-
-    //     for (const date of workingShift) {
-    //         columns.set(date, []);
-    //     }
-    //     for (const row of data) {
-    //         const rowShedule = row.shedule;
-    //         for (const date of Array.from(rowShedule.keys())) {
-    //             columns.set(date, [...columns.get(date) ?? [], rowShedule.get(date) ?? null])
-    //         }
-    //     }
-    //     return <TableSummary glasses={glasses} columns={Array.from(columns.values())} />
-    // };
 
     buildColumns(workingShift: string[]) {
         const columns: ColumnsType<RowDefault> = [

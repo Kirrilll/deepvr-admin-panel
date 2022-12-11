@@ -7,7 +7,6 @@ import selectionReducer from '../features/selection/redux/slice';
 import jobDataReducer from '../features/game/redux/slice';
 import warningReducer from '../features/warning-modal/redux/slice';
 import warningMiddleware from "../common/middlewares/warningMiddleware";
-import replacingReducer from '../features/replacing/slice';
 
 const rootReducer = combineReducers({
     timeLineReducer,
@@ -15,7 +14,6 @@ const rootReducer = combineReducers({
     orderCreationReducer,
     selectionReducer,
     jobDataReducer,
-    replacingReducer,
     warningReducer
 });
 

@@ -9,8 +9,12 @@ import { precreateOrder } from '../../booking-creator/redux/asyncActions';
 import { selectIsOpen } from '../../booking-creator/redux/selectors';
 import { CellView, CellPivot } from '../../../entities/Cell';
 import CellMapper from '../../../common/mappers/CellMapper';
+import { TimelineOptions } from '../../../entities/TimelineOptions';
+import { cellTypeSelector } from '../redux/selectors';
 
 export const DEFAULT_CELL_CLASSNAME = 'table__cell';
+
+type CellType = 'default' | 'simple'
 
 interface CellProps{
     roomId: number,
@@ -19,12 +23,14 @@ interface CellProps{
 }
 
 const Cell: React.FC<CellProps> = ({roomId, time, pivot}) => {
-    const dispatch = useAppDispatch();
 
+    
+    const dispatch = useAppDispatch();
     const selectedDate = useAppSelector(state => state.datePickerReducer.currentDate);
     const selectedCells = useAppSelector(state => state.selectionReducer.selectedCells);
     const modeType = useAppSelector(selectMode);
     const isCreating = useAppSelector(selectIsOpen);
+    const cellType = useAppSelector(cellTypeSelector);
 
     const isAfter = useTimeChecker({ time: time, date: selectedDate });
 
@@ -33,7 +39,7 @@ const Cell: React.FC<CellProps> = ({roomId, time, pivot}) => {
         [time, roomId, selectedDate.format('YYYY-MM-DD'), pivot]
     );
 
-    const cellContent = useMemo(() => CellContentFactory.createContent(pivot), [pivot]);
+    const cellContent = useMemo(() => CellContentFactory.createContent(pivot, cellType), [pivot, cellType]);
     const cellMode = useMemo(() => CellModeFactory.createMode(
         !isAfter ? { type: 'overpast' } : { type: modeType, extraData: selectedCells },
         cell,
@@ -46,10 +52,12 @@ const Cell: React.FC<CellProps> = ({roomId, time, pivot}) => {
         dispatch(precreateOrder(selectedCells.map(cell => cell.id)));
     }
 
+    const buildHeight = cellType == 'default' ? 130 : 60;
+
 
     return (
         <>
-            <div style={{ position: 'relative' }}>
+            <div style={{ position: 'relative', height: `${buildHeight}px`}}>
                 <CreateOrderButton isVisible={isVisible} onClick={onButtonClick} />
                 <div onClick={cellMode.onClick} className={cellMode.className}>
                     {cellContent}

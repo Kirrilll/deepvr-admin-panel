@@ -1,7 +1,7 @@
 
 import { OrderView } from "../../../entities/Order";
 import {Room} from "../../../entities/Room";
-import { Timeline } from "../../../entities/TimelineTypes";
+import { OrderCellMatrix, Timeline } from "../../../entities/TimelineTypes";
 import { TimelineDirector } from "../../../entities/TimelineUtilsTypes";
 import TimelineMapper from "../../mappers/TimelineMapper";
 import TimelineTransposedBuilder from "./TimelineTransposedBuilder";
@@ -13,11 +13,10 @@ class TimelineTransposedDirector implements TimelineDirector {
 
     private constructor(){};
 
-    construct(workingShift: string[], rooms: Room[], data: OrderView[], glasses: number): Timeline{
-        const dataMatrix = TimelineMapper.toOrderMatrixTransposed(data, workingShift, rooms);
+    construct(workingShift: string[], rooms: Room[], matrix: OrderCellMatrix, glasses: number): Timeline{
         return ({
             columns: this.builder.buildColumns(rooms),
-            data: this.builder.buildData(dataMatrix, workingShift, glasses),
+            data: this.builder.buildData(matrix, workingShift, glasses),
             summary: this.builder.buildSummary()
         })
     }

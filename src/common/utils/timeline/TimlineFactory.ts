@@ -5,8 +5,8 @@ import TimelineDefaultDirector from "./TimelineDefaultDirector";
 import TimelineLoadingDirector from "./TimelineLoadingDirector";
 import TimelineTransposedDirector from "./TimelineTransposedDirector";
 
-class TimelineFactory {
-    static createTimeline(type: TimelineType): TimelineDirector {
+class TimelineDirectorFactory {
+    static createTimelineDirector(type: TimelineType): TimelineDirector {
         switch (type) {
             case 'default':
                 return TimelineDefaultDirector.instance;
@@ -18,4 +18,4 @@ class TimelineFactory {
     }
 }
 
-export default TimelineFactory;
+export default TimelineDirectorFactory;
