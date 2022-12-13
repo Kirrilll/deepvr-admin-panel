@@ -2,7 +2,7 @@ import { Checkbox, Row, Select } from "antd";
 import React, { useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
 import { selectOptions, selectType } from "../redux/selectors";
-import { toggleFixed, toggleSimpliefied, toggleTranspose } from '../redux/slice';
+import { toggleFixed, toggleShowCanceled, toggleSimpliefied, toggleTranspose } from '../redux/slice';
 import DateRange from "../../date-picker/ui/DateRange";
 
 const { Option } = Select;
@@ -14,7 +14,7 @@ const SettingContainer: React.FC = () => {
 
     const isTranspose = useMemo(() => type === 'transposed', [type]);
     const isFixed = useMemo(() => options.isFixed, [options.isFixed]);
-    const {isSimpliefied} = options;
+    const {isSimpliefied, isShowCanceled} = options;
 
     const handleTranspose = () => dispatch(toggleTranspose(isTranspose
         ? 'default'
@@ -22,6 +22,7 @@ const SettingContainer: React.FC = () => {
     );
     const handleFixed = () => dispatch(toggleFixed());
     const handleSimpliefied = () => dispatch(toggleSimpliefied());
+    const handleShowCanceled = () => dispatch(toggleShowCanceled());
 
     return (
         <Row style={{ margin: 0, gap: 8, marginBottom: '60px' }}>
@@ -40,6 +41,11 @@ const SettingContainer: React.FC = () => {
                 checked={isSimpliefied}
                 onChange={handleSimpliefied}>
                 Упростить
+            </Checkbox>
+            <Checkbox
+                checked={isShowCanceled}
+                onChange={handleShowCanceled}>
+                Показать отмененные
             </Checkbox>
             {/* <Select
                 defaultValue='default'

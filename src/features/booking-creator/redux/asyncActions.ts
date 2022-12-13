@@ -24,7 +24,6 @@ export const createOrder = (order: OrderDto) => (dispatch: AppDispatch) => {
                 if((data as ErrorResponse).error){
                     console.log((data as ErrorResponse).error_text)
                 }
-                
                 // if(res.status === 200){
                 dispatch(creatingFulfilled());
                 dispatch(insertOrder(res.data as Order))

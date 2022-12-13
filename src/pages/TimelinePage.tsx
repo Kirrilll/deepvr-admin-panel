@@ -18,6 +18,7 @@ import WarningModal from "../features/warning-modal/ui/WarningModal";
 import { createOrder } from "../features/booking-creator/redux/asyncActions";
 import OrderMapper from "../common/mappers/OrderMapper";
 import useWebSocket, { ReadyState } from 'react-use-websocket';
+import { selectOrders, selectTimelineMap } from "../features/timeline/redux/selectors";
 const { Sider, Content } = Layout;
 
 
@@ -36,7 +37,8 @@ const TimelinePage: React.FC = () => {
 
     const dispatch = useAppDispatch();
 
-    const { options, type, data } = useAppSelector(state => state.timeLineReducer);
+    const { options, type } = useAppSelector(state => state.timeLineReducer);
+    const orders =  useAppSelector(selectTimelineMap);
     const isOpen = useAppSelector(state => state.orderCreationReducer.isCreating);
     const currentDate = useAppSelector(state => state.datePickerReducer.currentDate);
 
@@ -72,7 +74,6 @@ const TimelinePage: React.FC = () => {
     return (
         <>
             <WarningModal />
-
             <Layout hasSider>
                 <Layout>
                     <Content style={{ padding: 60 }}>
@@ -81,7 +82,7 @@ const TimelinePage: React.FC = () => {
                             type={timelineType}
                             options={options}
                             glasses={workingParams.glasses}
-                            data={data}
+                            data={orders}
                             workingShift={workingParams.time}
                             rooms={rooms}
                         />

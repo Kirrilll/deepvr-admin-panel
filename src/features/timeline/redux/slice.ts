@@ -34,8 +34,9 @@ interface TimelineState {
 const initialState: TimelineState = {
     options: { 
         isFixed: true,
-        isSimpliefied: false
-     },
+        isSimpliefied: false,
+        isShowCanceled: false
+    },
     type: 'default',
     fetchingStatus: FetchingStatus.NEVER,
     data: [],
@@ -57,8 +58,12 @@ const timelineSlice = createSlice({
         toggleSimpliefied: (state) => {
             state.options.isSimpliefied = !state.options.isSimpliefied;
         },
+        toggleShowCanceled: (state) => {
+            state.options.isShowCanceled =!state.options.isShowCanceled;
+        },
         insertOrder: (state, action: PayloadAction<Order>) => {
             const insertedOrder =  OrderMapper.fromEntity(action.payload);
+            console.log(insertedOrder);
             const insertedOrderDuplicateIndex = state.data.findIndex(order => order.id === insertedOrder.id);
             if(~insertedOrderDuplicateIndex){
                 state.data = [...state.data.slice(0, insertedOrderDuplicateIndex), insertedOrder, ...state.data.slice(insertedOrderDuplicateIndex+1)];
@@ -84,5 +89,5 @@ const timelineSlice = createSlice({
 
 export default timelineSlice.reducer;
 
-export const { toggleFixed, toggleTranspose, insertOrder, toggleSimpliefied } = timelineSlice.actions;
+export const { toggleFixed, toggleTranspose, insertOrder, toggleSimpliefied, toggleShowCanceled } = timelineSlice.actions;
 

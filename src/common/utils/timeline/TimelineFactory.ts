@@ -6,13 +6,9 @@ import { TimelineType } from "../../../entities/TimelineTypes";
 import { WorkingShiftView } from "../../../entities/WorkingShift";
 import { TimelineStateType } from "../../../features/timeline/redux/slice";
 
-interface Timeline {
-    headersValues: any[],
 
-}
-
-type OrderMapDefault = Map<number, Map<string, CellPivot | null>>;
-type OrderMapTransposed = Map<string, Map<number, CellPivot | null>>;
+export type OrderMapDefault = Map<number, Map<string, CellPivot | null>>;
+export type OrderMapTransposed = Map<string, Map<number, CellPivot | null>>;
 
 
 interface TimelineFactoryArgs {

@@ -61,6 +61,7 @@ class TimelineDefaultBuilder implements TimelineBuilder {
                 title: 'Залы',
                 key: 'rooms',
                 dataIndex: 'rooms',
+                // rowSpan: 1,
                 width: '95px',
                 fixed: 'left',
                 render: (title, data) => <div className="room-name">

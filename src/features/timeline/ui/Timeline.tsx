@@ -3,6 +3,7 @@ import { Table } from 'antd';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { useAppSelector } from '../../../app/store';
 import TimelineMapper from '../../../common/mappers/TimelineMapper';
+import { OrderMapDefault, OrderMapTransposed } from '../../../common/utils/timeline/TimelineFactory';
 import TimelineDirectorFactory from '../../../common/utils/timeline/TimlineFactory';
 import { CellPivot } from '../../../entities/Cell';
 import { OrderView } from '../../../entities/Order';
@@ -15,34 +16,22 @@ import { selectTimelineMap } from '../redux/selectors';
 interface TimelineProps {
     options: TimelineOptions,
     glasses: number,
-    data: OrderView[],
+    data: OrderMapDefault | OrderMapTransposed,
     workingShift: string[],
     rooms: Room[],
     type: TimelineType
 }
 
-//TODO отработать 30 минутки
-//Cell должна знать свое место(время, комната)
-//Cell должна знать:
-//                  1. Выбрана ли она
-//                  2. Есть ли возможность выбрать
-//TODO Сделать кнопку создать бронь
-//TODO Мультиселект на ЛКМ
-//Рефактор Timeline, сделать единый тип данных(не Map), 
-
-
-
 const REFERENCE_CELL_WIDTH = 190;
 
 const Timeline: React.FC<TimelineProps> = ({ options, data, workingShift, rooms, glasses, type }) => {
 
-    const timelineMap = useAppSelector(selectTimelineMap);
 
     const director = useMemo(() => TimelineDirectorFactory.createTimelineDirector(type), [type]);
     const timeline = useMemo(() => director.construct(
         workingShift,
         rooms,
-        TimelineMapper.mapToMatrix<any, any, CellPivot | null>(timelineMap),
+        TimelineMapper.mapToMatrix<any, any, CellPivot | null>(data),
         glasses), [data, type]);
 
     return (

@@ -138,6 +138,7 @@ code {
   flex-grow: 1;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   color: #FFFFFF;
 }
 
@@ -145,7 +146,7 @@ code {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  flex-grow: 1;
+  flex-grow: 2;
 }
 
 .booked-item {

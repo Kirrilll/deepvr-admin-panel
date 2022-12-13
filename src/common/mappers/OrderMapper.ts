@@ -53,6 +53,7 @@ export default class OrderMapper {
         }
     }
 
+
     static fromEntities(orders: Order[]) {
         return orders.map(order => OrderMapper.fromEntity(order));
     }
@@ -88,7 +89,6 @@ export default class OrderMapper {
 
     static fromCells(cells: CellIndeficator[], id: number): OrderCreation {
         const unionDate = cells[0].date;
-        console.log(moment(new Date(unionDate)))
         return ({
             id: id,
             paymentStatus: EPaymentStatus.NOTPAID,

@@ -15,6 +15,7 @@ import BookingMapper from "../../../common/mappers/BookingMapper";
 import CellMapper from "../../../common/mappers/CellMapper";
 import TimelineHelper from "../../../common/helpers/TimelineHelper";
 import { selectOrders } from "../../timeline/redux/selectors";
+import { ValidatorHelper } from "../../../common/helpers/ValidatorHelper";
 
 
 
@@ -28,15 +29,13 @@ interface BookingFormProps {
 
 
 const BookingForm: React.FC<BookingFormProps> = ({ color, orderId, field, date, booking }) => {
-
-    const orders = useAppSelector(selectOrders);
-
     const games = useAppSelector(buildGamesByRoomSelector(booking[ROOM_PATH]));
     const rooms = useAppSelector(selectRooms);
-    // const room = useAppSelector(buildRoomByIdSelector(booking[ROOM_PATH]));
+    const room = useAppSelector(buildRoomByIdSelector(booking[ROOM_PATH]));
     const gamesOptions = useMemo(() => GameMapper.gamesToValues(games), [games])
     const roomsOptions = useMemo(() => RoomMapper.gamesToValues(rooms), [rooms]);
 
+    
 
     const dispatch = useAppDispatch();
     const onOnDeleteItem = () => {
@@ -73,8 +72,8 @@ const BookingForm: React.FC<BookingFormProps> = ({ color, orderId, field, date, 
                     key={field.key + '2'}
                     name={[field.name, GAME_PATH]}
                     initialValue={booking[GAME_PATH]}
-                    rules = {[
-                        {required: true}
+                    rules={[
+                        { required: true }
                     ]}
                 >
                     <Select
@@ -89,9 +88,13 @@ const BookingForm: React.FC<BookingFormProps> = ({ color, orderId, field, date, 
                     initialValue={booking[GUEST_COUNT_PATH]}
                     key={field.key + '3'}
                     name={[field.name, GUEST_COUNT_PATH]}
-                    rules = {[
-                        // {type: 'number', max: 10},
-                        {required: true, message: 'Это поле обязательно'},
+                    rules={[
+                        { pattern: new RegExp(/^[0-9]+$/), message: 'Значение не является числом' },
+                        {
+                            validator: ValidatorHelper.buildNumberAmbitValidato(room?.guest_max ?? 1, 1),
+                            message: 'Превышенно рекомендованное кол-во', warningOnly: true
+                        },
+                        { required: true, message: 'Это поле обязательно' },
                     ]}
                 >
                     <Input

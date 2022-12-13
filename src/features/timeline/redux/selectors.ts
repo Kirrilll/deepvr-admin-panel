@@ -2,26 +2,37 @@ import { createDraftSafeSelector, createSelector } from "@reduxjs/toolkit"
 import { RootState } from "../../../app/store"
 import TimelineFactory from "../../../common/utils/timeline/TimelineFactory";
 import { CellContentType } from "../../../entities/Cell";
+import { EConfirmStatus } from "../../../entities/PaymentInfo";
 import { TimelineType } from "../../../entities/TimelineTypes"
 import { selectRooms, selectWorkingParams } from "../../game/redux/selectors";
 import { CellIndeficator, FetchingStatus } from "./slice";
 
 export const selectType = (state: RootState) => state.timeLineReducer.type;
 export const selectOptions = (state: RootState) => state.timeLineReducer.options;
-export const selectOrders = (state: RootState) => state.timeLineReducer.data;
+export const selectOrders = (state: RootState) => {
+    const {data, options} = state.timeLineReducer;
+    const {isShowCanceled} = options;
+    if(isShowCanceled == true){
+        return data;
+    }
+    return data.filter(order => {
+        return order.confirmStatus != EConfirmStatus.CANCELED
+    });
+} 
 
 export const selectTimelineMap = createDraftSafeSelector(
     [
         (state: RootState) => state.timeLineReducer,
+        selectOrders,
         selectRooms,
         selectWorkingParams
     ],
-    (timeline, rooms, workingParams) => TimelineFactory.createTimeline({
+    (timeline, orders, rooms, workingParams) => TimelineFactory.createTimeline({
         options: timeline.options,
         type: timeline.type,
         rooms: rooms,
         workingParams: workingParams,
-        orders: timeline.data
+        orders: orders
     })
 );
 
@@ -35,3 +46,5 @@ export const cellTypeSelector = (state: RootState): CellContentType => {
     }
     return 'default';
 }
+
+// export const selectGlassesAt

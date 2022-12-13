@@ -1,8 +1,10 @@
+import { Col, Row } from 'antd';
 import React, { useRef } from 'react';
 import { BookingView } from '../../../entities/Booking';
 import { CellPivot } from '../../../entities/Cell';
 import BookingPopover from './BookingPopover';
 import ConfirmStatusTag from './ConfirmStatusTag'
+import PERSON_ICON from '../../../assets/person.svg';
 
 interface BookedCellProps {
     pivot: CellPivot,
@@ -20,7 +22,7 @@ interface BookedCellBodyProps {
 }
 
 //Хранит order и index в bookings
-const BookedCell: React.FC<BookedCellProps> = ({pivot, isSimplified = false}) => {
+const BookedCell: React.FC<BookedCellProps> = ({ pivot, isSimplified = false }) => {
 
     const { order, bookingIndex } = pivot;
     const currBooking = order.bookings[bookingIndex];
@@ -57,7 +59,11 @@ const BookedCellBody: React.FC<BookedCellBodyProps> = ({ booking }) => {
 const BookedCellHeader: React.FC<BookedCellHeaderProps> = ({ id, guestCount, color }) => {
     return (
         <div className='cell__header' style={{ backgroundColor: color }}>
-            {`Заказ ${id}/ ${guestCount}`}
+            <div>{`Заказ №${id}`}</div>
+            <div style={{display: 'flex', alignItems: 'center'}}>
+                <img style={{height: '15px', width: '15px'}} src={PERSON_ICON} />
+                <div>{guestCount}</div>
+            </div>
         </div>
     )
 }

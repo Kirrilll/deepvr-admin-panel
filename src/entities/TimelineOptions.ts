@@ -3,7 +3,8 @@ export type TimelineModeType = 'selection' | 'idle';
 
 export interface TimelineOptions {
     isFixed: boolean,
-    isSimpliefied: boolean
+    isSimpliefied: boolean,
+    isShowCanceled: boolean
 }
 
 export interface TimelineMode {

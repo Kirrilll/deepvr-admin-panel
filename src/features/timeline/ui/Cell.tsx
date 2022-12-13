@@ -52,7 +52,7 @@ const Cell: React.FC<CellProps> = ({roomId, time, pivot}) => {
         dispatch(precreateOrder(selectedCells.map(cell => cell.id)));
     }
 
-    const buildHeight = cellType == 'default' ? 130 : 60;
+    const buildHeight = cellType == 'default' ? 145 : 85;
 
 
     return (
