@@ -4,35 +4,28 @@ import React, { useEffect, useMemo, useRef } from 'react';
 import { useAppSelector } from '../../../app/store';
 import TimelineMapper from '../../../common/mappers/TimelineMapper';
 import { OrderMapDefault, OrderMapTransposed } from '../../../common/utils/timeline/TimelineFactory';
-import TimelineDirectorFactory from '../../../common/utils/timeline/TimlineFactory';
+import TimelineDirectorFactory from '../../../common/utils/timeline/TimlineFactoryDirector';
 import { CellPivot } from '../../../entities/Cell';
 import { OrderView } from '../../../entities/Order';
 import { Room } from '../../../entities/Room';
 import { TimelineMode, TimelineOptions } from '../../../entities/TimelineOptions';
-import { TimelineType } from '../../../entities/TimelineTypes';
-import { selectTimelineMap } from '../redux/selectors';
+import { Timeline, TimelineType } from '../../../entities/TimelineTypes';
+import { timelineSelector } from '../redux/selectors';
 
 
 interface TimelineProps {
     options: TimelineOptions,
-    glasses: number,
-    data: OrderMapDefault | OrderMapTransposed,
-    workingShift: string[],
-    rooms: Room[],
+    timeline: Timeline<any, any>,
     type: TimelineType
 }
 
 const REFERENCE_CELL_WIDTH = 190;
 
-const Timeline: React.FC<TimelineProps> = ({ options, data, workingShift, rooms, glasses, type }) => {
+const TimelineTable: React.FC<TimelineProps> = ({ options, timeline, type }) => {
 
 
     const director = useMemo(() => TimelineDirectorFactory.createTimelineDirector(type), [type]);
-    const timeline = useMemo(() => director.construct(
-        workingShift,
-        rooms,
-        TimelineMapper.mapToMatrix<any, any, CellPivot | null>(data),
-        glasses), [data, type]);
+    const timelineView = useMemo(() => director.construct(timeline), [timeline, type]);
 
     return (
         <Table
@@ -40,16 +33,16 @@ const Timeline: React.FC<TimelineProps> = ({ options, data, workingShift, rooms,
             tableLayout='fixed'
             pagination={false}
             bordered
-            columns={timeline.columns}
-            dataSource={timeline.data}
-            summary={timeline.summary}
+            columns={timelineView.columns}
+            dataSource={timelineView.data}
+            summary={timelineView.summary}
             scroll={options.isFixed
                 ? {
-                    x: REFERENCE_CELL_WIDTH * workingShift.length,
+                    x: REFERENCE_CELL_WIDTH * timelineView.columns.length,
                 }
                 : undefined}
         />
     )
 }
 
-export default Timeline;
+export default TimelineTable;

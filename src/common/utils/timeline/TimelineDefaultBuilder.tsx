@@ -21,26 +21,10 @@ type RowDefault = Row<Room>;
 //Передаем матрицу ячеек
 class TimelineDefaultBuilder implements TimelineBuilder {
 
-    buildSummary(glasses: number, workingShift: string[]): SummaryCallback {
+    buildSummary(remainingGlasses: Map<string, number>): SummaryCallback {
 
-        return (data: readonly RowDefault[]) => {
-            const columns = new Map<string, Array<number>>();
-            for (let timeColIndex = 0; timeColIndex < workingShift.length; timeColIndex++) {
-                const time = workingShift[timeColIndex];
-                for (const row of data) {
-                    let bookedGlasses = row.shedule[timeColIndex] === null
-                        ? 0
-                        : row.shedule[timeColIndex]!.order.bookings[row.shedule[timeColIndex]!.bookingIndex].guestCount;
-                    columns.set(time, [...(columns.get(time) ?? []), bookedGlasses]);
-                }
-            }
-            return <TableSummary
-                columns={Array
-                    .from(columns.values())
-                    .map(col => col
-                        .reduce((prev, next) => prev + next))}
-                glasses={glasses} />
-        }
+        return (data: readonly RowDefault[]) =>  <TableSummary
+                columns={Array.from(remainingGlasses.values())} />
     };
 
 

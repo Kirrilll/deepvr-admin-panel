@@ -3,13 +3,13 @@ import { OrderView } from "./Order";
 
 import {Room} from "./Room"
 import { TimelineOptions } from "./TimelineOptions";
-import { OrderCellMatrix, Row, Timeline } from "./TimelineTypes"
+import { OrderCellMatrix, Row, Timeline, TimelineView } from "./TimelineTypes"
 
 
 export type SummaryCallback = ((data: readonly Row<any>[]) => React.ReactNode) | undefined;
-
+export type RestArgsTypes =[{rooms: Room[]}]
 export interface TimelineDirector {
-    construct: (workingShift: string[], rooms: Room[], matrix: OrderCellMatrix, glasses: number ) => Timeline
+    construct: (timeline: Timeline<any, any>) => TimelineView
 }
 
 export interface TimelineBuilder {

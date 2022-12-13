@@ -2,9 +2,10 @@ import { CellPivot } from "../../../entities/Cell";
 import { OrderView } from "../../../entities/Order";
 import { Room } from "../../../entities/Room";
 import { TimelineOptions } from "../../../entities/TimelineOptions";
-import { TimelineType } from "../../../entities/TimelineTypes";
+import { DefaultTimeline, Timeline, TimelineType, TransposedTimeline } from "../../../entities/TimelineTypes";
 import { WorkingShiftView } from "../../../entities/WorkingShift";
 import { TimelineStateType } from "../../../features/timeline/redux/slice";
+import TimelineMapper from "../../mappers/TimelineMapper";
 
 
 export type OrderMapDefault = Map<number, Map<string, CellPivot | null>>;
@@ -27,18 +28,19 @@ export default class TimelineFactory {
 
         switch (type) {
             case 'default':
-                return TimelineFactory.createDefault(orders, workingParams.time, rooms);
+                return TimelineFactory.createDefault(orders, workingParams.time, rooms, workingParams.glasses);
             case 'transposed':
-                return TimelineFactory.createTransposed(orders, workingParams.time, rooms);
+                return TimelineFactory.createTransposed(orders, workingParams.time, rooms, workingParams.glasses);
             default:
                 throw Error('Imposible timeline view');
         }
     }
 
+    private static createTransposed(orders: OrderView[], times: string[], rooms: Room[], initialGlasses: number): TransposedTimeline {
 
-    private static createTransposed(orders: OrderView[], times: string[], rooms: Room[]) {
+        const glassesMap = new Map<string, number>(times.map(time => [time, initialGlasses]));
         const defaultRoomMap: Map<number, CellPivot | null> = new Map(rooms.map(room => [room.id, null]));
-        const map: OrderMapTransposed = new Map(times.map(time => [
+        const ordersMap: OrderMapTransposed = new Map(times.map(time => [
             time,
             new Map(defaultRoomMap)
         ]));
@@ -48,16 +50,24 @@ export default class TimelineFactory {
                 const booking = order.bookings[bookingIndex];
                 const time = booking.startTime.time;
                 const roomId = booking.roomId;
-                const shedule = map.get(time) ?? new Map(defaultRoomMap);
+                glassesMap.set(time, (glassesMap.get(time) ?? initialGlasses) - booking.guestCount);
+                const shedule = ordersMap.get(time) ?? new Map(defaultRoomMap);
                 shedule.set(roomId, { order: order, bookingIndex: bookingIndex })
             }
         }
-        return map;
+
+        return ({
+            header: rooms,
+            presentCol: times,
+            matrix: TimelineMapper.toOrderMatrixTransposed(ordersMap),
+            remainingGlassesMap: glassesMap
+        });
     }
 
-    private static createDefault(orders: OrderView[], times: string[], rooms: Room[]) {
+    private static createDefault(orders: OrderView[], times: string[], rooms: Room[], initialGlasses: number): DefaultTimeline {
+        const glassesMap = new Map<string, number>(times.map(time => [time, initialGlasses]));
         const defaultSheduleMap = new Map(times.map(time => ([time, null])));
-        const map: OrderMapDefault = new Map(
+        const ordersMap: OrderMapDefault = new Map(
             rooms.map(room => ([
                 room.id,
                 new Map(defaultSheduleMap)
@@ -68,18 +78,18 @@ export default class TimelineFactory {
                 const booking = order.bookings[bookingIndex];
                 const roomId = booking.roomId;
                 const time = booking.startTime.time;
-                const shedule = map.get(roomId) ?? new Map(defaultSheduleMap);
-                shedule.set(time, {
-                    order: order,
-                    bookingIndex: bookingIndex
-                })
-                map.set(
-                    roomId,
-                    shedule
-                );
+                glassesMap.set(time, (glassesMap.get(time) ?? initialGlasses) - booking.guestCount)
+                const shedule = ordersMap.get(roomId) ?? new Map(defaultSheduleMap);
+                shedule.set(time, { order: order, bookingIndex: bookingIndex })
+                //ordersMap.set(roomId, shedule);
             }
         }
+        return ({
+            header: times,
+            presentCol: rooms,
+            matrix: TimelineMapper.toOrderMatrixDefault(ordersMap),
+            remainingGlassesMap: glassesMap
+        })
 
-        return map;
     }
 }

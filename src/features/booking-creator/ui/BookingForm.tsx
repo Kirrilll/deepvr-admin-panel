@@ -92,7 +92,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ color, orderId, field, date, 
                         { pattern: new RegExp(/^[0-9]+$/), message: 'Значение не является числом' },
                         {
                             validator: ValidatorHelper.buildNumberAmbitValidato(room?.guest_max ?? 1, 1),
-                            message: 'Превышенно рекомендованное кол-во', warningOnly: true
+                            message: `Рекомендованное кол-во человек от ${1} до ${room?.guest_max?? 1}`, warningOnly: true
                         },
                         { required: true, message: 'Это поле обязательно' },
                     ]}

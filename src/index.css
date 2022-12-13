@@ -751,7 +751,7 @@ td {
   background-color: #FFFFFF;
   border-radius: 10px;
   width: 270px;
-  height: 270px;
+  min-height: 270px;
 }
 
 .booking-form__header {

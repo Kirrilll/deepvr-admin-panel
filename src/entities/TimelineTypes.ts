@@ -7,12 +7,16 @@ export type TimelineType = 'loading' | 'transposed' | 'default';
 
 
 export type OrderCellMatrix = (CellPivot | null)[][];
+export type DefaultTimeline = Timeline<string, Room>
+export type TransposedTimeline = Timeline<Room, string>
 
-export interface TimelineView<HeaderType, PresentColType>{
+export interface Timeline<HeaderType, PresentColType>{
     header: HeaderType[],
     presentCol: PresentColType[],
-    matrix: OrderCellMatrix
+    matrix: OrderCellMatrix,
+    remainingGlassesMap: Map<string, number>
 }
+
 
 export interface SheduleTime {
     time: string,
@@ -24,7 +28,7 @@ export interface Row<T extends Room | SheduleTime> {
     shedule: (CellPivot | null)[]
 }
 
-export interface Timeline {
+export interface TimelineView {
     columns: ColumnsType<any>,
     data: Row<any>[],
     summary?: (data: readonly Row<any>[]) => React.ReactNode

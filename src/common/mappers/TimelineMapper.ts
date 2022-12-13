@@ -1,16 +1,14 @@
-
 import { CellPivot } from "../../entities/Cell";
-import { OrderView } from "../../entities/Order";
-import { Room } from "../../entities/Room";
-import { OrderCellMatrix, TimelineView } from "../../entities/TimelineTypes";
-import TimelineFactory from "../utils/timeline/TimelineFactory";
+import { OrderCellMatrix, Timeline } from "../../entities/TimelineTypes";
 
 
 type OrderMapDefault = Map<number, Map<string, CellPivot | null>>;
 type OrderMapTransposed = Map<string, Map<number, CellPivot | null>>;
 
-export default class TimelineMapper {
+type TransposedTimeline = Timeline<number, string>
+type DefaultTimelineView = Timeline<string, number>
 
+export default class TimelineMapper {
 
     static mapToMatrix<KeyOneType, KeyTwoType, ValueType>(map: Map<KeyOneType, Map<KeyTwoType, ValueType>>): ValueType[][] {
         return Array
@@ -19,7 +17,7 @@ export default class TimelineMapper {
                 .from(innerMap.values()))
     }
 
-    
+
 
     static toOrderMatrixDefault(map: OrderMapDefault): OrderCellMatrix {
         return TimelineMapper.mapToMatrix<number, string, CellPivot | null>(map);

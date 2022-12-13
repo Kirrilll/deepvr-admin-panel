@@ -7,7 +7,7 @@ import { close } from "../features/booking-creator/redux/slice";
 import { FetchingStatus } from "../features/timeline/redux/slice";
 
 import SettingContainer from "../features/timeline/ui/SettingsContainer";
-import Timeline from "../features/timeline/ui/Timeline";
+import TimelineTable from "../features/timeline/ui/Timeline";
 import { TimelineType } from "../entities/TimelineTypes";
 import StorageService from "../common/services/StorageService";
 import { closeWarning, resetSelection, unselectCell } from "../features/selection/redux/slice";
@@ -18,7 +18,7 @@ import WarningModal from "../features/warning-modal/ui/WarningModal";
 import { createOrder } from "../features/booking-creator/redux/asyncActions";
 import OrderMapper from "../common/mappers/OrderMapper";
 import useWebSocket, { ReadyState } from 'react-use-websocket';
-import { selectOrders, selectTimelineMap } from "../features/timeline/redux/selectors";
+import { selectOrders, timelineSelector } from "../features/timeline/redux/selectors";
 const { Sider, Content } = Layout;
 
 
@@ -38,12 +38,10 @@ const TimelinePage: React.FC = () => {
     const dispatch = useAppDispatch();
 
     const { options, type } = useAppSelector(state => state.timeLineReducer);
-    const orders =  useAppSelector(selectTimelineMap);
+    const timeline =  useAppSelector(timelineSelector);
     const isOpen = useAppSelector(state => state.orderCreationReducer.isCreating);
     const currentDate = useAppSelector(state => state.datePickerReducer.currentDate);
 
-    const workingParams = useAppSelector(selectWorkingParams);
-    const rooms = useAppSelector(selectRooms);
     const isReady = useAppSelector(isTimelineReadySelector);
 
     const onCancel = () => {
@@ -78,13 +76,10 @@ const TimelinePage: React.FC = () => {
                 <Layout>
                     <Content style={{ padding: 60 }}>
                         <SettingContainer />
-                        <Timeline
+                        <TimelineTable
                             type={timelineType}
                             options={options}
-                            glasses={workingParams.glasses}
-                            data={orders}
-                            workingShift={workingParams.time}
-                            rooms={rooms}
+                            timeline={timeline}
                         />
                     </Content>
                 </Layout>

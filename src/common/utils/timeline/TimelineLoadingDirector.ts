@@ -2,7 +2,7 @@
 import { OrderView } from "../../../entities/Order";
 import {Room} from "../../../entities/Room";
 import { TimelineOptions } from "../../../entities/TimelineOptions";
-import { OrderCellMatrix, Timeline } from "../../../entities/TimelineTypes";
+import { OrderCellMatrix, TimelineView } from "../../../entities/TimelineTypes";
 import { TimelineDirector } from "../../../entities/TimelineUtilsTypes";
 import TimelineLoadingBuilder from "./TimelineLoadingBuilder";
 
@@ -13,7 +13,7 @@ class TimelineLoadingDirector implements TimelineDirector{
 
     private constructor(){}
 
-    construct (workingShift: string[], rooms: Room[], matrix: OrderCellMatrix, glasses: number): Timeline{
+    construct (): TimelineView{
         return ({
             columns: this.builder.buildColumns(),
             data: this.builder.buildData(),
