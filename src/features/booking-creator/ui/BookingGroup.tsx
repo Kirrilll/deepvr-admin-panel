@@ -47,7 +47,6 @@ const BookingGroup: React.FC<BookingGroupProps> = ({ globalForm, orderId, date }
             document.body.style.userSelect = 'auto';
         },
         onHover: ({ hovering }) => {
-            const docStyle = document.body.style;
             if (hovering) {
                 document.body.style.cursor = 'grab';
             }
@@ -55,8 +54,6 @@ const BookingGroup: React.FC<BookingGroupProps> = ({ globalForm, orderId, date }
                 document.body.style.cursor = 'default';
             }
         },
-
-
     })
 
     const buildGuestMax = (booking: FormBooking) => {

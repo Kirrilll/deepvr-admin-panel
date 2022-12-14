@@ -18,7 +18,7 @@
 
 *::-webkit-scrollbar {
   width: 0px;
-  height: 10px;
+  height: 0px;
 }
 
 *::-webkit-scrollbar-track {
@@ -745,6 +745,7 @@ td {
   background-color: #F3F5F9;
   border-radius: 15px;
   overflow: auto;
+  touch-action: none;
 }
 
 .booking-form {
