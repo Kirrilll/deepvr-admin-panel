@@ -49,6 +49,18 @@ export const cellTypeSelector = (state: RootState): CellContentType => {
     return 'default';
 }
 
+export const availableGlassesByTimeSelector = createDraftSafeSelector(
+    [
+        timelineSelector,
+        (state, time: string) => time
+    ],
+    (timeline, time) => timeline.remainingGlassesMap.get(time) ?? 0
+)
+
+export const availableGlassesSelector = createSelector(
+    [timelineSelector],
+    (timeline) => timeline.remainingGlassesMap
+)
 
 
 // export const selectGlassesAt

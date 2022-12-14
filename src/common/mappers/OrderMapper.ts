@@ -66,7 +66,8 @@ export default class OrderMapper {
             comment: order.comment,
             date: moment(new Date(order.booking_date)),
             color: OrderMapper._colorPool.getColor(order.id),
-            confirmStatus: OrderMapper._transformConfirmStatus(order.status.toString()),
+            //confirmStatus: OrderMapper._transformConfirmStatus(order.status.toString()),
+            confirmStatus: OrderMapper._transformConfirmStatus(order.bookings[0].status),
             paymentStatus: order.paymentInfo.is_payed ? EPaymentStatus.PAID : EPaymentStatus.NOTPAID,
             bookings: order.bookings.map(booking => ({
                 id: booking.id,

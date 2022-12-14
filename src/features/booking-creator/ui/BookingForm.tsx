@@ -2,7 +2,7 @@ import { Button, Form, FormListFieldData, Input, InputNumber, Row, Select } from
 import REMOVE_ICON from '../../../assets/remove.svg';
 import GUEST_ICON from '../../../assets/person.svg';
 import TIME_ICON from '../../../assets/clock.svg';
-import { FormBooking, BOOKING_LIST_PATH, GAME_PATH, GUEST_COUNT_PATH, ROOM_PATH, TIME_PATH } from "./OrderCreateForm";
+import { FormBooking, BOOKING_LIST_PATH, GAME_PATH, GUEST_COUNT_PATH, ROOM_PATH, TIME_PATH, PHONE_PICKER_PATH } from "./OrderCreateForm";
 
 import { useAppDispatch, useAppSelector } from "../../../app/store";
 import { buildGamesByRoomSelector, buildRoomByIdSelector, selectRooms } from "../../game/redux/selectors";
@@ -14,32 +14,37 @@ import { unselectCell } from "../../selection/redux/slice";
 import BookingMapper from "../../../common/mappers/BookingMapper";
 import CellMapper from "../../../common/mappers/CellMapper";
 import TimelineHelper from "../../../common/helpers/TimelineHelper";
-import { selectOrders } from "../../timeline/redux/selectors";
+import { availableGlassesByTimeSelector, selectOrders } from "../../timeline/redux/selectors";
 import { ValidatorHelper } from "../../../common/helpers/ValidatorHelper";
 
 
 
 interface BookingFormProps {
     booking: FormBooking,
-    field: FormListFieldData
+    field: FormListFieldData,
+    fields: FormListFieldData[],
+    calcGuestMax: () => number,
     color: string,
     date: moment.Moment
     orderId: number,
 }
 
 
-const BookingForm: React.FC<BookingFormProps> = ({ color, orderId, field, date, booking }) => {
+const BookingForm: React.FC<BookingFormProps> = ({ color, orderId, field, date, booking, calcGuestMax, fields }) => {
     const games = useAppSelector(buildGamesByRoomSelector(booking[ROOM_PATH]));
     const rooms = useAppSelector(selectRooms);
     const room = useAppSelector(buildRoomByIdSelector(booking[ROOM_PATH]));
-    const gamesOptions = useMemo(() => GameMapper.gamesToValues(games), [games])
-    const roomsOptions = useMemo(() => RoomMapper.gamesToValues(rooms), [rooms]);
 
-    
+    const gamesOptions = useMemo(() => GameMapper.gamesToValues(games), [games])
+    const roomsOptions = useMemo(() => RoomMapper.gamesToValues(rooms), [rooms]);    
 
     const dispatch = useAppDispatch();
     const onOnDeleteItem = () => {
         dispatch(unselectCell(CellMapper.toCellFromFormBooking(booking, date)))
+    }
+
+    const buildGlassesValidator = () => {
+        return ValidatorHelper.buildNumberAmbitValidato(calcGuestMax(), 0);
     }
 
     return (
@@ -87,12 +92,17 @@ const BookingForm: React.FC<BookingFormProps> = ({ color, orderId, field, date, 
                 <Form.Item
                     initialValue={booking[GUEST_COUNT_PATH]}
                     key={field.key + '3'}
+                    dependencies = {[[BOOKING_LIST_PATH, 1, GUEST_COUNT_PATH]]}
                     name={[field.name, GUEST_COUNT_PATH]}
                     rules={[
                         { pattern: new RegExp(/^[0-9]+$/), message: 'Значение не является числом' },
                         {
                             validator: ValidatorHelper.buildNumberAmbitValidato(room?.guest_max ?? 1, 1),
                             message: `Рекомендованное кол-во человек от ${1} до ${room?.guest_max?? 1}`, warningOnly: true
+                        },
+                        {
+                            validator: buildGlassesValidator(),
+                            message: `Доступно очков на это время ${calcGuestMax()}`
                         },
                         { required: true, message: 'Это поле обязательно' },
                     ]}
