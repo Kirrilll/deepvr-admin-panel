@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AppDispatch } from "../../../app/store";
 import { insertOrder, CellIndeficator } from "../../timeline/redux/slice";
-import api from "../../../repositories/Api";
+import api from "../../../api/Api";
 import { creatingFulfilled, creatingPending, creatingRejected } from "./slice";
 import OrderMapper from "../../../common/mappers/OrderMapper";
 import { Order, OrderDto } from "../../../entities/Order";

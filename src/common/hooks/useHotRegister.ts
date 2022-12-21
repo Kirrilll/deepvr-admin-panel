@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import api from '../../repositories/Api';
+import api from '../../api/Api';
 
 const { hotRegister } = api;
 

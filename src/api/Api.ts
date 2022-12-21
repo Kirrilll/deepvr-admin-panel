@@ -12,13 +12,15 @@ export interface ErrorResponse {
 
 const baseUrl = process.env.REACT_APP_API_URL;
 const globalUrl = process.env.REACT_APP_API_GLOBAL_URL;
+
+
 const api = {
     getTimeline: async (date: moment.Moment) => {
         return await axios.get<OrderResponse>(
             `${baseUrl}/v2/orders/test`,
             {
                 params: {
-                    date: date.format('YYYY-MM-DD' )
+                    date: date.format('YYYY-MM-DD')
                 }
             }
         )
@@ -36,7 +38,7 @@ const api = {
         return await axios.get<ClientResponse>(
             `${baseUrl}/v2/client/getByPhone`,
             {
-                params:{
+                params: {
                     phone: phoneNumber
                 }
             }
@@ -65,7 +67,7 @@ const api = {
         )
     },
     getBonusInfo: async () => {
-        
+
     },
     hotRegister: async (name: string, phone: string) => {
         return await axios.get<CreatedClient>(
