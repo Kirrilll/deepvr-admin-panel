@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit";
 
 interface AuthenticationState{
     isAuthenticated: boolean
@@ -6,7 +6,7 @@ interface AuthenticationState{
 
 const initialState: AuthenticationState = {
     isAuthenticated: false
-}
+};
 
 const authenticationSlice = createSlice({
     name: 'authenticationSlice',
@@ -19,7 +19,7 @@ const authenticationSlice = createSlice({
             state.isAuthenticated = false;
         }
     }
-})
+});
 
 export const {login, logout} = authenticationSlice.actions;
 export default authenticationSlice.reducer;
