@@ -48,6 +48,7 @@
     font-weight:normal;
     background: 0 0;
     margin-bottom: 8px;
+    padding: 5px;
 }
 
 .form-group-default label {
@@ -154,19 +155,21 @@
 
 .logo-title-container{
     position: fixed;
-    width: 100%;
+    width: max-content;
     bottom: 0px;
     margin-top: -100px;
     left: 30px;
-    display: flexbox;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding-bottom: 32px;
 }
 
 .logo{
     height: auto;
     max-width: 52px;
     margin: 0 auto;
-    padding-bottom: 32px;
-    margin-top: -8px;
     display: inline-block;
 }
 
@@ -202,8 +205,19 @@
     position: relative;
     z-index: 99;
     font-weight: 300;
-    margin-top: 0;
+    margin: 0;
     left: 15px;
     position:relative;
     top:-8px;
+}
+
+.error-message {
+    color: #e74c3c;
+    margin: 0;
+}
+
+.remember-me-group{
+    display: block;
+    width: 100%;
+    min-height: 1.2em;
 }
