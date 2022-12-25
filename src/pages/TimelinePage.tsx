@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Button, Drawer, Layout, Modal, Space, Spin } from 'antd';
+import { Button, Drawer, Layout, message, Modal, Space, Spin } from 'antd';
 import { useAppDispatch, useAppSelector } from "../app/store";
 import { fetchTimline } from "../features/timeline/redux/asyncActions";
 import { close } from "../features/booking-creator/redux/slice";
@@ -17,12 +17,11 @@ import { getGames, getRooms, getWorkingParams } from "../features/game/redux/asy
 import WarningModal from "../features/warning-modal/ui/WarningModal";
 import { createOrder } from "../features/booking-creator/redux/asyncActions";
 import OrderMapper from "../common/mappers/OrderMapper";
-import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { selectOrders, timelineSelector } from "../features/timeline/redux/selectors";
 const { Sider, Content } = Layout;
 
 
-interface SocketMessage{
+interface SocketMessage {
     id: string,
     channel: number,
     message: string
@@ -30,15 +29,10 @@ interface SocketMessage{
 
 const TimelinePage: React.FC = () => {
 
-    const socket = useWebSocket('ws://pusher.creatrix-digital.ru:5000/connect/abc', {
-        onOpen: (event) => console.log(event),
-        onMessage: (event) => console.log(JSON.parse(event.data))
-    });
-
     const dispatch = useAppDispatch();
 
-    const { options, type } = useAppSelector(state => state.timeLineReducer);
-    const timeline =  useAppSelector(timelineSelector);
+    const { options, timelineView: type } = useAppSelector(state => state.timeLineReducer);
+    const timeline = useAppSelector(timelineSelector);
     const isOpen = useAppSelector(state => state.orderCreationReducer.isCreating);
     const currentDate = useAppSelector(state => state.datePickerReducer.currentDate);
 
@@ -77,6 +71,7 @@ const TimelinePage: React.FC = () => {
                     <Content style={{ padding: 60 }}>
                         <SettingContainer />
                         <TimelineTable
+                            dispatch={dispatch}
                             type={timelineType}
                             options={options}
                             timeline={timeline}

@@ -62,7 +62,7 @@ const selectionSlice = createSlice({
             .addMatcher(
                 isAnyOf(selectCell, startSelecting, unselectCell),
                 (state, action) => {
-                    StorageService.instance.setItem('lastSelectedItem', action.payload.id);
+                    StorageService.instance.setItem('lastSelectedItem', action.payload);
                 }
             )
 

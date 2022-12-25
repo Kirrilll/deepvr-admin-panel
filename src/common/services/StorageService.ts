@@ -1,9 +1,11 @@
 import { type } from "os";
+import { CellView } from "../../entities/Cell";
 import { CellIndeficator } from "../../features/timeline/redux/slice";
 
 interface StoredData{
-    lastSelectedItem: CellIndeficator,
-    som: string
+    lastSelectedItem: CellView,
+    som: string,
+    delayedActionName?: string
 }
 
 type KeyValue = keyof StoredData

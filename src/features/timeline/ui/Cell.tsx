@@ -11,26 +11,28 @@ import { CellView, CellPivot } from '../../../entities/Cell';
 import CellMapper from '../../../common/mappers/CellMapper';
 import { TimelineOptions } from '../../../entities/TimelineOptions';
 import { cellTypeSelector } from '../redux/selectors';
+import StorageService from '../../../common/services/StorageService';
 
 export const DEFAULT_CELL_CLASSNAME = 'table__cell';
 
 type CellType = 'default' | 'simple'
 
-interface CellProps{
+interface CellProps {
     roomId: number,
     time: string,
     pivot: CellPivot | null
 }
 
-const Cell: React.FC<CellProps> = ({roomId, time, pivot}) => {
+const Cell: React.FC<CellProps> = ({ roomId, time, pivot }) => {
 
-    
+
     const dispatch = useAppDispatch();
     const selectedDate = useAppSelector(state => state.datePickerReducer.currentDate);
     const selectedCells = useAppSelector(state => state.selectionReducer.selectedCells);
     const modeType = useAppSelector(selectMode);
     const isCreating = useAppSelector(selectIsOpen);
     const cellType = useAppSelector(cellTypeSelector);
+    const isMoving = useAppSelector(state => state.timeLineReducer.timelineAction === 'moving');
 
     const isAfter = useTimeChecker({ time: time, date: selectedDate });
 
@@ -46,20 +48,28 @@ const Cell: React.FC<CellProps> = ({roomId, time, pivot}) => {
         dispatch
     ), [cell.id, pivot, selectedCells, modeType, isAfter]);
 
+    const onCellClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        if (!isMoving) {
+            cellMode.onClick(e);
+        }
+    }
+
+
     const isVisible = cellMode.isLastSelected && !isCreating;
 
     const onButtonClick = () => {
         dispatch(precreateOrder(selectedCells.map(cell => cell.id)));
     }
 
+
     const buildHeight = cellType == 'default' ? 145 : 85;
 
 
     return (
         <>
-            <div style={{ position: 'relative', height: `${buildHeight}px`}}>
+            <div style={{ position: 'relative', height: `${buildHeight}px` }}>
                 <CreateOrderButton isVisible={isVisible} onClick={onButtonClick} />
-                <div onClick={cellMode.onClick} className={cellMode.className}>
+                <div onClick={onCellClick} className={cellMode.className}>
                     {cellContent}
                 </div>
             </div>

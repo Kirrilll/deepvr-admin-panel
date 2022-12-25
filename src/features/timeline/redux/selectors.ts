@@ -9,7 +9,7 @@ import { TimelineType } from "../../../entities/TimelineTypes"
 import { selectRooms, selectWorkingParams } from "../../game/redux/selectors";
 import { CellIndeficator, FetchingStatus } from "./slice";
 
-export const selectType = (state: RootState) => state.timeLineReducer.type;
+export const selectType = (state: RootState) => state.timeLineReducer.timelineView;
 export const selectOptions = (state: RootState) => state.timeLineReducer.options;
 export const selectOrders = (state: RootState) => {
     const {data, options} = state.timeLineReducer;
@@ -31,7 +31,7 @@ export const timelineSelector = createDraftSafeSelector(
     ],
     (timeline, orders, rooms, workingParams) => TimelineFactory.createTimeline({
         options: timeline.options,
-        type: timeline.type,
+        type: timeline.timelineView,
         rooms: rooms,
         workingParams: workingParams,
         orders: orders

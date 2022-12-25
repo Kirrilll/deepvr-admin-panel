@@ -315,6 +315,10 @@ td {
 
 /*Таблица*/
 
+.ant-table-thead{
+  /* position: sticky; */
+}
+
 .room-name {
   color: #000000 !important;
   font-weight: 700;

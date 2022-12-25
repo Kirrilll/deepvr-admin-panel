@@ -1,4 +1,4 @@
-export type TimelineModeType = 'selection' | 'idle';
+export type TimelineModeType = 'selection' | 'idle' | 'grabbing';
 
 
 export interface TimelineOptions {
@@ -11,6 +11,8 @@ export interface TimelineMode {
     type: TimelineModeType,
     extraData?: any
 }
+
+export type TimelineActionType = 'moving' | 'tap';
 
 export interface SelectionMode extends TimelineMode {
     type: TimelineModeType & 'selection',
