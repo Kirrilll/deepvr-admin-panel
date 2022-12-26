@@ -1,0 +1,2 @@
+REACT_APP_API_URL = 'https://srt.vrbook.creatrix-digital.ru/api'
+REACT_APP_API_GLOBAL_URL = 'https://vrbook.creatrix-digital.ru/api'

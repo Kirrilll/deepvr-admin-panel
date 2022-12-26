@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface AuthenticationState{
-    isAuthenticated: boolean
+    isAuthenticated: boolean,
+    authToken?: string;
 }
 
 const initialState: AuthenticationState = {
@@ -17,9 +18,14 @@ const authenticationSlice = createSlice({
         },
         logout: (state) => {
             state.isAuthenticated = false;
+        },
+        setToken: (state, action) => {
+            state.authToken = action.payload;
         }
     }
 });
 
-export const {login, logout} = authenticationSlice.actions;
+export const getToken = (state: AuthenticationState) => state.authToken; 
+
+export const {login, logout, setToken} = authenticationSlice.actions;
 export default authenticationSlice.reducer;

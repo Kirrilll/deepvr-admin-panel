@@ -6,6 +6,8 @@ import { Provider } from 'react-redux';
 import { RouterProvider } from 'react-router';
 import { router } from './common/router/router';
 import moment from 'moment';
+import axios from 'axios';
+import MockAdapter from "axios-mock-adapter";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -16,13 +18,11 @@ const store = setupStore();
 moment.locale('ru');
 
 root.render(
-
-  <Provider store={store}>
-    <React.StrictMode>
+  <React.StrictMode>
+    <Provider store={store}>
       <RouterProvider router={router} />
-    </React.StrictMode>
-  </Provider>
-
+    </Provider>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -65,6 +65,9 @@
   },
   "devDependencies": {
     "@types/pako": "^2.0.0",
-    "dotenv": "^16.0.3"
+    "axios-mock-adapter": "^1.21.2",
+    "dotenv": "^16.0.3",
+    "jest": "^27.5.1",
+    "util": "^0.12.5"
   }
 }

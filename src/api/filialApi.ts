@@ -1,6 +1,7 @@
 import axios from "axios";
 import { ClientResponse, CreatedClient } from "../entities/Client";
 import { GameResponse } from "../entities/Game";
+import { ILoginData, ILoginResponce } from "../entities/Login";
 import { OrderResponse, OrderDto, Order, EmptyOrder } from "../entities/Order";
 import RoomResponse from "../entities/Room";
 import WorkingShiftResponse from "../entities/WorkingShift";
@@ -20,6 +21,10 @@ export class FilialApi {
         this.url = url;
     }
 
+    async login(data: ILoginData) {
+        return await axios.post<ILoginResponce>(`${this.url}/api/v2/auth/login`, data);
+    }
+
     async getTimeline(date: moment.Moment) {
         return await axios.get<OrderResponse>(
             `${this.url}/v2/orders/test`,
@@ -28,22 +33,22 @@ export class FilialApi {
                     date: date.format('YYYY-MM-DD')
                 }
             }
-        )
+        );
     };
     async getRooms() {
-        return await axios.get<RoomResponse>(`${this.url}/rooms`)
+        return await axios.get<RoomResponse>(`${this.url}/rooms`);
     };
     async getGames() {
         return await axios.get<GameResponse>(`${this.url}/games`);
     };
     async getWorkingParams() {
-        return await axios.get<WorkingShiftResponse>(`${this.url}/v2/work-times`)
+        return await axios.get<WorkingShiftResponse>(`${this.url}/v2/work-times`);
     };
     async createOrder(order: OrderDto) {
         return await axios.post<Order | ErrorResponse>(
             `${this.url}/v2/booking/admin`,
             order
-        )
+        );
     };
     async validatePromoCode(promoCode: string, price: number, gameId: number) {
         return await axios.post(
@@ -54,12 +59,12 @@ export class FilialApi {
                 price: price,
                 game: gameId
             }
-        )
+        );
     };
     async precreateOrder() {
         return await axios.post<EmptyOrder>(
             `${this.url}/v2/orders/createEmpty`
-        )
+        );
     };
     async getBonusInfo() {
 
