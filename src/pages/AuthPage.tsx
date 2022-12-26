@@ -70,10 +70,11 @@ const LogInForm: React.FC = () => {
                     if (response.data.error === 0) {
                         setServErr(null);
                         dispatch(setToken(response.data.token));
+
+                        // redirect
+                    } else {
+                        // set error
                     }
-                    setServErr({
-                        message: 'ответ ок'
-                    });
                     console.log(response.data);
                 }
             })
