@@ -82,7 +82,7 @@ export const QrModal: React.FC<IModalProps> = ({onSubmit, onCancel, isOpen = tru
                 />
             }
             <p>
-                <span>current result: {qrRes}</span>
+                <span>QR код: {qrRes}</span>
             </p>
         </Modal>
     );
