@@ -1,5 +1,6 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { AuthPage } from '../../pages/AuthPage';
+import { QrTestPage } from '../../pages/QrTestPage';
 import TimelinePage from '../../pages/TimelinePage';
 import AuthGuard from './guards/AuthGuard';
 
@@ -19,4 +20,8 @@ export const router = createBrowserRouter([
         path: ADMIN_TIMELINE_PATH,
         element: <AuthGuard element={<TimelinePage />} />,
     },
+    {
+        path: '/qr-test',
+        element: <QrTestPage />
+    }
 ]);

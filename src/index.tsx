@@ -6,8 +6,6 @@ import { Provider } from 'react-redux';
 import { RouterProvider } from 'react-router';
 import { router } from './common/router/router';
 import moment from 'moment';
-import axios from 'axios';
-import MockAdapter from "axios-mock-adapter";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
