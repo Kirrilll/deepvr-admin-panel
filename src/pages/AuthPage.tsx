@@ -6,10 +6,10 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './AdminLoginStyles.css';
 import { login, setToken } from '../features/authentication/redux/slice';
 import { useAppDispatch, useAppSelector } from '../app/store';
-import { Navigate, redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { ADMIN_TIMELINE_PATH } from '../common/router/router';
 import api from '../api/Api';
-import { getTokenCookie, LOGIN_TOKEN_COOKIE, setTokenCookie } from '../common/utils/cookesUtils';
+import { getTokenCookie, setTokenCookie } from '../common/utils/cookesUtils';
 
 const bgImg = `https://srt.vrbook.creatrix-digital.ru/storage/settings/March2021/w4sA18JkULnlcgTLFSSk.jpg`;
 const logo = `https://srt.vrbook.creatrix-digital.ru/storage/settings/March2021/KG8T5zPhoeZoRjVXyF5V.png`;
@@ -19,7 +19,6 @@ export const AuthPage: React.FC = () => {
     const isAuthorized  = useAppSelector(state => state.authenticationReducer.isAuthenticated);
     const dispatch = useAppDispatch();
 
-    console.log(path);
     useEffect(() => {
         if (!isAuthorized) {
             api.getTokenByCookie()
@@ -29,9 +28,7 @@ export const AuthPage: React.FC = () => {
                     dispatch(setToken(getTokenCookie()));
                 }
             })
-            .catch(err => {
-                
-            });
+            .catch(err => { });
         } 
     }, [path]);
 

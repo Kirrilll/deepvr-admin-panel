@@ -25,16 +25,14 @@ const api = {
 
         return await axios
             .post<ILoginResponce>(
-            `${baseUrl}/api/v2/auth/login`,
-            // 'https://vrbook.creatrix-digital.ru/api/v2/auth/login', 
+            `${globalUrl}/v2/auth/login`,
             data);
     },
 
     async getTokenByCookie() {
         const token = getTokenCookie();
         return await axios.post<IUser>(
-            `${baseUrl}/api/v2/auth/loginByRememberedToken`,
-            // `https://vrbook.creatrix-digital.ru/api/v2/auth/loginByRememberedToken`,
+            `${globalUrl}/v2/auth/loginByRememberedToken`,
             { token }
         );
     },
@@ -50,13 +48,13 @@ const api = {
         );
     },
     getRooms: async () => {
-        return await axios.get<RoomResponse>(`${baseUrl}/rooms`)
+        return await axios.get<RoomResponse>(`${baseUrl}/rooms`);
     },
     getGames: async () => {
         return await axios.get<GameResponse>(`${baseUrl}/games`);
     },
     getWorkingParams: async () => {
-        return await axios.get<WorkingShiftResponse>(`${baseUrl}/v2/work-times`)
+        return await axios.get<WorkingShiftResponse>(`${baseUrl}/v2/work-times`);
     },
     getClientsByPhone: async (phoneNumber: string) => {
         return await axios.get<ClientResponse>(
@@ -104,6 +102,6 @@ const api = {
             }
         );
     }
-}
+};
 
 export default api;
