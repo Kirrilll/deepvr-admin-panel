@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from '../../../app/store';
 import {editOrder} from '../../booking-creator/redux/slice';
 import { OrderView } from '../../../entities/Order';
 import { EPaymentStatus } from '../../../entities/PaymentInfo';
-import { multiSelectCells } from '../../selection/redux/slice';
+import { multiSelectCells } from '../redux/slice';
 import CellMapper from '../../../common/mappers/CellMapper';
 import { selectRooms } from '../../game/redux/selectors';
 import RoomMapper from '../../../common/mappers/RoomMapper';

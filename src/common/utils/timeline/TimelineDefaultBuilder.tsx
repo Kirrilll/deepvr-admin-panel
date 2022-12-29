@@ -4,8 +4,9 @@ import { Room } from "../../../entities/Room";
 import { TimelineOptions } from "../../../entities/TimelineOptions";
 import { OrderCellMatrix, Row } from "../../../entities/TimelineTypes";
 import { SummaryCallback, TimelineBuilder } from "../../../entities/TimelineUtilsTypes";
-import Cell from "../../../features/timeline/ui/Cell";
+import Cell from "../../../features/selection/ui/Cell";
 import TableSummary from "../../../features/timeline/ui/TableSummary";
+import { REFERENCE_CELL_WIDTH } from "../../../features/timeline/ui/Timeline";
 
 
 type RowDefault = Row<Room>;
@@ -45,7 +46,6 @@ class TimelineDefaultBuilder implements TimelineBuilder {
                 title: 'Залы',
                 key: 'rooms',
                 dataIndex: 'rooms',
-                // rowSpan: 1,
                 width: '95px',
                 fixed: 'left',
                 render: (title, data) => <div className="room-name">
@@ -55,13 +55,13 @@ class TimelineDefaultBuilder implements TimelineBuilder {
             },
             ...workingShift.map<ColumnType<RowDefault>>((time, index) => ({
                 title: time,
-                key: time,
+                key: time,  
                 dataIndex: time,
                 render: (value, data) => {
                     return (<Cell
                         roomId={data.leadingCol.id}
                         time={time}
-                        pivot={data.shedule.at(index) ?? null}
+                        pivots={data.shedule.at(index) ?? null}
                     />)
                 }
             }))

@@ -1,8 +1,9 @@
 import { createReducer, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import OrderMapper from "../../../common/mappers/OrderMapper";
 import ColorPool from "../../../common/utils/color/ColorPool";
+import { CellContentType } from "../../../entities/Cell";
 import { Order, OrderResponse, OrderView } from "../../../entities/Order";
-import { TimelineMode, TimelineOptions } from "../../../entities/TimelineOptions";
+import { TimelineActionType, TimelineMode, TimelineOptions } from "../../../entities/TimelineOptions";
 import { TimelineType } from "../../../entities/TimelineTypes";
 import { fetchTimline } from "./asyncActions";
 
@@ -23,21 +24,22 @@ export interface CellIndeficator {
 }
 
 interface TimelineState {
-    type: TimelineStateType,
+    timelineView: TimelineStateType,
     options: TimelineOptions
     fetchingStatus: FetchingStatus,
     data: OrderView[],
-
+    timelineAction: TimelineActionType
 }
 
 
 const initialState: TimelineState = {
-    options: { 
+    options: {
+        cellView: 'default',
         isFixed: true,
-        isSimpliefied: false,
         isShowCanceled: false
     },
-    type: 'default',
+    timelineAction: 'tap',
+    timelineView: 'default',
     fetchingStatus: FetchingStatus.NEVER,
     data: [],
 }
@@ -48,30 +50,32 @@ const timelineSlice = createSlice({
     name: 'TimelineSlice',
     initialState: initialState,
     reducers: {
+        handleTimelineAction: (state, action: PayloadAction<TimelineActionType>) => {
+            state.timelineAction = action.payload;
+        },
         toggleTranspose: (state, action: PayloadAction<TimelineStateType>) => {
-            state.type = action.payload;
+            state.timelineView = action.payload;
             //маппятся данные
         },
         toggleFixed: (state) => {
             state.options.isFixed = !state.options.isFixed;
         },
-        toggleSimpliefied: (state) => {
-            state.options.isSimpliefied = !state.options.isSimpliefied;
+        changeCellView: (state, action: PayloadAction<CellContentType>) => {
+            state.options.cellView = action.payload;
         },
         toggleShowCanceled: (state) => {
-            state.options.isShowCanceled =!state.options.isShowCanceled;
+            state.options.isShowCanceled = !state.options.isShowCanceled;
         },
         insertOrder: (state, action: PayloadAction<Order>) => {
-            const insertedOrder =  OrderMapper.fromEntity(action.payload);
-            console.log(insertedOrder);
+            const insertedOrder = OrderMapper.fromEntity(action.payload);
             const insertedOrderDuplicateIndex = state.data.findIndex(order => order.id === insertedOrder.id);
-            if(~insertedOrderDuplicateIndex){
-                state.data = [...state.data.slice(0, insertedOrderDuplicateIndex), insertedOrder, ...state.data.slice(insertedOrderDuplicateIndex+1)];
+            if (~insertedOrderDuplicateIndex) {
+                state.data = [...state.data.slice(0, insertedOrderDuplicateIndex), insertedOrder, ...state.data.slice(insertedOrderDuplicateIndex + 1)];
             }
-            else{
+            else {
                 state.data = [...state.data, insertedOrder];
             }
-            
+
         }
     },
     extraReducers: (builder) => {
@@ -89,5 +93,12 @@ const timelineSlice = createSlice({
 
 export default timelineSlice.reducer;
 
-export const { toggleFixed, toggleTranspose, insertOrder, toggleSimpliefied, toggleShowCanceled } = timelineSlice.actions;
+export const {
+    toggleFixed,
+    toggleTranspose,
+    insertOrder,
+    changeCellView,
+    toggleShowCanceled,
+    handleTimelineAction
+} = timelineSlice.actions;
 

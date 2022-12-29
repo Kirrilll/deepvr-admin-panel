@@ -1,7 +1,7 @@
 import { AppDispatch } from "../../../app/store";
 import { CellView } from "../../../entities/Cell";
 import { startSelecting } from "../../../features/selection/redux/slice";
-import  { DEFAULT_CELL_CLASSNAME } from "../../../features/timeline/ui/Cell";
+import  { DEFAULT_CELL_CLASSNAME } from "../../../features/selection/ui/Cell";
 
 interface FactoryAttrs {
     dispatch: AppDispatch,
@@ -11,7 +11,7 @@ interface FactoryAttrs {
 export default class CellIdleModeFactory {
     static createIdleMode(attrs: FactoryAttrs) {
         const { dispatch, cell } = attrs;
-        if (cell.pivot == null) {
+        if (cell.pivots == null) {
             return ({
                 isLastSelected: false,
                 className: `${DEFAULT_CELL_CLASSNAME}`,

@@ -6,7 +6,7 @@ import { Room } from "./Room"
 export type TimelineType = 'loading' | 'transposed' | 'default';
 
 
-export type OrderCellMatrix = (CellPivot | null)[][];
+export type OrderCellMatrix = (CellPivot[] | null)[][];
 export type DefaultTimeline = Timeline<string, Room>
 export type TransposedTimeline = Timeline<Room, string>
 
@@ -25,7 +25,7 @@ export interface SheduleTime {
 
 export interface Row<T extends Room | SheduleTime> {
     leadingCol: T & { key: string },
-    shedule: (CellPivot | null)[]
+    shedule: (CellPivot[] | null)[]
 }
 
 export interface TimelineView {

@@ -1,9 +1,9 @@
 import { ColumnsType, ColumnType } from "antd/lib/table";
 import { CellPivot } from "../../../entities/Cell";
-import {Room} from "../../../entities/Room";
+import { Room } from "../../../entities/Room";
 import { SheduleTime, OrderCellMatrix, Row } from "../../../entities/TimelineTypes";
 import { TimelineBuilder } from "../../../entities/TimelineUtilsTypes";
-import Cell from "../../../features/timeline/ui/Cell";
+import Cell from "../../../features/selection/ui/Cell";
 
 
 type RowTransposed = Row<SheduleTime>;
@@ -12,10 +12,12 @@ class TimelineTransposedBuilder implements TimelineBuilder {
 
     buildSummary = (...args: any[]) => undefined;
 
-    private buildGlasses(allGlassesCount: number, shedule: (CellPivot | null)[]) {
+    private buildGlasses(allGlassesCount: number, shedule: (CellPivot[] | null)[]) {
         if (shedule.length == 0) return allGlassesCount;
         return allGlassesCount - shedule
-            .map(cell => cell?.order.bookings[cell.bookingIndex].guestCount ?? 0)
+            .map(cell => cell
+                ?.map(pivot => pivot.order.bookings[pivot.bookingIndex].guestCount)
+                .reduce((prev, next) => prev + next) ?? 0)
             .reduce((prev, next) => prev + next);
     }
 
@@ -52,8 +54,8 @@ class TimelineTransposedBuilder implements TimelineBuilder {
                 dataIndex: room.id,
                 render: (value, data) => <Cell
                     roomId={room.id}
-                    time = {data.leadingCol.time}
-                    pivot = {data.shedule.at(index) ?? null}
+                    time={data.leadingCol.time}
+                    pivots={data.shedule.at(index) ?? null}
                 />
             }))
         ]

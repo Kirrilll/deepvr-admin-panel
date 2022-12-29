@@ -127,7 +127,7 @@ code {
   flex-direction: column;
 }
 
-.cell__container div {
+.cell__container .cell__header, .cell__container .cell__wrapper {
   padding: 8px 16px;
 }
 
@@ -314,6 +314,10 @@ td {
 }
 
 /*Таблица*/
+
+.ant-table-thead{
+  /* position: sticky; */
+}
 
 .room-name {
   color: #000000 !important;

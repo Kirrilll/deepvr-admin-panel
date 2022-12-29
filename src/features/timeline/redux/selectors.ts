@@ -1,15 +1,12 @@
 import { createDraftSafeSelector, createSelector } from "@reduxjs/toolkit"
 import { RootState } from "../../../app/store"
-import TimeHelper from "../../../common/helpers/TimeHelper";
-import TimelineHelper from "../../../common/helpers/TimelineHelper";
 import TimelineFactory from "../../../common/utils/timeline/TimelineFactory";
 import { CellContentType } from "../../../entities/Cell";
 import { EConfirmStatus } from "../../../entities/PaymentInfo";
-import { TimelineType } from "../../../entities/TimelineTypes"
 import { selectRooms, selectWorkingParams } from "../../game/redux/selectors";
 import { CellIndeficator, FetchingStatus } from "./slice";
 
-export const selectType = (state: RootState) => state.timeLineReducer.type;
+export const selectType = (state: RootState) => state.timeLineReducer.timelineView;
 export const selectOptions = (state: RootState) => state.timeLineReducer.options;
 export const selectOrders = (state: RootState) => {
     const {data, options} = state.timeLineReducer;
@@ -31,7 +28,7 @@ export const timelineSelector = createDraftSafeSelector(
     ],
     (timeline, orders, rooms, workingParams) => TimelineFactory.createTimeline({
         options: timeline.options,
-        type: timeline.type,
+        type: timeline.timelineView,
         rooms: rooms,
         workingParams: workingParams,
         orders: orders
@@ -43,10 +40,7 @@ export const cellTypeSelector = (state: RootState): CellContentType => {
     if(fetchingStatus == FetchingStatus.LOADING){
         return 'loading';
     }
-    if(options.isSimpliefied){
-        return 'simplified'
-    }
-    return 'default';
+    return options.cellView;
 }
 
 export const availableGlassesByTimeSelector = createDraftSafeSelector(

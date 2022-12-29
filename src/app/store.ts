@@ -8,6 +8,7 @@ import jobDataReducer from '../features/game/redux/slice';
 import warningReducer from '../features/warning-modal/redux/slice';
 import warningMiddleware from "../common/middlewares/warningMiddleware";
 import authenticationReducer from '../features/authentication/redux/slice';
+import { socketMiddleware } from "../common/middlewares/socketMiddleware";
 
 const rootReducer = combineReducers({
     timeLineReducer,
@@ -24,6 +25,7 @@ export const setupStore = () => {
         reducer: rootReducer,
         middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }).
             prepend(warningMiddleware)
+            .prepend(socketMiddleware)
     });
 }
 

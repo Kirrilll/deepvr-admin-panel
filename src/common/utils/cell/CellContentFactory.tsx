@@ -1,23 +1,32 @@
 
 import { Skeleton } from "antd";
 import { CellContentType, CellPivot } from "../../../entities/Cell";
-import BookedCell from "../../../features/timeline/ui/BookedCell";
+import BookedCell, { DefaultBookingView, SimplifiedBookingView, SpacedBookingView } from "../../../features/selection/ui/BookedCell";
 import { DefaultTableSkeleton } from "../timeline/TimelineLoadingBuilder";
 
 
 class CellContentFactory {
-    static createContent(pivot: CellPivot | null, type: CellContentType): React.ReactNode | null {
-        if(type == 'loading'){
-            return <DefaultTableSkeleton/>
-        }
-        if(pivot == null){
+    static createContent(pivots: CellPivot[] | null, type: CellContentType): React.ReactNode | null {
+        if (pivots == null) {
             return null;
         }
-        if(type == 'default'){
-            return <BookedCell pivot={pivot}/>
-        }
-        if(type == 'simplified'){
-            return <BookedCell isSimplified = {true} pivot = {pivot}/>
+
+        switch (type) {
+            case 'loading':
+                return <DefaultTableSkeleton />
+            case 'simplified':
+                return <BookedCell
+                    pivots={pivots}
+                    bookingView={SimplifiedBookingView} />
+            case 'simplified-spaced':
+                return <BookedCell
+                    pivots={pivots}
+                    bookingView={SpacedBookingView}
+                />
+            default:
+                return <BookedCell
+                    pivots={pivots}
+                    bookingView={DefaultBookingView} />
         }
     }
 }
