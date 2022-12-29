@@ -4,7 +4,8 @@ import RoomResponse from "../entities/Room";
 import { EmptyOrder, Order, OrderDto, OrderResponse } from "../entities/Order";
 import { GameResponse } from "../entities/Game";
 import WorkingShiftResponse from "../entities/WorkingShift";
-import { ILoginData, ILoginResponce } from "../entities/Login";
+import { ILoginData, ILoginResponce, IUser } from "../entities/Login";
+import { getTokenCookie } from "../common/utils/cookesUtils";
 
 export interface ErrorResponse {
     error: number,
@@ -18,11 +19,24 @@ const globalUrl = process.env.REACT_APP_API_GLOBAL_URL;
 const api = {
 
     async login(data: ILoginData) {
+        // @ts-ignore
+        if (data.remember === '1') data.remember = true;
+        else data.remember = false;
+
         return await axios
             .post<ILoginResponce>(
-            //`${baseUrl}/api/v2/auth/login`
-            'https://vrbook.creatrix-digital.ru/api/v2/auth/login'
-            , data);
+            `${baseUrl}/api/v2/auth/login`,
+            // 'https://vrbook.creatrix-digital.ru/api/v2/auth/login', 
+            data);
+    },
+
+    async getTokenByCookie() {
+        const token = getTokenCookie();
+        return await axios.post<IUser>(
+            `${baseUrl}/api/v2/auth/loginByRememberedToken`,
+            // `https://vrbook.creatrix-digital.ru/api/v2/auth/loginByRememberedToken`,
+            { token }
+        );
     },
 
     getTimeline: async (date: moment.Moment) => {
@@ -33,7 +47,7 @@ const api = {
                     date: date.format('YYYY-MM-DD')
                 }
             }
-        )
+        );
     },
     getRooms: async () => {
         return await axios.get<RoomResponse>(`${baseUrl}/rooms`)
@@ -52,13 +66,13 @@ const api = {
                     phone: phoneNumber
                 }
             }
-        )
+        );
     },
     createOrder: async (order: OrderDto) => {
         return await axios.post<Order | ErrorResponse>(
             `${baseUrl}/v2/booking/admin`,
             order
-        )
+        );
     },
     validatePromoCode: async (promoCode: string, price: number, gameId: number) => {
         return await axios.post(
@@ -69,12 +83,12 @@ const api = {
                 price: price,
                 game: gameId
             }
-        )
+        );
     },
     precreateOrder: async () => {
         return await axios.post<EmptyOrder>(
             `${baseUrl}/v2/orders/createEmpty`
-        )
+        );
     },
     getBonusInfo: async () => {
 
@@ -88,7 +102,7 @@ const api = {
                     phone: phone
                 }
             }
-        )
+        );
     }
 }
 

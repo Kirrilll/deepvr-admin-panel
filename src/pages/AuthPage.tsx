@@ -1,44 +1,69 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import { AxiosError } from 'axios';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './AdminLoginStyles.css';
 import { login, setToken } from '../features/authentication/redux/slice';
-import { useAppDispatch } from '../app/store';
+import { useAppDispatch, useAppSelector } from '../app/store';
 import { Navigate, redirect } from 'react-router-dom';
 import { ADMIN_TIMELINE_PATH } from '../common/router/router';
 import api from '../api/Api';
+import { getTokenCookie, LOGIN_TOKEN_COOKIE, setTokenCookie } from '../common/utils/cookesUtils';
 
 const bgImg = `https://srt.vrbook.creatrix-digital.ru/storage/settings/March2021/w4sA18JkULnlcgTLFSSk.jpg`;
 const logo = `https://srt.vrbook.creatrix-digital.ru/storage/settings/March2021/KG8T5zPhoeZoRjVXyF5V.png`;
 
 export const AuthPage: React.FC = () => {
+    const path = window.location.pathname;
+    const isAuthorized  = useAppSelector(state => state.authenticationReducer.isAuthenticated);
+    const dispatch = useAppDispatch();
+
+    console.log(path);
+    useEffect(() => {
+        if (!isAuthorized) {
+            api.getTokenByCookie()
+            .then(response => {
+                if (response.data && response.data.role_id === 1) {
+                    dispatch(login());
+                    dispatch(setToken(getTokenCookie()));
+                }
+            })
+            .catch(err => {
+                
+            });
+        } 
+    }, [path]);
+
     return (
-        <div className='container-fluid' style={{
-            background: `url("${bgImg}") no-repeat center center fixed`,
-            backgroundSize: 'cover',
-        }}>
-            <div className='row'>
-                <div className='hidden-sm col-md-7 col-lg-8'>
-                    <div className='col-sm-12 col-md-10 col-md-offset-2'>
-                        <div className='logo-title-container'>
-                            <img className='img-responsive pull-left flip logo hidden-xs animated fadeIn' src={logo} alt="Logo Icon" />
-                            <div className='copy animated fadeIn'>
-                                <h1>THE DEEP VR</h1>
-                                <p>Booking system controll</p>
+        <>{ isAuthorized ?
+            <Navigate to={ADMIN_TIMELINE_PATH} replace /> 
+            :
+            <div className='container-fluid' style={{
+                background: `url("${bgImg}") no-repeat center center fixed`,
+                backgroundSize: 'cover',
+            }}>
+                <div className='row'>
+                    <div className='hidden-sm col-md-7 col-lg-8'>
+                        <div className='col-sm-12 col-md-10 col-md-offset-2'>
+                            <div className='logo-title-container'>
+                                <img className='img-responsive pull-left flip logo hidden-xs animated fadeIn' src={logo} alt="Logo Icon" />
+                                <div className='copy animated fadeIn'>
+                                    <h1>THE DEEP VR</h1>
+                                    <p>Booking system controll</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="col-sm-12 col-md-5 col-lg-4 login-sidebar">
-                    <div className='login-container'>
-                        <p> ВХОД В ПАНЕЛЬ УПРАВЛЕНИЯ </p>
-                        <LogInForm/>
+                    <div className="col-sm-12 col-md-5 col-lg-4 login-sidebar">
+                        <div className='login-container'>
+                            <p> ВХОД В ПАНЕЛЬ УПРАВЛЕНИЯ </p>
+                            <LogInForm/>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        }</>
     );
 };
 
@@ -70,9 +95,9 @@ const LogInForm: React.FC = () => {
         event?.preventDefault();
         // add remember
         setServErr(null);
-        api.login({ email, password })
+        api.login({ email, password, remember: remember ?? false })
             .then((response) => {
-                console.log(response);
+                // console.log(response);
 
                 if(response.status >= 200 && response.status < 300) { 
                     if (response.data.error === 0 ) {
@@ -81,7 +106,9 @@ const LogInForm: React.FC = () => {
                             dispatch(setToken(response.data.token));
                             dispatch(login());
 
-                            // redirect
+                            if (remember)
+                                setTokenCookie(response.data.token);
+                            
                             setRedirect(true);
                         } else {
                             setServErr({ message: 'У вас недостаточно прав'});
@@ -90,7 +117,6 @@ const LogInForm: React.FC = () => {
                         // set error
                         setServErr({ message: response.data.error_text ?? ''});
                     }
-                    console.log(response.data);
                 }
             })
             .catch((err: AxiosError) => {
