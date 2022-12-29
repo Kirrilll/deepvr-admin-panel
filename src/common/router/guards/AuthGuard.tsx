@@ -8,9 +8,7 @@ interface GuardProps {
 }
 
 const AuthGuard: React.FC<GuardProps> = ({ element }) => {
-
     const isAuthorized  = useAppSelector(state => state.authenticationReducer.isAuthenticated);
-
     return (
         isAuthorized
             ? element
@@ -18,4 +16,4 @@ const AuthGuard: React.FC<GuardProps> = ({ element }) => {
     );
 }
 
-export default AuthGuard
+export default AuthGuard;

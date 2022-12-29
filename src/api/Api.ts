@@ -4,6 +4,7 @@ import RoomResponse from "../entities/Room";
 import { EmptyOrder, Order, OrderDto, OrderResponse } from "../entities/Order";
 import { GameResponse } from "../entities/Game";
 import WorkingShiftResponse from "../entities/WorkingShift";
+import { ILoginData, ILoginResponce } from "../entities/Login";
 
 export interface ErrorResponse {
     error: number,
@@ -15,6 +16,15 @@ const globalUrl = process.env.REACT_APP_API_GLOBAL_URL;
 
 
 const api = {
+
+    async login(data: ILoginData) {
+        return await axios
+            .post<ILoginResponce>(
+            //`${baseUrl}/api/v2/auth/login`
+            'https://vrbook.creatrix-digital.ru/api/v2/auth/login'
+            , data);
+    },
+
     getTimeline: async (date: moment.Moment) => {
         return await axios.get<OrderResponse>(
             `${baseUrl}/v2/orders/test`,

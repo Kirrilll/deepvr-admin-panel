@@ -21,10 +21,6 @@ export class FilialApi {
         this.url = url;
     }
 
-    async login(data: ILoginData) {
-        return await axios.post<ILoginResponce>(`${this.url}/api/v2/auth/login`, data);
-    }
-
     async getTimeline(date: moment.Moment) {
         return await axios.get<OrderResponse>(
             `${this.url}/v2/orders/test`,
