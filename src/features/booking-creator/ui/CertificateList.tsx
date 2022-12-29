@@ -4,6 +4,7 @@ import ADD_ICON from '../../../assets/add.svg';
 import { QrcodeOutlined } from '@ant-design/icons';
 import { useState } from "react";
 import form, { FormListFieldData } from 'antd/lib/form';
+import { QrModal } from '../../qr-modal/QrModal';
 
 interface CertificateListProps {
     globalForm: FormInstance
@@ -32,6 +33,20 @@ const CertificatesList: React.FC<CertificateListProps> = ({ globalForm }) => {
         add(certificate);
     }
 
+    const [qrModalState, setQrModalState] = useState(false);
+
+    const onSubmitQr = (res: string) => {
+        // validate certificate here
+
+        setCertificate(res);
+        setQrModalState(false);
+    };
+
+    const onCancelQr = () => {
+        setQrModalState(false);
+    };
+
+    const openQrModal = () => setQrModalState(true);
 
 
     return (
@@ -39,6 +54,11 @@ const CertificatesList: React.FC<CertificateListProps> = ({ globalForm }) => {
                 {
                     (fields, { add, remove }) => (
                         <>
+                            <QrModal 
+                                onSubmit={onSubmitQr}
+                                onCancel={onCancelQr}
+                                isOpen={qrModalState}
+                            />
                             <Row style={{marginTop: '20px'}} gutter={[0, 20]} align='middle'>
                                 <Col span={12} style={{ marginRight: '20px' }}>
                                     <Form.Item name={'addInput'}>
@@ -67,7 +87,7 @@ const CertificatesList: React.FC<CertificateListProps> = ({ globalForm }) => {
                                         height: '46px',
                                         width: '46px'
                                     }} className="gradient-border">
-                                        <Button className="add-btn">
+                                        <Button className="add-btn" onClick={openQrModal}>
                                             <QrcodeOutlined style={{ fontSize: '21px', color: '#2F80ED' }} />
                                         </Button>
                                     </div>

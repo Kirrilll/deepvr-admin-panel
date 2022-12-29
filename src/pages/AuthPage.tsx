@@ -5,7 +5,7 @@ import { useCallback, useState } from 'react';
 import { FilialApi } from '../api/filialApi';
 import 'bootstrap/dist/css/bootstrap.css';
 import './AdminLoginStyles.css';
-import { setToken } from '../features/authentication/redux/slice';
+import { login, setToken } from '../features/authentication/redux/slice';
 import { useAppDispatch } from '../app/store';
 
 const bgImg = `https://srt.vrbook.creatrix-digital.ru/storage/settings/March2021/w4sA18JkULnlcgTLFSSk.jpg`;
@@ -70,6 +70,7 @@ const LogInForm: React.FC = () => {
                     if (response.data.error === 0) {
                         setServErr(null);
                         dispatch(setToken(response.data.token));
+                        dispatch(login());
 
                         // redirect
                     } else {
