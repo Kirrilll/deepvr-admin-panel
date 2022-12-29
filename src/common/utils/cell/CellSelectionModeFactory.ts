@@ -2,7 +2,7 @@ import { AppDispatch } from "../../../app/store";
 import { CellView, CellPivot } from "../../../entities/Cell";
 import { selectCell, unselectCell, } from "../../../features/selection/redux/slice";
 import { CellIndeficator } from "../../../features/timeline/redux/slice";
-import { DEFAULT_CELL_CLASSNAME } from "../../../features/timeline/ui/Cell";
+import { DEFAULT_CELL_CLASSNAME } from "../../../features/selection/ui/Cell";
 import CellHelper from "../../helpers/CellHelper";
 
 interface CreateSelectionModeAttrs {
@@ -17,7 +17,7 @@ const timeRule = (selectedCells: CellView[], cellId: CellIndeficator) => selecte
     .map(selectedCellId => CellHelper.isNextOrPrev(cellId, selectedCellId))
     .reduce((prev, next) => prev || next);
 
-const pivotRule = (pivot: CellPivot | null) => pivot === null;
+const pivotRule = (pivot: CellPivot[] | null) => pivot === null;
 
 class CellSelectionModeFactory {
     static createSelectionMode(attrs: CreateSelectionModeAttrs) {
@@ -29,14 +29,14 @@ class CellSelectionModeFactory {
                 onClick: () => dispatch(unselectCell(cell))
             })
         }
-        if (timeRule(selectedCells, cell.id) && pivotRule(cell.pivot)) {
+        if (timeRule(selectedCells, cell.id) && pivotRule(cell.pivots)) {
             return ({
                 isLastSelected: false,
                 className: DEFAULT_CELL_CLASSNAME + ' selectable',
                 onClick: () => dispatch(selectCell(cell))
             })
         }
-        if (!pivotRule(cell.pivot)) {
+        if (!pivotRule(cell.pivots)) {
             return ({
                 isLastSelected: false,
                 className: DEFAULT_CELL_CLASSNAME,

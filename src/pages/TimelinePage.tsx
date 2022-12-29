@@ -62,6 +62,7 @@ const TimelinePage: React.FC = () => {
     const timelineType: TimelineType = !isReady
         ? 'loading'
         : type;
+    
 
     return (
         <>

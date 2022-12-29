@@ -7,9 +7,6 @@ import TimeHelper from "../helpers/TimeHelper";
 
 
 export default class BookingMapper {
-
-
-
     static bookingFromCell(cell: CellIndeficator): BookingCreation {
         return ({
             startTime: TimeHelper.transformStringToTime(cell.time),
@@ -34,8 +31,8 @@ export default class BookingMapper {
         const formBookings = cells.map<FormBooking>(cell => ({
             time: cell.id.time,
             roomId: cell.id.roomId,
-            gameId: cell.pivot?.order.bookings.at(cell.pivot.bookingIndex)?.gameId ?? null,
-            guestCount: cell.pivot?.order.bookings.at(cell.pivot.bookingIndex)?.guestCount ?? null
+            gameId: cell.pivots?.at(0)?.order.bookings.at(cell.pivots.at(0)?.bookingIndex ?? -1)?.gameId ?? null,
+            guestCount: cell.pivots?.at(0)?.order.bookings.at(cell.pivots.at(0)?.bookingIndex ?? -1)?.guestCount ?? null
         }));
         return formBookings;
     }

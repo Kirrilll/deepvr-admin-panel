@@ -27,9 +27,6 @@ interface TimelineProps {
 export const REFERENCE_CELL_WIDTH = 190;
 
 const TimelineTable: React.FC<TimelineProps> = ({ options, timeline, type, dispatch }) => {
-
-    
-
     const director = useMemo(() => TimelineDirectorFactory.createTimelineDirector(type), [type]);
     const timelineView = useMemo(() => director.construct(timeline), [timeline, type]);
 

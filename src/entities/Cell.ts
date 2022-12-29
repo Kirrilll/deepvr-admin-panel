@@ -14,7 +14,7 @@ export interface CellIndeficator {
 
 export interface CellView {
     id: CellIndeficator,
-    pivot: CellPivot | null
+    pivots: CellPivot[] | null
 }
 
-export type CellContentType = 'default' | 'simplified' | 'loading';
+export type CellContentType = 'default' | 'simplified' | 'loading' | 'simplified-spaced';

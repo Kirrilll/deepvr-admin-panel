@@ -1,6 +1,7 @@
 import { createReducer, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import OrderMapper from "../../../common/mappers/OrderMapper";
 import ColorPool from "../../../common/utils/color/ColorPool";
+import { CellContentType } from "../../../entities/Cell";
 import { Order, OrderResponse, OrderView } from "../../../entities/Order";
 import { TimelineActionType, TimelineMode, TimelineOptions } from "../../../entities/TimelineOptions";
 import { TimelineType } from "../../../entities/TimelineTypes";
@@ -33,8 +34,8 @@ interface TimelineState {
 
 const initialState: TimelineState = {
     options: {
+        cellView: 'default',
         isFixed: true,
-        isSimpliefied: false,
         isShowCanceled: false
     },
     timelineAction: 'tap',
@@ -59,8 +60,8 @@ const timelineSlice = createSlice({
         toggleFixed: (state) => {
             state.options.isFixed = !state.options.isFixed;
         },
-        toggleSimpliefied: (state) => {
-            state.options.isSimpliefied = !state.options.isSimpliefied;
+        changeCellView: (state, action: PayloadAction<CellContentType>) => {
+            state.options.cellView = action.payload;
         },
         toggleShowCanceled: (state) => {
             state.options.isShowCanceled = !state.options.isShowCanceled;
@@ -96,7 +97,7 @@ export const {
     toggleFixed,
     toggleTranspose,
     insertOrder,
-    toggleSimpliefied,
+    changeCellView,
     toggleShowCanceled,
     handleTimelineAction
 } = timelineSlice.actions;

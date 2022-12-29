@@ -4,7 +4,7 @@ import { Room } from "../../../entities/Room";
 import { TimelineOptions } from "../../../entities/TimelineOptions";
 import { OrderCellMatrix, Row } from "../../../entities/TimelineTypes";
 import { SummaryCallback, TimelineBuilder } from "../../../entities/TimelineUtilsTypes";
-import Cell from "../../../features/timeline/ui/Cell";
+import Cell from "../../../features/selection/ui/Cell";
 import TableSummary from "../../../features/timeline/ui/TableSummary";
 import { REFERENCE_CELL_WIDTH } from "../../../features/timeline/ui/Timeline";
 
@@ -61,7 +61,7 @@ class TimelineDefaultBuilder implements TimelineBuilder {
                     return (<Cell
                         roomId={data.leadingCol.id}
                         time={time}
-                        pivot={data.shedule.at(index) ?? null}
+                        pivots={data.shedule.at(index) ?? null}
                     />)
                 }
             }))

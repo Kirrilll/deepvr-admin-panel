@@ -8,8 +8,8 @@ import { TimelineStateType } from "../../../features/timeline/redux/slice";
 import TimelineMapper from "../../mappers/TimelineMapper";
 
 
-export type OrderMapDefault = Map<number, Map<string, CellPivot | null>>;
-export type OrderMapTransposed = Map<string, Map<number, CellPivot | null>>;
+export type OrderMapDefault = Map<number, Map<string, CellPivot[] | null>>;
+export type OrderMapTransposed = Map<string, Map<number, CellPivot[] | null>>;
 
 
 interface TimelineFactoryArgs {
@@ -39,7 +39,7 @@ export default class TimelineFactory {
     private static createTransposed(orders: OrderView[], times: string[], rooms: Room[], initialGlasses: number): TransposedTimeline {
 
         const glassesMap = new Map<string, number>(times.map(time => [time, initialGlasses]));
-        const defaultRoomMap: Map<number, CellPivot | null> = new Map(rooms.map(room => [room.id, null]));
+        const defaultRoomMap: Map<number, CellPivot[] | null> = new Map(rooms.map(room => [room.id, null]));
         const ordersMap: OrderMapTransposed = new Map(times.map(time => [
             time,
             new Map(defaultRoomMap)
@@ -51,8 +51,9 @@ export default class TimelineFactory {
                 const time = booking.startTime.time;
                 const roomId = booking.roomId;
                 glassesMap.set(time, (glassesMap.get(time) ?? initialGlasses) - booking.guestCount);
-                const shedule = ordersMap.get(time) ?? new Map(defaultRoomMap);
-                shedule.set(roomId, { order: order, bookingIndex: bookingIndex })
+                const shedule = (ordersMap.get(time) ?? new Map(defaultRoomMap));
+                
+                shedule.set(roomId, [...shedule.get(roomId) ?? [], { order: order, bookingIndex: bookingIndex }])
             }
         }
 
@@ -80,7 +81,7 @@ export default class TimelineFactory {
                 const time = booking.startTime.time;
                 glassesMap.set(time, (glassesMap.get(time) ?? initialGlasses) - booking.guestCount)
                 const shedule = ordersMap.get(roomId) ?? new Map(defaultSheduleMap);
-                shedule.set(time, { order: order, bookingIndex: bookingIndex })
+                shedule.set(time, [...shedule.get(time) ?? [], { order: order, bookingIndex: bookingIndex }])
                 //ordersMap.set(roomId, shedule);
             }
         }

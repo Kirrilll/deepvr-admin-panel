@@ -4,7 +4,7 @@ import { TimelineMode, TimelineModeType } from "../../../entities/TimelineOption
 
 import { startSelecting } from "../../../features/selection/redux/slice";
 import { CellIndeficator } from "../../../features/timeline/redux/slice";
-import { DEFAULT_CELL_CLASSNAME } from "../../../features/timeline/ui/Cell";
+import { DEFAULT_CELL_CLASSNAME } from "../../../features/selection/ui/Cell";
 import CellIdleModeFactory from "./CellIdleModeFactory";
 import CellSelectionModeFactory from "./CellSelectionModeFactory";
 export type TimelineModeExtended = Omit<TimelineMode, 'type'> & { type: TimelineModeType | 'overpast' };

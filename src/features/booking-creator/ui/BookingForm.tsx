@@ -2,19 +2,15 @@ import { Button, Form, FormListFieldData, Input, InputNumber, Row, Select } from
 import REMOVE_ICON from '../../../assets/remove.svg';
 import GUEST_ICON from '../../../assets/person.svg';
 import TIME_ICON from '../../../assets/clock.svg';
-import { FormBooking, BOOKING_LIST_PATH, GAME_PATH, GUEST_COUNT_PATH, ROOM_PATH, TIME_PATH, PHONE_PICKER_PATH } from "./OrderCreateForm";
+import { FormBooking, BOOKING_LIST_PATH, GAME_PATH, GUEST_COUNT_PATH, ROOM_PATH, TIME_PATH } from "./OrderCreateForm";
 
 import { useAppDispatch, useAppSelector } from "../../../app/store";
 import { buildGamesByRoomSelector, buildRoomByIdSelector, selectRooms } from "../../game/redux/selectors";
 import { useMemo } from "react";
 import GameMapper from "../../../common/mappers/GameMapper";
 import RoomMapper from "../../../common/mappers/RoomMapper";
-import { FormInstance } from "antd/es/form/Form";
 import { unselectCell } from "../../selection/redux/slice";
-import BookingMapper from "../../../common/mappers/BookingMapper";
 import CellMapper from "../../../common/mappers/CellMapper";
-import TimelineHelper from "../../../common/helpers/TimelineHelper";
-import { availableGlassesByTimeSelector, selectOrders } from "../../timeline/redux/selectors";
 import { ValidatorHelper } from "../../../common/helpers/ValidatorHelper";
 
 
@@ -100,10 +96,10 @@ const BookingForm: React.FC<BookingFormProps> = ({ color, orderId, field, date, 
                             validator: ValidatorHelper.buildNumberAmbitValidato(room?.guest_max ?? 1, 1),
                             message: `Рекомендованное кол-во человек от ${1} до ${room?.guest_max?? 1}`, warningOnly: true
                         },
-                        {
-                            validator: buildGlassesValidator(),
-                            message: `Доступно очков на это время ${calcGuestMax()}`
-                        },
+                        // {
+                        //     validator: buildGlassesValidator(),
+                        //     message: `Доступно очков на это время ${calcGuestMax()}`
+                        // },
                         { required: true, message: 'Это поле обязательно' },
                     ]}
                 >

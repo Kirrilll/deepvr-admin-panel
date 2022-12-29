@@ -1,9 +1,11 @@
+import { CellContentType } from "./Cell";
+
 export type TimelineModeType = 'selection' | 'idle' | 'grabbing';
 
 
 export interface TimelineOptions {
+    cellView: CellContentType,
     isFixed: boolean,
-    isSimpliefied: boolean,
     isShowCanceled: boolean
 }
 
